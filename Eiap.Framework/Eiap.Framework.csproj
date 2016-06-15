@@ -76,7 +76,8 @@
     <Compile Include="Base.Interceptor\IInterceptorMethodContainerManager.cs" />
     <Compile Include="Base.Interceptor\InterceptorMethodContainer.cs" />
     <Compile Include="Base.UnitTest\IUnitTestManager.cs" />
-    <Compile Include="Base.UnitTest\UnitTestCaseManager.cs" />
+    <Compile Include="Base.UnitTest\IUnitTestCaseManager.cs" />
+    <Compile Include="Base.UnitTest\IUnitTestResultManager.cs" />
     <Compile Include="Common.DataAccess\SQL\IDataAccessConnectionString.cs" />
     <Compile Include="Common.DataAccess\SQL\ISQLCommandDataAccessConnection.cs" />
     <Compile Include="Common.DataAccess\SQL\ISQLDataAccess.cs" />
