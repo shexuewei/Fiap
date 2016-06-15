@@ -1,0 +1,79 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="12.0" DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <Import Project="$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props" Condition="Exists('$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props')" />
+  <PropertyGroup>
+    <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
+    <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
+    <ProjectGuid>{C9F8075B-770C-4959-92CE-78F89F6EF2AA}</ProjectGuid>
+    <OutputType>Library</OutputType>
+    <AppDesignerFolder>Properties</AppDesignerFolder>
+    <RootNamespace>Eiap.Framework.Common.Logger.LocalFile</RootNamespace>
+    <AssemblyName>Eiap.Framework.Common.Logger.LocalFile</AssemblyName>
+    <TargetFrameworkVersion>v4.5.1</TargetFrameworkVersion>
+    <FileAlignment>512</FileAlignment>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
+    <DebugSymbols>true</DebugSymbols>
+    <DebugType>full</DebugType>
+    <Optimize>false</Optimize>
+    <OutputPath>bin\Debug\</OutputPath>
+    <DefineConstants>DEBUG;TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
+    <DebugType>pdbonly</DebugType>
+    <Optimize>true</Optimize>
+    <OutputPath>bin\Release\</OutputPath>
+    <DefineConstants>TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+  </PropertyGroup>
+  <ItemGroup>
+    <Reference Include="System" />
+    <Reference Include="System.configuration" />
+    <Reference Include="System.Core" />
+    <Reference Include="System.Xml.Linq" />
+    <Reference Include="System.Data.DataSetExtensions" />
+    <Reference Include="Microsoft.CSharp" />
+    <Reference Include="System.Data" />
+    <Reference Include="System.Xml" />
+  </ItemGroup>
+  <ItemGroup>
+    <Compile Include="LogBody.cs" />
+    <Compile Include="Logger.cs" />
+    <Compile Include="ILoggerConfigeration.cs" />
+    <Compile Include="LoggerConfigeration.cs" />
+    <Compile Include="LogHead.cs" />
+    <Compile Include="LogLevel.cs" />
+    <Compile Include="LogMessage.cs" />
+    <Compile Include="LogStatistics.cs" />
+    <Compile Include="Properties\AssemblyInfo.cs" />
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\Eiap.Framework.AssemblyManager.SXW\Eiap.Framework.Base.AssemblyService.SXW.csproj">
+      <Project>{5c5afa54-e0d2-40de-bdff-d0088588947b}</Project>
+      <Name>Eiap.Framework.Base.AssemblyService.SXW</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\Eiap.Framework.Dependency.SXW\Eiap.Framework.Base.Dependency.SXW.csproj">
+      <Project>{efca732e-18cf-410e-adf5-b8a3e4c28ff3}</Project>
+      <Name>Eiap.Framework.Base.Dependency.SXW</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\Eiap.Framework.DynamicProxy.SXW\Eiap.Framework.Base.DynamicProxy.SXW.csproj">
+      <Project>{c0281458-6ce2-42dd-a807-c1c74557f354}</Project>
+      <Name>Eiap.Framework.Base.DynamicProxy.SXW</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\Eiap.Framework\Eiap.Framework.csproj">
+      <Project>{a29d9e5f-1889-4c23-a991-6bcd9cc91a45}</Project>
+      <Name>Eiap.Framework</Name>
+    </ProjectReference>
+  </ItemGroup>
+  <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
+  <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
+       Other similar extension points exist, see Microsoft.Common.targets.
+  <Target Name="BeforeBuild">
+  </Target>
+  <Target Name="AfterBuild">
+  </Target>
+  -->
+</Project>

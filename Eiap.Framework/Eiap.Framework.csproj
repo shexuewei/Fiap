@@ -1,0 +1,125 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="12.0" DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <Import Project="$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props" Condition="Exists('$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props')" />
+  <PropertyGroup>
+    <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
+    <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
+    <ProjectGuid>{A29D9E5F-1889-4C23-A991-6BCD9CC91A45}</ProjectGuid>
+    <OutputType>Library</OutputType>
+    <AppDesignerFolder>Properties</AppDesignerFolder>
+    <RootNamespace>Eiap.Framework</RootNamespace>
+    <AssemblyName>Eiap.Framework</AssemblyName>
+    <TargetFrameworkVersion>v4.5.1</TargetFrameworkVersion>
+    <FileAlignment>512</FileAlignment>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
+    <DebugSymbols>true</DebugSymbols>
+    <DebugType>full</DebugType>
+    <Optimize>false</Optimize>
+    <OutputPath>bin\Debug\</OutputPath>
+    <DefineConstants>DEBUG;TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
+    <DebugType>pdbonly</DebugType>
+    <Optimize>true</Optimize>
+    <OutputPath>bin\Release\</OutputPath>
+    <DefineConstants>TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+  </PropertyGroup>
+  <ItemGroup>
+    <Reference Include="System" />
+    <Reference Include="System.Core" />
+    <Reference Include="System.Xml.Linq" />
+    <Reference Include="System.Data.DataSetExtensions" />
+    <Reference Include="Microsoft.CSharp" />
+    <Reference Include="System.Data" />
+    <Reference Include="System.Xml" />
+  </ItemGroup>
+  <ItemGroup>
+    <Compile Include="AppBase.ApplicationService\IAppService.cs" />
+    <Compile Include="AppBase.ApplicationService\IAppServiceUnitOfWork.cs" />
+    <Compile Include="AppBase.BussinessService\BusinessContextBase.cs" />
+    <Compile Include="AppBase.BussinessService\IBusinessContextHandler.cs" />
+    <Compile Include="AppBase.BussinessService\IBusinessContextManager.cs" />
+    <Compile Include="AppBase.BussinessService\IBusinessHandlerContainerManager.cs" />
+    <Compile Include="AppBase.BussinessService\IPiping.cs" />
+    <Compile Include="AppBase.BussinessService\IPipingContainerManager.cs" />
+    <Compile Include="AppBase.BussinessService\IPipingManager.cs" />
+    <Compile Include="AppBase.BussinessService\PipingContainer.cs" />
+    <Compile Include="AppBase.DomainEvent\DomainEventContainer.cs" />
+    <Compile Include="AppBase.DomainEvent\IDomainEventContainerManager.cs" />
+    <Compile Include="AppBase.DomainEvent\IDomainEventData.cs" />
+    <Compile Include="AppBase.DomainEvent\IDomainEventHandler.cs" />
+    <Compile Include="AppBase.DomainEvent\IDomainEventManager.cs" />
+    <Compile Include="AppBase.DomainService\IDomainService.cs" />
+    <Compile Include="AppBase.DomainService\IDomainServiceUnitOfWork.cs" />
+    <Compile Include="AppBase.DTOMapper\IDTOMapper.cs" />
+    <Compile Include="AppBase.Repository\IRepository.cs" />
+    <Compile Include="AppBase.Repository\IRepositoryCommit.cs" />
+    <Compile Include="AppBase.Repository\IRepositoryUnitOfWork.cs" />
+    <Compile Include="AppBase.UnitOfWork\ICurrentUnitOfWork.cs" />
+    <Compile Include="AppBase.UnitOfWork\IUnitOfWork.cs" />
+    <Compile Include="AppBase.UnitOfWork\IUnitOfWorkCommandConnection.cs" />
+    <Compile Include="AppBase.UnitOfWork\UnitOfWorkAttribute.cs" />
+    <Compile Include="Base.AssemblyService\IAssemblyManager.cs" />
+    <Compile Include="Base.Dependency\DependencyContainerManagerBase.cs" />
+    <Compile Include="Base.Dependency\IDependencyContainerManager.cs" />
+    <Compile Include="Base.Dependency\IPropertyDependency.cs" />
+    <Compile Include="Base.Dependency\IDynamicProxyDisable.cs" />
+    <Compile Include="Base.Interceptor\IInterceptorMethodManager.cs" />
+    <Compile Include="Base.Interceptor\InterceptorMethodContainerManagerBase.cs" />
+    <Compile Include="Base.Interceptor\InterceptorMethodArgs.cs" />
+    <Compile Include="Base.Interceptor\InterceptorMethodAttibute.cs" />
+    <Compile Include="Base.Interceptor\IInterceptorMethodContainerManager.cs" />
+    <Compile Include="Base.Interceptor\InterceptorMethodContainer.cs" />
+    <Compile Include="Base.UnitTest\IUnitTestManager.cs" />
+    <Compile Include="Base.UnitTest\UnitTestCaseManager.cs" />
+    <Compile Include="Common.DataAccess\SQL\IDataAccessConnectionString.cs" />
+    <Compile Include="Common.DataAccess\SQL\ISQLCommandDataAccessConnection.cs" />
+    <Compile Include="Common.DataAccess\SQL\ISQLDataAccess.cs" />
+    <Compile Include="Common.DataAccess\SQL\ISQLDataAccessConnection.cs" />
+    <Compile Include="Common.DataAccess\SQL\ISQLDataAccessConnectionString.cs" />
+    <Compile Include="Common.DataAccess\SQL\ISQLDataCommand.cs" />
+    <Compile Include="Common.DataAccess\SQL\ISQLDataQuery.cs" />
+    <Compile Include="Common.DataAccess\SQL\ISQLDataQueryDataAccessConnection.cs" />
+    <Compile Include="Common.DataAccess\SQL\ISQLQuery.cs" />
+    <Compile Include="Common.DataAccess\SQL\ISQLQueryDataAccessConnection.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="Common.DataAccess\SQL\SQLServerDataExtension .cs" />
+    <Compile Include="Base.Dependency\DependencyContainer.cs" />
+    <Compile Include="Base.Dependency\IDependencyManager.cs" />
+    <Compile Include="Base.Dependency\IContextDependency.cs" />
+    <Compile Include="Base.Dependency\ISingletonDependency.cs" />
+    <Compile Include="Base.Dependency\IRealtimeDependency.cs" />
+    <Compile Include="Base.Dependency\ObjectLifeCycle.cs" />
+    <Compile Include="Base.DynamicProxy\IDynamicProxyInterceptor.cs" />
+    <Compile Include="Base.DynamicProxy\IDynamicProxyManager.cs" />
+    <Compile Include="Common.DataMapping\SQL\EntityAttribute.cs" />
+    <Compile Include="Common.DataMapping\SQL\ISQLCommandMapping.cs" />
+    <Compile Include="Common.DataMapping\SQL\ISQLDataMappingExtension.cs" />
+    <Compile Include="Common.DataMapping\SQL\ISQLDataQueryMapping.cs" />
+    <Compile Include="Common.DataMapping\SQL\PropertyAttribute.cs" />
+    <Compile Include="Common.Entity\ICreationEntity.cs" />
+    <Compile Include="Common.Entity\IDeleteEntity.cs" />
+    <Compile Include="Common.Entity\IIsEnable.cs" />
+    <Compile Include="Common.Entity\IIsDelete.cs" />
+    <Compile Include="Common.Entity\IEntity.cs" />
+    <Compile Include="Common.Entity\IModifyEntity.cs" />
+    <Compile Include="Common.Logger\ILogger.cs" />
+    <Compile Include="Base.Module\IComponentModule.cs" />
+    <Compile Include="Properties\AssemblyInfo.cs" />
+  </ItemGroup>
+  <ItemGroup />
+  <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
+  <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
+       Other similar extension points exist, see Microsoft.Common.targets.
+  <Target Name="BeforeBuild">
+  </Target>
+  <Target Name="AfterBuild">
+  </Target>
+  -->
+</Project>
