@@ -10,25 +10,6 @@ namespace Eiap.Framework.Base.DynamicProxy.SXW
 {
     public class DynamicProxyManager : IDynamicProxyManager
     {
-        private static IDynamicProxyManager _DynamicProxyManager = null;
-
-        private DynamicProxyManager()
-        { 
-            
-        }
-
-        public static IDynamicProxyManager Instance
-        {
-            get 
-            {
-                if (_DynamicProxyManager == null)
-                {
-                    _DynamicProxyManager = new DynamicProxyManager();
-                }
-                return _DynamicProxyManager;
-            }
-        }
-
         public T Create<T>(IDynamicProxyInterceptor interceptorInstance, object objInstance) where T : class
         {
             return (T)Create(typeof(T), interceptorInstance, objInstance);

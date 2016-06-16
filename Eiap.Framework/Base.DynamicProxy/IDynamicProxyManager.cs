@@ -7,7 +7,7 @@ using System.Threading.Tasks;
 
 namespace Eiap.Framework.Base.DynamicProxy
 {
-    public interface IDynamicProxyManager
+    public interface IDynamicProxyManager : ISingletonDependency, IDynamicProxyDisable
     {
         T Create<T>(IDynamicProxyInterceptor interceptorInstance, object objInstance) where T : class;
 

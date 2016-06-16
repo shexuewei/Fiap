@@ -39,6 +39,7 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="DynamicProxyModule.cs" />
     <Compile Include="DynamicProxyInterceptor.cs" />
     <Compile Include="DynamicProxyManager.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />

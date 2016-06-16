@@ -41,13 +41,10 @@
   <ItemGroup>
     <Compile Include="DependencyContainerManager.cs" />
     <Compile Include="DependencyManager.cs" />
+    <Compile Include="DependencyModule.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\Eiap.Framework.DynamicProxy.SXW\Eiap.Framework.Base.DynamicProxy.SXW.csproj">
-      <Project>{c0281458-6ce2-42dd-a807-c1c74557f354}</Project>
-      <Name>Eiap.Framework.Base.DynamicProxy.SXW</Name>
-    </ProjectReference>
     <ProjectReference Include="..\Eiap.Framework\Eiap.Framework.csproj">
       <Project>{a29d9e5f-1889-4c23-a991-6bcd9cc91a45}</Project>
       <Name>Eiap.Framework</Name>

@@ -7,7 +7,7 @@ using System.Threading.Tasks;
 using System.IO;
 using System.Runtime.Remoting.Messaging;
 using Eiap.Framework.Base.DynamicProxy;
-using Eiap.Framework.Base.DynamicProxy.SXW;
+using Eiap.Framework.Base.AssemblyService;
 
 namespace Eiap.Framework.Base.Dependency.SXW
 {
@@ -82,11 +82,10 @@ namespace Eiap.Framework.Base.Dependency.SXW
                         }
                         //TODO:生成动态代理对象（可返回空类型对象）
                         //TODO:目前只根据接口生成动态代理
-                        //TODO:依赖注入和动态代理解耦
                         if (!typeof(IDynamicProxyDisable).IsAssignableFrom(tEntity))
                         {
                             IDynamicProxyInterceptor dynamicProxyInterceptorInstance = this.Resolver<IDynamicProxyInterceptor>();
-                            t = DynamicProxyManager.Instance.Create(tEntity, dynamicProxyInterceptorInstance, t);
+                            t = this.Resolver<IDynamicProxyManager>().Create(tEntity, dynamicProxyInterceptorInstance, t);
                         }
                     }
                 }

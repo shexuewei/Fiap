@@ -9,7 +9,7 @@ using System.Threading.Tasks;
 
 namespace Eiap.Framework.Base.DynamicProxy
 {
-    public interface IDynamicProxyInterceptor : IRealtimeDependency
+    public interface IDynamicProxyInterceptor : IRealtimeDependency, IDynamicProxyDisable
     {
         object Invoke(object instance, string name, object[] parameters);
     }

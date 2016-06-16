@@ -5,6 +5,7 @@ using System.Linq;
 using System.Reflection;
 using System.Text;
 using System.Threading.Tasks;
+using Eiap.Framework.Base.Extension;
 
 namespace Eiap.Framework.Base.AssemblyService
 {
@@ -55,7 +56,6 @@ namespace Eiap.Framework.Base.AssemblyService
             if (!IsExistSameAssembly(assembly))
             {
                 assemblyList.Add(assembly);
-                ModuleInitialize(assembly);
             }
             return Instance;
         }
@@ -65,13 +65,13 @@ namespace Eiap.Framework.Base.AssemblyService
         /// </summary>
         /// <param name="assemblyPath"></param>
         /// <returns></returns>
-        public AssemblyManager RegisterAssembly(string assemblyPath)
+        public AssemblyManager LoadAllAssembly(string assemblyPath)
         {
             var loadDllList = Directory.GetFiles(assemblyPath).Where(m => m.EndsWith(".dll") || m.EndsWith(".exe")).ToList();
             foreach (string dllname in loadDllList)
             {
                 Assembly assembly = Assembly.LoadFile(dllname);
-                RegisterAssembly(assembly);
+                ModuleInitialize(assembly);
             }
             return Instance;
         }
@@ -99,9 +99,12 @@ namespace Eiap.Framework.Base.AssemblyService
         /// <param name="assembly"></param>
         private void ModuleInitialize(Assembly assembly)
         {
-            Type componentModuleType = assembly.GetTypes().Where(m => m.IsAssignableFrom(typeof(IComponentModule))).FirstOrDefault();
-            IComponentModule componentModule = (IComponentModule)Activator.CreateInstance(componentModuleType);
-            componentModule.Initialize();
+            Type componentModuleType = assembly.GetTypes().Where(m => typeof(IComponentModule).IsAssignableFrom(m)).FirstOrDefault();
+            if (componentModuleType.IsNotNull() && !componentModuleType.IsInterface)
+            {
+                IComponentModule componentModule = (IComponentModule)Activator.CreateInstance(componentModuleType);
+                componentModule.Initialize();
+            }
         }
     }
 }
