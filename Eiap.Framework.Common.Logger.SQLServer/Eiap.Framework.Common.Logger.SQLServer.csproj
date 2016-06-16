@@ -49,10 +49,6 @@
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\Eiap.Framework.AssemblyManager.SXW\Eiap.Framework.Base.AssemblyService.SXW.csproj">
-      <Project>{5c5afa54-e0d2-40de-bdff-d0088588947b}</Project>
-      <Name>Eiap.Framework.Base.AssemblyService.SXW</Name>
-    </ProjectReference>
     <ProjectReference Include="..\Eiap.Framework.Dependency.SXW\Eiap.Framework.Base.Dependency.SXW.csproj">
       <Project>{efca732e-18cf-410e-adf5-b8a3e4c28ff3}</Project>
       <Name>Eiap.Framework.Base.Dependency.SXW</Name>

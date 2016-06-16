@@ -7,7 +7,7 @@ using Eiap.Framework.Common.Entity;
 using Eiap.Framework;
 using Eiap.Framework.AppBase.UnitOfWork;
 using Eiap.Framework.Base.Dependency.SXW;
-using Eiap.Framework.Base.AssemblyService.SXW;
+using Eiap.Framework.Base.AssemblyService;
 using System.Reflection;
 using Eiap.Framework.AppBase.Repository.SXW;
 using Eiap.Framework.AppBase.ApplicationService.SXW;

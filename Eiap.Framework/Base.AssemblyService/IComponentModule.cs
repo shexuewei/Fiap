@@ -4,7 +4,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace Eiap.Framework.Base.Module
+namespace Eiap.Framework.Base.AssemblyService
 {
     public interface IComponentModule
     {

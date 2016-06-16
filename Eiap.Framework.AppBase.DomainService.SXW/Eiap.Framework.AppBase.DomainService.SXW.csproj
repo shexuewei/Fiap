@@ -45,10 +45,6 @@
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\Eiap.Framework.AssemblyManager.SXW\Eiap.Framework.Base.AssemblyService.SXW.csproj">
-      <Project>{5c5afa54-e0d2-40de-bdff-d0088588947b}</Project>
-      <Name>Eiap.Framework.Base.AssemblyService.SXW</Name>
-    </ProjectReference>
     <ProjectReference Include="..\Eiap.Framework.Common.Logger.SQLServer\Eiap.Framework.Common.Logger.SQLServer.csproj">
       <Project>{304fb927-68a0-47fb-a86d-28bf11b3d2c6}</Project>
       <Name>Eiap.Framework.Common.Logger.SQLServer</Name>

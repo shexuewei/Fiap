@@ -61,10 +61,6 @@
       <Project>{305c705e-d5bc-4de3-bf41-bb89a0eadd37}</Project>
       <Name>Eiap.Framework.AppBase.UnitOfWork.SXW</Name>
     </ProjectReference>
-    <ProjectReference Include="..\Eiap.Framework.AssemblyManager.SXW\Eiap.Framework.Base.AssemblyService.SXW.csproj">
-      <Project>{5c5afa54-e0d2-40de-bdff-d0088588947b}</Project>
-      <Name>Eiap.Framework.Base.AssemblyService.SXW</Name>
-    </ProjectReference>
     <ProjectReference Include="..\Eiap.Framework.Common.Logger.LocalFile\Eiap.Framework.Common.Logger.LocalFile.csproj">
       <Project>{c9f8075b-770c-4959-92ce-78f89f6ef2aa}</Project>
       <Name>Eiap.Framework.Common.Logger.LocalFile</Name>

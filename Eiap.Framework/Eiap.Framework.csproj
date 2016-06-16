@@ -64,6 +64,7 @@
     <Compile Include="AppBase.UnitOfWork\IUnitOfWork.cs" />
     <Compile Include="AppBase.UnitOfWork\IUnitOfWorkCommandConnection.cs" />
     <Compile Include="AppBase.UnitOfWork\UnitOfWorkAttribute.cs" />
+    <Compile Include="Base.AssemblyService\AssemblyManager.cs" />
     <Compile Include="Base.AssemblyService\IAssemblyManager.cs" />
     <Compile Include="Base.Dependency\DependencyContainerManagerBase.cs" />
     <Compile Include="Base.Dependency\IDependencyContainerManager.cs" />
@@ -111,7 +112,7 @@
     <Compile Include="Common.Entity\IEntity.cs" />
     <Compile Include="Common.Entity\IModifyEntity.cs" />
     <Compile Include="Common.Logger\ILogger.cs" />
-    <Compile Include="Base.Module\IComponentModule.cs" />
+    <Compile Include="Base.AssemblyService\IComponentModule.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup />

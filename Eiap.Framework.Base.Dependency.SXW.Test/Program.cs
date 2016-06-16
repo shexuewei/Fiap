@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
-using Eiap.Framework.Base.AssemblyService.SXW;
+using Eiap.Framework.Base.AssemblyService;
 using System.Reflection;
 
 namespace Eiap.Framework.Base.Dependency.SXW.Test

@@ -1,4 +1,4 @@
-﻿using Eiap.Framework.Base.AssemblyService.SXW;
+﻿using Eiap.Framework.Base.AssemblyService;
 using Eiap.Framework.Base.Dependency.SXW;
 using System;
 using System.Collections.Generic;
