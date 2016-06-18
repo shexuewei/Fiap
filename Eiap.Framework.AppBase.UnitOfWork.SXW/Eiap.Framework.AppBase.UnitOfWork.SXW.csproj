@@ -42,6 +42,7 @@
     <Compile Include="CurrentUnitOfWorkManager.cs" />
     <Compile Include="UnitOfWorkManager.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="UnitOfWorkModule.cs" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\Eiap.Framework.Common.Logger.SQLServer\Eiap.Framework.Common.Logger.SQLServer.csproj">

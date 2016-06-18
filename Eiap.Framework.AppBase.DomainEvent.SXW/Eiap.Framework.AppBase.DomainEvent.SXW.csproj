@@ -41,6 +41,7 @@
   <ItemGroup>
     <Compile Include="DomainEventContainerManager.cs" />
     <Compile Include="DomainEventManager.cs" />
+    <Compile Include="DomainEventModule.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>

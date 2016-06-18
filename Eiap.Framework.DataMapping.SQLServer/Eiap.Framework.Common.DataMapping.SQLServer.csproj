@@ -42,6 +42,7 @@
     <Compile Include="DataDescription.cs" />
     <Compile Include="DataExtension.cs" />
     <Compile Include="DataManager.cs" />
+    <Compile Include="DataMappingSQLServerModule.cs" />
     <Compile Include="SQLDataMappingExtension.cs" />
     <Compile Include="SQLServerCommandMapping.cs" />
     <Compile Include="SQLServerQueryMapping.cs" />

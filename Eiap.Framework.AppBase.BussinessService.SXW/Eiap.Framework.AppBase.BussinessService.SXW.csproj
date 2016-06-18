@@ -43,6 +43,7 @@
     <Compile Include="BusinessContextManagerBase.cs" />
     <Compile Include="BusinessHandlerContainer.cs" />
     <Compile Include="BusinessHandlerContainerManager.cs" />
+    <Compile Include="BussinessServiceModule.cs" />
     <Compile Include="PipingContainerManager.cs" />
     <Compile Include="PipingManager.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />

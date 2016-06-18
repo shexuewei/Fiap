@@ -6,9 +6,9 @@ using System.Reflection;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace Eiap.Framework.Common.DataAccess.SQLServer
+namespace Eiap.Framework.AppBase.DomainEvent.SXW
 {
-    public class DataAccessSQLServerModule : IComponentModule
+    public class DomainEventModule : IComponentModule
     {
         public void Initialize()
         {

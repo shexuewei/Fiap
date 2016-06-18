@@ -6,9 +6,9 @@ using System.Reflection;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace Eiap.Framework.Common.DataAccess.SQLServer
+namespace Eiap.Framework.Common.Logger.LocalFile
 {
-    public class DataAccessSQLServerModule : IComponentModule
+    public class LoggerLocalFileModule : IComponentModule
     {
         public void Initialize()
         {

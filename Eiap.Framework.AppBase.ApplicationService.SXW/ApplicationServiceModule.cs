@@ -6,9 +6,9 @@ using System.Reflection;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace Eiap.Framework.Common.DataAccess.SQLServer
+namespace Eiap.Framework.AppBase.ApplicationService.SXW
 {
-    public class DataAccessSQLServerModule : IComponentModule
+    public class ApplicationServiceModule : IComponentModule
     {
         public void Initialize()
         {

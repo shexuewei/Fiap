@@ -41,6 +41,7 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="LogBody.cs" />
+    <Compile Include="LoggerSQLServerModule.cs" />
     <Compile Include="LogHead.cs" />
     <Compile Include="LogLevel.cs" />
     <Compile Include="Logger.cs" />

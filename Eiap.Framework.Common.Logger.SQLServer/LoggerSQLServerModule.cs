@@ -2,17 +2,16 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Reflection;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace Eiap.Framework.Common.DataAccess.SQLServer
+namespace Eiap.Framework.Common.Logger.SQLServer
 {
-    public class DataAccessSQLServerModule : IComponentModule
+    public class LoggerSQLServerModule : IComponentModule
     {
         public void Initialize()
         {
-            AssemblyManager.Instance.RegisterAssembly(Assembly.GetExecutingAssembly());
+            
         }
     }
 }
