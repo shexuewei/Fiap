@@ -1,5 +1,4 @@
-﻿using Eiap.Framework.Base.Dependency;
-using System;
+﻿using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -7,8 +6,8 @@ using System.Threading.Tasks;
 
 namespace Eiap.Framework.Base.UnitTest
 {
-    public interface IUnitTestManager
+    public class UnitTestResultContainer
     {
-        IUnitTestCaseManager Register<T>();
+        public string UnitTestResultMessage { get; set; }
     }
 }

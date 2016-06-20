@@ -8,5 +8,9 @@ namespace Eiap.Framework.Base.UnitTest.SXW
 {
     public class UnitTestManager : IUnitTestManager
     {
+        public IUnitTestCaseManager Register<T>()
+        {
+            throw new NotImplementedException();
+        }
     }
 }

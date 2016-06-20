@@ -7,8 +7,9 @@ using System.Threading.Tasks;
 
 namespace Eiap.Framework.Base.UnitTest
 {
-    public interface IUnitTestManager
+    public interface IUnitTestContainerManager : ISingletonDependency
     {
-        IUnitTestCaseManager Register<T>();
+        void RegisterUnitTestInterface(Type unitTestInterface, string methodName);
+
     }
 }

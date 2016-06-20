@@ -8,6 +8,10 @@ namespace Eiap.Framework.Base.UnitTest
 {
     public interface IUnitTestCaseManager
     {
-       
+        IUnitTestCaseManager SetMethodName(string methodName);
+
+        IUnitTestCaseManager SetMethodCase(params object[] objs);
+
+        void Finish();
     }
 }

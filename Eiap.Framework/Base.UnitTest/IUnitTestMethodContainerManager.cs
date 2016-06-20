@@ -2,13 +2,14 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Reflection;
 using System.Text;
 using System.Threading.Tasks;
 
 namespace Eiap.Framework.Base.UnitTest
 {
-    public interface IUnitTestManager
+    public interface IUnitTestMethodContainerManager : ISingletonDependency
     {
-        IUnitTestCaseManager Register<T>();
+        void RegisterUnitTestMethod(MethodInfo methodInfo, UnitTestCaseContainer unitTestCase);
     }
 }
