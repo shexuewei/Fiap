@@ -12,7 +12,7 @@ namespace Eiap.Framework.Base.Dependency.SXW.Test
     {
         static void Main(string[] args)
         {
-            AssemblyManager.Instance.LoadAllAssembly(@"C:\MyWork\EiapV3.0\Eiap.Framework\Eiap.Framework.Base.Dependency.SXW.Test\bin\Debug\")
+            AssemblyManager.Instance.LoadAllAssembly()//@"C:\MyWork\EiapV3.0\Eiap.Framework\Eiap.Framework.Base.Dependency.SXW.Test\bin\Debug\"
                 .Register(DependencyManager.Instance.Register);
             //根据接口返回接口实现类对象
             //ISchoolManager schoolManager = (ISchoolManager)DependencyManager.Instance.Resolver(typeof(ISchoolManager));

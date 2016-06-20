@@ -65,9 +65,9 @@ namespace Eiap.Framework.Base.AssemblyService
         /// </summary>
         /// <param name="assemblyPath"></param>
         /// <returns></returns>
-        public AssemblyManager LoadAllAssembly(string assemblyPath)
+        public AssemblyManager LoadAllAssembly()
         {
-            var loadDllList = Directory.GetFiles(assemblyPath).Where(m => m.EndsWith(".dll") || m.EndsWith(".exe")).ToList();
+            var loadDllList = Directory.GetFiles(AppDomain.CurrentDomain.BaseDirectory).Where(m => m.EndsWith(".dll") || m.EndsWith(".exe")).ToList();
             foreach (string dllname in loadDllList)
             {
                 Assembly assembly = Assembly.LoadFile(dllname);
