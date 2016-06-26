@@ -10,14 +10,14 @@ namespace Eiap.Framework.AppBase.DomainEvent
     {
         public Type DomainEventDataType { get; set; }
 
-        public string DomainEventDataTypeName { get; set; }
+        public string DomainEventDataTypeName { get { return DomainEventDataType.FullName; } }
 
         public Type DomainEventHandlerType { get; set; }
 
-        public string DomainEventHandlerTypeName { get; set; }
+        public string DomainEventHandlerTypeName { get { return DomainEventHandlerType.FullName; } }
 
         public Type InterfaceDomainEventHandlerType { get; set; }
 
-        public string InterfaceDomainEventHandlerName { get; set; }
+        public string InterfaceDomainEventHandlerName { get { return InterfaceDomainEventHandlerType.Namespace + "." + InterfaceDomainEventHandlerType.Name; } }
     }
 }

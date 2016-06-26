@@ -31,7 +31,7 @@ namespace Eiap.Framework.Base.Interceptor.SXW
                 }
                 else
                 {
-                    _InterceptorMethodContainerList.Add(new InterceptorMethodContainer { InterceptorMethodAttibuteName = interceptorMethodAttibute.FullName, InterceptorMethodAttibute = interceptorMethodAttibute, InterceptorMethodList = { interceptorMethod } });
+                    _InterceptorMethodContainerList.Add(new InterceptorMethodContainer { InterceptorMethodAttibute = interceptorMethodAttibute, InterceptorMethodList = { interceptorMethod } });
                 }
             }
         }

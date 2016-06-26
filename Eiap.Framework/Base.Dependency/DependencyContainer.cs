@@ -8,15 +8,15 @@ namespace Eiap.Framework.Base.Dependency
 {
     public class DependencyContainer
     {
-        public virtual Type DependencyInterface { get; set; }
+        public Type DependencyInterface { get; set; }
 
-        public virtual string DependencyInterfaceName { get; set; }
+        public string DependencyInterfaceName { get { return DependencyInterface.FullName; } }
 
-        public virtual Type DependencyInterfaceClass { get; set; }
+        public Type DependencyInterfaceClass { get; set; }
 
-        public virtual string DependencyInterfaceClassName { get; set; }
+        public string DependencyInterfaceClassName { get { return DependencyInterfaceClass.FullName; } }
 
-        public virtual bool IsDirectRelation { get; set; }
+        public bool IsDirectRelation { get; set; }
 
     }
 }

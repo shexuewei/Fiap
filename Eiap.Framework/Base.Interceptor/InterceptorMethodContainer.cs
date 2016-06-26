@@ -19,17 +19,17 @@ namespace Eiap.Framework.Base.Interceptor
         /// <summary>
         /// 拦截方法列表
         /// </summary>
-        public virtual List<Func<InterceptorMethodArgs, bool>> InterceptorMethodList { get; set; }
+        public List<Func<InterceptorMethodArgs, bool>> InterceptorMethodList { get; set; }
 
         /// <summary>
         /// 拦截方法特性
         /// </summary>
-        public virtual Type InterceptorMethodAttibute { get; set; }
+        public Type InterceptorMethodAttibute { get; set; }
 
         /// <summary>
         /// 拦截方法特性名称
         /// </summary>
-        public virtual string InterceptorMethodAttibuteName { get; set; }
+        public string InterceptorMethodAttibuteName { get { return InterceptorMethodAttibute.FullName; } }
 
     }
 }

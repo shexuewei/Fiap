@@ -9,6 +9,11 @@ namespace Eiap.Framework.Base.UnitTest
 {
     public class UnitTestContainer
     {
+        public UnitTestContainer()
+        {
+            TestMethodList = new List<UnitTestMethodContainer>();
+        }
+
         public Type UnitTestInterfaceType { get; set; }
 
         public List<UnitTestMethodContainer> TestMethodList { get; set; }

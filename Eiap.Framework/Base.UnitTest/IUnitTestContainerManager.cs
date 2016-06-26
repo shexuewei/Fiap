@@ -9,7 +9,7 @@ namespace Eiap.Framework.Base.UnitTest
 {
     public interface IUnitTestContainerManager : ISingletonDependency
     {
-        void RegisterUnitTestInterface(Type unitTestInterface, string methodName);
+        void RegisterUnitTestInterface(Type unitTestInterface, string methodName, UnitTestCaseContainer unitTestCase);
 
     }
 }

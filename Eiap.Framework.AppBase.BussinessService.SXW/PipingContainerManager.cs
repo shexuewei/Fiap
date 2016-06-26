@@ -31,7 +31,7 @@ namespace Eiap.Framework.AppBase.BussinessService.SXW
                     return this;
                 }
             }
-            _pipingContainerList.Add(new PipingContainer { PipingName = pipingImpType.FullName, PipingImpType = pipingImpType, BusinessContextManagerImpType = businessContextManagerImpType });
+            _pipingContainerList.Add(new PipingContainer { PipingImpType = pipingImpType, BusinessContextManagerImpType = businessContextManagerImpType });
             return this;
         }
 

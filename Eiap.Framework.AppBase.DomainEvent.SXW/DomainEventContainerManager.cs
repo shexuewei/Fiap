@@ -48,11 +48,8 @@ namespace Eiap.Framework.AppBase.DomainEvent.SXW
             _DomainEventContList.Add(new DomainEventContainer()
             {
                 DomainEventDataType = domainEventDataTypeItem,
-                DomainEventDataTypeName = domainEventDataTypeItem.FullName,
                 DomainEventHandlerType = classItem,
-                DomainEventHandlerTypeName = classItem.FullName,
                 InterfaceDomainEventHandlerType = interfaceItem,
-                InterfaceDomainEventHandlerName = interfaceItem.Namespace + "." + interfaceItem.Name
             });
         }
 

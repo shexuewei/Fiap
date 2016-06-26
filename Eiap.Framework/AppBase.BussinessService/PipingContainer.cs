@@ -8,7 +8,7 @@ namespace Eiap.Framework.AppBase.BussinessService
 {
     public class PipingContainer
     {
-        public string PipingName { get; set; }
+        public string PipingName { get { return PipingImpType.FullName; } }
 
         public Type PipingImpType { get; set; }
 

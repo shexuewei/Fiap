@@ -32,8 +32,6 @@ namespace Eiap.Framework.Base.Dependency.SXW
                 DependencyContainer cont = new DependencyContainer();
                 cont.DependencyInterfaceClass = dependencyInterfaceClass;
                 cont.DependencyInterface = dependencyInterface;
-                cont.DependencyInterfaceClassName = dependencyInterfaceClass.FullName;
-                cont.DependencyInterfaceName = dependencyInterface.FullName;
                 cont.IsDirectRelation = isDirectRelation;
                 _DepeDicList.Add(cont);
             }
