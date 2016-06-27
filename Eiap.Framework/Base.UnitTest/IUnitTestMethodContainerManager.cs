@@ -10,6 +10,6 @@ namespace Eiap.Framework.Base.UnitTest
 {
     public interface IUnitTestMethodContainerManager : ISingletonDependency
     {
-        void RegisterUnitTestMethod(MethodInfo methodInfo, UnitTestCaseContainer unitTestCase);
+        UnitTestMethodContainer RegisterUnitTestMethod(MethodInfo methodInfo, UnitTestCaseContainer unitTestCase);
     }
 }
