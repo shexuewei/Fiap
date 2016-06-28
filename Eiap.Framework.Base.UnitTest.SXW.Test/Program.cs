@@ -1,4 +1,5 @@
 ﻿using Eiap.Framework.Base.AssemblyService;
+using Eiap.Framework.Base.Dependency;
 using Eiap.Framework.Base.Dependency.SXW;
 using System;
 using System.Collections.Generic;
@@ -14,5 +15,10 @@ namespace Eiap.Framework.Base.UnitTest.SXW.Test
         {
             AssemblyManager.Instance.LoadAllAssembly().Register(DependencyManager.Instance.Register);
         }
+    }
+
+    public interface IUnitTestAppInterface : IRealtimeDependency
+    {
+        void Add(int a, int b);
     }
 }
