@@ -68,6 +68,7 @@ namespace Eiap.Framework.Base.AssemblyService
         public AssemblyManager LoadAllAssembly()
         {
             var loadDllList = Directory.GetFiles(AppDomain.CurrentDomain.BaseDirectory).Where(m => m.EndsWith(".dll") || m.EndsWith(".exe")).ToList();
+            //初始化组件
             foreach (string dllname in loadDllList)
             {
                 Assembly assembly = Assembly.LoadFile(dllname);

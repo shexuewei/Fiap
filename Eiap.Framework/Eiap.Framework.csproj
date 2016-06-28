@@ -77,6 +77,7 @@
     <Compile Include="Base.Interceptor\IInterceptorMethodContainerManager.cs" />
     <Compile Include="Base.Interceptor\InterceptorMethodContainer.cs" />
     <Compile Include="Base.UnitTest\IUnitTestContainerManager.cs" />
+    <Compile Include="Base.UnitTest\IUnitTestManager.cs" />
     <Compile Include="Base.UnitTest\IUnitTestMethodContainerManager.cs" />
     <Compile Include="Base.UnitTest\UnitTestCaseAssertType.cs" />
     <Compile Include="Base.UnitTest\UnitTestCaseContainer.cs" />
