@@ -6,12 +6,12 @@ using System.Reflection.Emit;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace Eiap.Framework.Base.DynamicProxy.SXW
+namespace Eiap.Framework.Base.UnitTest.SXW
 {
-    public class DynamicProxyManager : IDynamicProxyManager
+    public class UnitTestProxyManager : IUnitTestProxyManager
     {
-        private IDynamicProxyInterceptor _InterceptorInstance;
-        public DynamicProxyManager(IDynamicProxyInterceptor interceptorInstance)
+        private IUnitTestProxyInterceptor _InterceptorInstance;
+        public UnitTestProxyManager(IUnitTestProxyInterceptor interceptorInstance)
         {
             _InterceptorInstance = interceptorInstance;
         }
@@ -32,8 +32,8 @@ namespace Eiap.Framework.Base.DynamicProxy.SXW
             //持久化模块
             //var modulebuilder = asm.DefineDynamicModule(instanceType.Name, instanceType.Name + "EiapProxy.dll");
             //瞬时模块
-            var modulebuilder = asm.DefineDynamicModule(instanceType.Name + "EiapProxy.dll");
-            var typeBuilder = modulebuilder.DefineType(instanceType.Name + "EiapProxy", TypeAttributes.Public, typeof(object), new Type[] { interfaceType });
+            var modulebuilder = asm.DefineDynamicModule(instanceType.Name + "EiapUnitTestProxy.dll");
+            var typeBuilder = modulebuilder.DefineType(instanceType.Name + "EiapUnitTestProxy", TypeAttributes.Public, typeof(object), new Type[] { interfaceType });
 
             //定义字段
             var interceptorField = typeBuilder.DefineField("_" + interceptorType.Name, interceptorType, FieldAttributes.Private);
@@ -135,7 +135,6 @@ namespace Eiap.Framework.Base.DynamicProxy.SXW
             }
             var t = typeBuilder.CreateType();
             //持久化
-            //asm.Save(instanceType.Name + "EiapProxy.dll");
             return Activator.CreateInstance(t, new object[] { _InterceptorInstance, objInstance });
         }
 

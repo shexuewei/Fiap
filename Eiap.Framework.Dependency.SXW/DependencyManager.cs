@@ -84,8 +84,7 @@ namespace Eiap.Framework.Base.Dependency.SXW
                         //TODO:目前只根据接口生成动态代理
                         if (!typeof(IDynamicProxyDisable).IsAssignableFrom(tEntity))
                         {
-                            IDynamicProxyInterceptor dynamicProxyInterceptorInstance = this.Resolver<IDynamicProxyInterceptor>();
-                            t = this.Resolver<IDynamicProxyManager>().Create(tEntity, dynamicProxyInterceptorInstance, t);
+                            t = this.Resolver<IDynamicProxyManager>().Create(tEntity, t);
                         }
                     }
                 }

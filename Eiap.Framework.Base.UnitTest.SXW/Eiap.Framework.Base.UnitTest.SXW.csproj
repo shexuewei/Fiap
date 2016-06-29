@@ -39,6 +39,8 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="UnitTestProxyInterceptor.cs" />
+    <Compile Include="UnitTestProxyManager.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="UnitTestContainerManager.cs" />
     <Compile Include="UnitTestManager.cs" />
