@@ -11,14 +11,13 @@ namespace Eiap.Framework.Base.UnitTest.SXW
 {
     public class UnitTestProxyInterceptor : IUnitTestProxyInterceptor
     {
-        private readonly IInterceptorMethodManager _InterceptorMethodManager;
-
-        public UnitTestProxyInterceptor(IInterceptorMethodManager interceptorMethodManager)
+        private readonly IUnitTestManager _UnitTestManager;
+        public UnitTestProxyInterceptor(IUnitTestManager unitTestManager)
         {
-            _InterceptorMethodManager = interceptorMethodManager;
+            _UnitTestManager = unitTestManager;
         }
 
-        public object Invoke(object instance, string name, object[] parameters)
+        public object Invoke(object instance, string interfaceTypeName, string name, object[] parameters)
         {
             object objres = null;
             MethodInfo methodinfo = null;
@@ -29,6 +28,8 @@ namespace Eiap.Framework.Base.UnitTest.SXW
                     methodinfo = instance.GetType().GetMethod(name);
                     if (methodinfo != null)
                     {
+                        List<UnitTestCaseContainer> unitTestCaseContainerList = _UnitTestManager.GetUnitTestCaseByInterfaceTypeNameAndMethodName(interfaceTypeName, methodinfo);
+                        //TODO:循环执行测试方法和用例
                         objres = methodinfo.Invoke(instance, parameters);
                     }
                     else

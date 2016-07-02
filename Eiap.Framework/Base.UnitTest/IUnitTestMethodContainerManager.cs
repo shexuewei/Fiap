@@ -11,5 +11,7 @@ namespace Eiap.Framework.Base.UnitTest
     public interface IUnitTestMethodContainerManager : ISingletonDependency
     {
         UnitTestMethodContainer RegisterUnitTestMethod(MethodInfo methodInfo, UnitTestCaseContainer unitTestCase);
+
+        List<UnitTestCaseContainer> GetUnitTestCaseContainerListByMethod(List<UnitTestMethodContainer> methodContainer, MethodInfo testMethodInfo);
     }
 }

@@ -88,6 +88,7 @@ namespace Eiap.Framework.Base.UnitTest.SXW
                 methods.AddRange(baseInterfaceItem.GetMethods(BindingFlags.Public | BindingFlags.Instance).ToList());
             }
             var methodList = GetInterfaceMethod(methods);
+            var interfaceTypeName = interfaceType.FullName;
             //构造代理方法
             for (var i = 0; i < methods.Count; i++)
             {
@@ -100,8 +101,9 @@ namespace Eiap.Framework.Base.UnitTest.SXW
                 //il.Emit(OpCodes.Newobj, instanceType.GetConstructor(Type.EmptyTypes));
                 il.Emit(OpCodes.Ldarg_0);
                 il.Emit(OpCodes.Ldfld, instanceField);
+                il.Emit(OpCodes.Ldstr, interfaceTypeName);
                 il.Emit(OpCodes.Ldstr, methods[i].Name);
-
+                
                 if (paramtypes == null)
                 {
                     il.Emit(OpCodes.Ldnull);

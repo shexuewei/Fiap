@@ -11,6 +11,6 @@ namespace Eiap.Framework.Base.UnitTest
 {
     public interface IUnitTestProxyInterceptor : IRealtimeDependency
     {
-        object Invoke(object instance, string name, object[] parameters);
+        object Invoke(object instance, string interfaceTypeName, string name, object[] parameters);
     }
 }
