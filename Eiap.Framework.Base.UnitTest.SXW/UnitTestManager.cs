@@ -25,22 +25,31 @@ namespace Eiap.Framework.Base.UnitTest.SXW
         /// <param name="methodName"></param>
         /// <param name="unitTestCase"></param>
         /// <returns></returns>
-        public IUnitTestManager Register<T>(string methodName, UnitTestCaseContainer unitTestCase)
+        public IUnitTestManager Register(Type interfaceType, string methodName, UnitTestCaseContainer unitTestCase)
         {
-            _UnitTestContainerManager.RegisterUnitTestInterface(typeof(T), methodName, unitTestCase);
+            _UnitTestContainerManager.RegisterUnitTestInterface(interfaceType, methodName, unitTestCase);
             return this;
         }
 
         /// <summary>
-        /// 根据测试接口类型名称和方法获取用例集合
+        /// 运行注册的
         /// </summary>
-        /// <param name="interfaceTypeName"></param>
-        /// <param name="testMethodInfo"></param>
-        /// <returns></returns>
-        public List<UnitTestCaseContainer> GetUnitTestCaseByInterfaceTypeNameAndMethodName(string interfaceTypeName, MethodInfo testMethodInfo)
+        public void Run(string assemblyName)
         {
-            UnitTestContainer unitTestContainer = _UnitTestContainerManager.GetUnitTestContainer(interfaceTypeName);
-            return _UnitTestMethodContainerManager.GetUnitTestCaseContainerListByMethod(unitTestContainer.TestMethodList, testMethodInfo);
+            _UnitTestContainerManager.GetUnitTestContainerList(assemblyName);
+        }
+
+        /// <summary>
+        /// 注册单元测试接口、方法和测试用例
+        /// </summary>
+        /// <typeparam name="T"></typeparam>
+        /// <param name="methodName"></param>
+        /// <param name="unitTestCase"></param>
+        /// <returns></returns>
+        public IUnitTestManager Register<T>(string methodName, UnitTestCaseContainer unitTestCase)
+        {
+            _UnitTestContainerManager.RegisterUnitTestInterface(typeof(T), methodName, unitTestCase);
+            return this;
         }
     }
 }

@@ -14,6 +14,8 @@ namespace Eiap.Framework.Base.UnitTest
             TestMethodList = new List<UnitTestMethodContainer>();
         }
 
+        public string UnitTestInterfaceAssemblyName { get; set; }
+
         public Type UnitTestInterfaceType { get; set; }
 
         public List<UnitTestMethodContainer> TestMethodList { get; set; }

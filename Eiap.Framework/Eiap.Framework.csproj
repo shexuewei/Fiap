@@ -76,8 +76,6 @@
     <Compile Include="Base.Interceptor\InterceptorMethodAttibute.cs" />
     <Compile Include="Base.Interceptor\IInterceptorMethodContainerManager.cs" />
     <Compile Include="Base.Interceptor\InterceptorMethodContainer.cs" />
-    <Compile Include="Base.UnitTest\IUnitTestProxyInterceptor.cs" />
-    <Compile Include="Base.UnitTest\IUnitTestProxyManager.cs" />
     <Compile Include="Base.UnitTest\IUnitTestContainerManager.cs" />
     <Compile Include="Base.UnitTest\IUnitTestManager.cs" />
     <Compile Include="Base.UnitTest\IUnitTestMethodContainerManager.cs" />

@@ -29,7 +29,7 @@ namespace Eiap.Framework.Base.Dependency
         /// <param name="lifeCycle">生命周期</param>
         /// <param name="genArguments">泛型参数</param>
         /// <returns>返回实例类型对象</returns>
-        object Resolver(Type tEntity, int lifeCycle = ObjectLifeCycle.Realtime, Type[] genArguments = null);
+        object Resolver(Type tEntity, int lifeCycle = ObjectLifeCycle.Realtime, Type[] genArguments = null, Type[] genArgumentList = null);
 
         /// <summary>
         /// 获取调用类型实例
@@ -39,7 +39,7 @@ namespace Eiap.Framework.Base.Dependency
         /// <param name="lifeCycle">生命周期</param>
         /// <param name="genArguments">泛型参数</param>
         /// <returns></returns>
-        object Resolver(Type tEntity, object[] consParas, int lifeCycle = ObjectLifeCycle.Realtime, Type[] genArguments = null);
+        object Resolver(Type tEntity, object[] consParas, int lifeCycle = ObjectLifeCycle.Realtime, Type[] genArguments = null, Type[] genArgumentList = null);
 
         /// <summary>
         /// 根据泛型获取实现类型的实例

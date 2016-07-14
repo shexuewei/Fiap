@@ -41,10 +41,9 @@
   <ItemGroup>
     <Compile Include="UnitTestContainerManager.cs" />
     <Compile Include="UnitTestMethodContainerManager.cs" />
-    <Compile Include="UnitTestProxyInterceptor.cs" />
-    <Compile Include="UnitTestProxyManager.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="UnitTestManager.cs" />
+    <Compile Include="UnitTestModule.cs" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\Eiap.Framework\Eiap.Framework.csproj">

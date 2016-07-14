@@ -77,7 +77,7 @@ namespace Eiap.Framework.Base.UnitTest.SXW
         /// <returns></returns>
         private UnitTestContainer CreateUnitTestContainer(Type unitTestInterface)
         {
-            UnitTestContainer _container = new UnitTestContainer { UnitTestInterfaceType = unitTestInterface };
+            UnitTestContainer _container = new UnitTestContainer { UnitTestInterfaceType = unitTestInterface, UnitTestInterfaceAssemblyName = unitTestInterface.Assembly.FullName };
             _UnitTestContainerList.Add(_container);
             return _container;
         }
@@ -87,9 +87,9 @@ namespace Eiap.Framework.Base.UnitTest.SXW
         /// </summary>
         /// <param name="interfaceTypeName"></param>
         /// <returns></returns>
-        public UnitTestContainer GetUnitTestContainer(string interfaceTypeName)
+        public List<UnitTestContainer> GetUnitTestContainerList(string assemblyName)
         {
-            return _UnitTestContainerList.Where(m => m.UnitTestInterfaceType.FullName == interfaceTypeName).FirstOrDefault();
+            return _UnitTestContainerList.Where(m => m.UnitTestInterfaceAssemblyName == assemblyName).ToList();
         }
     }
 }

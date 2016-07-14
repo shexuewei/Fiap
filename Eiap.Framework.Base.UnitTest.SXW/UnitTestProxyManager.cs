@@ -98,7 +98,6 @@ namespace Eiap.Framework.Base.UnitTest.SXW
                 var il = methodbuilder.GetILGenerator();
                 il.Emit(OpCodes.Ldarg_0);
                 il.Emit(OpCodes.Ldfld, interceptorField);
-                //il.Emit(OpCodes.Newobj, instanceType.GetConstructor(Type.EmptyTypes));
                 il.Emit(OpCodes.Ldarg_0);
                 il.Emit(OpCodes.Ldfld, instanceField);
                 il.Emit(OpCodes.Ldstr, interfaceTypeName);

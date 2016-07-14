@@ -65,7 +65,7 @@ namespace Eiap.Framework.Base.Dependency.SXW
         /// <param name="lifeCycle">对象生命周期</param>
         /// <param name="genArguments">泛型对象的类型参数</param>
         /// <returns></returns>
-        public virtual object Resolver(Type tEntity, object[] consParas, int lifeCycle = ObjectLifeCycle.Realtime, Type[] genArguments = null)
+        public virtual object Resolver(Type tEntity, object[] consParas, int lifeCycle = ObjectLifeCycle.Realtime, Type[] genArguments = null, Type[] genArgumentList = null)
         {
             object t = null;
             if (tEntity != null)
@@ -78,7 +78,11 @@ namespace Eiap.Framework.Base.Dependency.SXW
                         Type classEntity = container.DependencyInterfaceClass;
                         if (classEntity != null)
                         {
-                            t = Resolver(classEntity, consParas, lifeCycle, genArguments);
+                            if (tEntity.IsGenericType)
+                            {
+                                genArgumentList = tEntity.GetGenericArguments();
+                            }
+                            t = Resolver(classEntity, consParas, lifeCycle, genArguments, genArgumentList);
                         }
                         //TODO:生成动态代理对象（可返回空类型对象）
                         //TODO:目前只根据接口生成动态代理
@@ -92,7 +96,7 @@ namespace Eiap.Framework.Base.Dependency.SXW
                 {
                     if (typeof(IRealtimeDependency).IsAssignableFrom(tEntity))
                     {
-                        t = ResolverBy(tEntity, consParas, genArguments);
+                        t = ResolverBy(tEntity, consParas, genArguments, genArgumentList);
                     }
                     else if (typeof(ISingletonDependency).IsAssignableFrom(tEntity))
                     {
@@ -104,7 +108,7 @@ namespace Eiap.Framework.Base.Dependency.SXW
                     }
                     else if (lifeCycle == ObjectLifeCycle.Realtime)
                     {
-                        t = ResolverBy(tEntity, consParas, genArguments);
+                        t = ResolverBy(tEntity, consParas, genArguments, genArgumentList);
                     }
                     else if (lifeCycle == ObjectLifeCycle.Singleton)
                     {
@@ -126,9 +130,9 @@ namespace Eiap.Framework.Base.Dependency.SXW
         /// <param name="lifeCycle">对象生命周期</param>
         /// <param name="genArguments">泛型对象的类型参数</param>
         /// <returns></returns>
-        public virtual object Resolver(Type tEntity, int lifeCycle = ObjectLifeCycle.Realtime, Type[] genArguments = null)
+        public virtual object Resolver(Type tEntity, int lifeCycle = ObjectLifeCycle.Realtime, Type[] genArguments = null, Type[] genArgumentList = null)
         {
-            return Resolver(tEntity, new object[] { }, lifeCycle, genArguments);
+            return Resolver(tEntity, new object[] { }, lifeCycle, genArguments, genArgumentList);
         }
 
         /// <summary>
@@ -138,7 +142,7 @@ namespace Eiap.Framework.Base.Dependency.SXW
         /// <param name="consParas">构造参数</param>
         /// <param name="genArguments">泛型对象的类型参数</param>
         /// <returns></returns>
-        private object ResolverBy(Type entiType, object[] consParas, Type[] genArguments = null)
+        private object ResolverBy(Type entiType, object[] consParas, Type[] genArguments = null, Type[] genArgumentList = null)
         {
             object t = null;
 
@@ -213,7 +217,15 @@ namespace Eiap.Framework.Base.Dependency.SXW
                     object obj = null;
                     if (genArguments == null)
                     {
-                        obj = consinfo.Invoke(paraobj);
+                        if (entiType.IsGenericType)
+                        {
+                            Type objtype = entiType.GetGenericTypeDefinition().MakeGenericType(genArgumentList);
+                            obj = Activator.CreateInstance(objtype, paraobj);
+                        }
+                        else
+                        { 
+                            obj = consinfo.Invoke(paraobj); 
+                        }
                     }
                     else
                     {

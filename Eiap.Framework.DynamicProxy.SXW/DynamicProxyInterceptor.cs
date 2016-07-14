@@ -55,7 +55,15 @@ namespace Eiap.Framework.Base.DynamicProxy.SXW
                             }
                         }
                         stopwatch.Start();
-                        objres = methodinfo.Invoke(instance, parameters);
+                        if (methodinfo.IsGenericMethod)
+                        {
+                            Type[] genericArgumentsList = methodinfo.GetGenericArguments().Select(m=>m.DeclaringType).ToArray();
+                            objres = methodinfo.MakeGenericMethod(genericArgumentsList).Invoke(instance, parameters);
+                        }
+                        else
+                        {
+                            objres = methodinfo.Invoke(instance, parameters);
+                        }
                         stopwatch.Stop();
                     }
                     else

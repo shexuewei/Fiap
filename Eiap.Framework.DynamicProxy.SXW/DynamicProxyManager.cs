@@ -91,9 +91,15 @@ namespace Eiap.Framework.Base.DynamicProxy.SXW
             //构造代理方法
             for (var i = 0; i < methods.Count; i++)
             {
-                var paramtypes = GetParametersType(methods[i]);
-                MethodAttributes methodAttributes = MethodAttributes.Public | MethodAttributes.Virtual;
+                Type[] paramtypes = GetParametersType(methods[i]);
+                MethodAttributes methodAttributes = MethodAttributes.Public | MethodAttributes.Virtual | MethodAttributes.HideBySig;
                 var methodbuilder = typeBuilder.DefineMethod(methods[i].Name, methodAttributes, CallingConventions.Standard, methods[i].ReturnType, paramtypes);
+                if (methods[i].IsGenericMethod)
+                {
+                    Type[] methodGenericArguments = methods[i].GetGenericArguments();
+                    methodbuilder.DefineGenericParameters(methodGenericArguments.Select(m => m.Name).ToArray());
+                }
+
                 var il = methodbuilder.GetILGenerator();
                 il.Emit(OpCodes.Ldarg_0);
                 il.Emit(OpCodes.Ldfld, interceptorField);
@@ -139,6 +145,33 @@ namespace Eiap.Framework.Base.DynamicProxy.SXW
             return Activator.CreateInstance(t, new object[] { _InterceptorInstance, objInstance });
         }
 
+        /// <summary>
+        /// 获取泛型方法的MethodBuilder
+        /// </summary>
+        /// <param name="typeBuilder"></param>
+        /// <param name="method"></param>
+        /// <returns></returns>
+        //private MethodBuilder GetGenericMethodBuilder(TypeBuilder typeBuilder, MethodInfo method, Type[] paramtypes)
+        //{
+
+            //设置泛型约束
+            //for (var i = 0; i < genericTypeParameterBuilders.Length; i++)
+            //{
+            //    genericTypeParameterBuilders[i].SetGenericParameterAttributes(methodGenericArguments[i].GenericParameterAttributes);
+            //    Type[] methodGenericArgumentInterface = methodGenericArguments[i].GetInterfaces();
+            //    //TODO:缺少基类约束
+            //    if (methodGenericArgumentInterface != null)
+            //    {
+            //        genericTypeParameterBuilders[i].SetInterfaceConstraints(methodGenericArgumentInterface);
+            //    }
+            //}
+        //}
+
+        /// <summary>
+        /// 获取接口方法
+        /// </summary>
+        /// <param name="allMethod"></param>
+        /// <returns></returns>
         private List<MethodInfo> GetInterfaceMethod(List<MethodInfo> allMethod)
         {
             bool issame = false;
@@ -162,6 +195,11 @@ namespace Eiap.Framework.Base.DynamicProxy.SXW
             return methodList;
         }
 
+        /// <summary>
+        /// 获取方法参数
+        /// </summary>
+        /// <param name="method"></param>
+        /// <returns></returns>
         private Type[] GetParametersType(MethodInfo method)
         {
             Type[] types = null;

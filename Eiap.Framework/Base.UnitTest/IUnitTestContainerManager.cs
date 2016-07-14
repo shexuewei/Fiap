@@ -11,6 +11,6 @@ namespace Eiap.Framework.Base.UnitTest
     {
         UnitTestContainer RegisterUnitTestInterface(Type unitTestInterface, string methodName, UnitTestCaseContainer unitTestCase);
 
-        UnitTestContainer GetUnitTestContainer(string interfaceTypeName);
+        List<UnitTestContainer> GetUnitTestContainerList(string assemblyName);
     }
 }
