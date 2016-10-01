@@ -9,47 +9,39 @@ namespace Eiap.Framework.Base.UnitTest.SXW
 {
     public class UnitTestManager : IUnitTestManager
     {
-        private readonly IUnitTestContainerManager _UnitTestContainerManager;
-        private readonly IUnitTestMethodContainerManager _UnitTestMethodContainerManager;
+        private static IUnitTestManager _Manager = null;
 
-        public UnitTestManager(IUnitTestContainerManager unitTestContainerManager, IUnitTestMethodContainerManager unitTestMethodContainerManager)
+        /// <summary>
+        /// 单例对象
+        /// </summary>
+        public static IUnitTestManager Instance
         {
-            _UnitTestContainerManager = unitTestContainerManager;
-            _UnitTestMethodContainerManager = unitTestMethodContainerManager;
+            get
+            {
+                if (_Manager == null)
+                {
+                    _Manager = new UnitTestManager();
+                }
+                return _Manager;
+            }
         }
 
         /// <summary>
-        /// 注册单元测试接口、方法和测试用例
+        /// 根据程序集注册用例
         /// </summary>
-        /// <typeparam name="T"></typeparam>
-        /// <param name="methodName"></param>
-        /// <param name="unitTestCase"></param>
-        /// <returns></returns>
-        public IUnitTestManager Register(Type interfaceType, string methodName, UnitTestCaseContainer unitTestCase)
+        /// <param name="assemblyList"></param>
+        public void Register(List<Assembly> assemblyList)
         {
-            _UnitTestContainerManager.RegisterUnitTestInterface(interfaceType, methodName, unitTestCase);
-            return this;
-        }
-
-        /// <summary>
-        /// 运行注册的
-        /// </summary>
-        public void Run(string assemblyName)
-        {
-            _UnitTestContainerManager.GetUnitTestContainerList(assemblyName);
-        }
-
-        /// <summary>
-        /// 注册单元测试接口、方法和测试用例
-        /// </summary>
-        /// <typeparam name="T"></typeparam>
-        /// <param name="methodName"></param>
-        /// <param name="unitTestCase"></param>
-        /// <returns></returns>
-        public IUnitTestManager Register<T>(string methodName, UnitTestCaseContainer unitTestCase)
-        {
-            _UnitTestContainerManager.RegisterUnitTestInterface(typeof(T), methodName, unitTestCase);
-            return this;
+            assemblyList.ForEach(m => {
+                List<Type> typeList = m.GetTypes().Where(n => n.IsClass && typeof(IUnitTestModule).IsAssignableFrom(n)).ToList();
+                if (typeList != null && typeList.Count > 0)
+                {
+                    typeList.ForEach(typeItem => {
+                        IUnitTestModule unitTestModule = (IUnitTestModule)Activator.CreateInstance(typeItem);
+                        unitTestModule.RegisterUnitTestCase();
+                    });
+                }
+            });
         }
     }
 }

@@ -14,7 +14,7 @@ namespace Eiap.Framework.Base.Dependency.SXW
     //TODO:缺少构造函数中泛型参数的个数和类型的比对
     public class DependencyManager : IDependencyManager
     {
-        private static IDependencyManager _Container = null;
+        private static IDependencyManager _Manager = null;
         private IDependencyContainerManager _DependencyContainerManager = null;
         private List<object> singletonList = null;
 
@@ -39,11 +39,11 @@ namespace Eiap.Framework.Base.Dependency.SXW
         {
             get
             {
-                if (_Container == null)
+                if (_Manager == null)
                 {
-                    _Container = new DependencyManager();
+                    _Manager = new DependencyManager();
                 }
-                return _Container;
+                return _Manager;
             }
         }
 

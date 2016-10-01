@@ -1,13 +1,16 @@
-﻿using System;
+﻿using Eiap.Framework.Base.Dependency;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
-using Eiap.Framework.Base.Dependency;
 
 namespace Eiap.Framework.Base.UnitTest
 {
-    public interface IUnitTestCaseManager : IRealtimeDependency
+    /// <summary>
+    /// 单元测试用例容器管理
+    /// </summary>
+    public interface IUnitTestCaseContainerManager : ISingletonDependency
     {
         /// <summary>
         /// 注册用例

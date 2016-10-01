@@ -6,21 +6,34 @@ using System.Threading.Tasks;
 
 namespace Eiap.Framework.Base.UnitTest.SXW
 {
-    public class UnitTestCaseManager:IUnitTestCaseManager
+    public class UnitTestCaseManager : IUnitTestCaseManager
     {
-        public IUnitTestCaseManager SetMethodName(string methodName)
+        private readonly IUnitTestCaseContainerManager _ContainerManager;
+
+        public UnitTestCaseManager(IUnitTestCaseContainerManager unitTestCaseContainerManager)
         {
-            throw new NotImplementedException();
+            _ContainerManager = unitTestCaseContainerManager;
         }
 
-        public IUnitTestCaseManager SetMethodCase(params object[] objs)
+        /// <summary>
+        /// 注册单元测试用例
+        /// </summary>
+        /// <param name="container"></param>
+        public void RegisterUnitTestCase(UnitTestCaseContainer container)
         {
-            throw new NotImplementedException();
+            _ContainerManager.RegisterUnitTestCase(container);
         }
 
-        public void Finish()
+        /// <summary>
+        /// 根据方法名（命名空间、类型）获取用例集合
+        /// </summary>
+        /// <param name="unitTestNamespace"></param>
+        /// <param name="className"></param>
+        /// <param name="methodName"></param>
+        /// <returns></returns>
+        public List<UnitTestCaseContainer> GetUnitTestCaseByMethodName(string unitTestNamespace, string className, string methodName)
         {
-            throw new NotImplementedException();
+            return _ContainerManager.GetUnitTestCaseByMethodName(unitTestNamespace, className, methodName);
         }
     }
 }

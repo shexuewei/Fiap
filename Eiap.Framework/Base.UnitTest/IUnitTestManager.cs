@@ -10,10 +10,10 @@ namespace Eiap.Framework.Base.UnitTest
 {
     public interface IUnitTestManager : IRealtimeDependency
     {
-        IUnitTestManager Register<T>(string methodName, UnitTestCaseContainer unitTestCase);
-
-        IUnitTestManager Register(Type interfaceType, string methodName, UnitTestCaseContainer unitTestCase);
-
-        void Run(string assemblyName);
+        /// <summary>
+        /// 根据程序集集合，注册用例
+        /// </summary>
+        /// <param name="assemblyList"></param>
+        void Register(List<Assembly> assemblyList);
     }
 }

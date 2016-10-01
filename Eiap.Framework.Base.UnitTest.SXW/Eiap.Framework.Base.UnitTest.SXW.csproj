@@ -39,9 +39,9 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="UnitTestContainerManager.cs" />
-    <Compile Include="UnitTestMethodContainerManager.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="UnitTestCaseContainerManager.cs" />
+    <Compile Include="UnitTestCaseManager.cs" />
     <Compile Include="UnitTestManager.cs" />
     <Compile Include="UnitTestModule.cs" />
   </ItemGroup>
