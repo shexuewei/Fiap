@@ -51,6 +51,8 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Eiap.Framework.Base.UnitTes
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Eiap.Framework.Base.DynamicProxy.SXW.Test", "Eiap.Framework.Base.DynamicProxy.SXW.Test\Eiap.Framework.Base.DynamicProxy.SXW.Test.csproj", "{49A5241C-D542-48AF-830D-DF759A5E1705}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Eiap.Framework.Base.Cache.SXW", "Eiap.Framework.Base.Cache.SXW\Eiap.Framework.Base.Cache.SXW.csproj", "{09C859C7-B45E-4630-AF14-0C425A4D9C4D}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -153,6 +155,10 @@ Global
 		{49A5241C-D542-48AF-830D-DF759A5E1705}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{49A5241C-D542-48AF-830D-DF759A5E1705}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{49A5241C-D542-48AF-830D-DF759A5E1705}.Release|Any CPU.Build.0 = Release|Any CPU
+		{09C859C7-B45E-4630-AF14-0C425A4D9C4D}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{09C859C7-B45E-4630-AF14-0C425A4D9C4D}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{09C859C7-B45E-4630-AF14-0C425A4D9C4D}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{09C859C7-B45E-4630-AF14-0C425A4D9C4D}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

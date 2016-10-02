@@ -49,6 +49,7 @@
     <Compile Include="AppBase.BussinessService\IPipingContainerManager.cs" />
     <Compile Include="AppBase.BussinessService\IPipingManager.cs" />
     <Compile Include="AppBase.BussinessService\PipingContainer.cs" />
+    <Compile Include="Base.Cache\ICacheManager.cs" />
     <Compile Include="AppBase.DomainEvent\DomainEventContainer.cs" />
     <Compile Include="AppBase.DomainEvent\IDomainEventContainerManager.cs" />
     <Compile Include="AppBase.DomainEvent\IDomainEventData.cs" />
