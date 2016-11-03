@@ -11,13 +11,32 @@ namespace Eiap.Framework.Base.Cache.SXW
         /// <summary>
         /// 缓存值
         /// </summary>
-        public object CacheValue { get; set; }
+        public string CacheValue { get; set; }
 
+        /// <summary>
+        /// 缓存版本（乐观锁）
+        /// </summary>
         public TimeSpan CacheVersion { get; set; }
 
+        /// <summary>
+        /// 过期时间
+        /// </summary>
         public DateTime? AbsoluteExpiration { get; set; }
 
+        /// <summary>
+        /// 用于设置可调过期时间，它表示当离最后访问超过某个时间段后就过期
+        /// </summary>
         public int? SlidingExpiration { get; set; }
+
+        /// <summary>
+        /// 缓存大小
+        /// </summary>
+        public int CacheLength { get; set; }
+
+        /// <summary>
+        /// 缓存引用次数
+        /// </summary>
+        public int CacheReferencesCount { get; set; }
 
     }
 }

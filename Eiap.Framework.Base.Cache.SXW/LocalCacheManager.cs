@@ -4,16 +4,26 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using Newtonsoft.Json;
 
 namespace Eiap.Framework.Base.Cache.SXW
 {
-    public class CacheManager : ICacheManager
+    public class LocalCacheManager : ICacheManager
     {
-        private ConcurrentDictionary<string, CacheEntity> _Dict = null;
+        private ConcurrentDictionary<string, int> _DicIndex = null;//缓存Key和队列的索引
+        private readonly int _CacheMaxLength; //缓存最大值（byte）
+        private readonly decimal _CurrentCacheClearScale;//当前缓存清理比例
+        private readonly CacheClearMode _CacheClearMode;
+        private int _CurrentLength = 0;//当前缓存总大小（byte）
+        ConcurrentQueue<CacheEntity> _DictValue = null;//缓存对了
 
-        public CacheManager()
+        public LocalCacheManager()
         {
-            _Dict = new ConcurrentDictionary<string, CacheEntity>();
+            _CacheMaxLength = 1024000000;
+            _CurrentCacheClearScale = 0.7m;
+            _CacheClearMode = CacheClearMode.FIFO;
+            _DicIndex = new ConcurrentDictionary<string, int>();
+            _DictValue = new ConcurrentQueue<CacheEntity>();
         }
 
         /// <summary>
@@ -25,6 +35,14 @@ namespace Eiap.Framework.Base.Cache.SXW
         /// <param name="timer"></param>
         public void SetCache(string key, object cacheContent, int? absoluteExpiration = null, int? slidingExpiration = null)
         {
+            string jsonObject = JsonConvert.SerializeObject(cacheContent);
+            //当前缓存大小
+            int currentCacheLength = UnicodeEncoding.UTF8.GetByteCount(jsonObject);
+            //如果当前缓存大小+当前缓存总大小>=缓存最大值*当前缓存清理比例
+            if (_CurrentLength + currentCacheLength >= _CacheMaxLength * _CurrentCacheClearScale)
+            { 
+                //触发清理缓存事件
+            }
             throw new NotImplementedException();
         }
 
@@ -63,6 +81,14 @@ namespace Eiap.Framework.Base.Cache.SXW
         public List<string> GetAllCacheKey()
         {
             throw new NotImplementedException();
+        }
+
+        /// <summary>
+        /// 清理缓存（先进先出原则）
+        /// </summary>
+        private void ClearCache()
+        { 
+            
         }
     }
 }

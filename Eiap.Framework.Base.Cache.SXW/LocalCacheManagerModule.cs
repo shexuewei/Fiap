@@ -8,7 +8,7 @@ using System.Threading.Tasks;
 
 namespace Eiap.Framework.AppBase.Cache.SXW
 {
-    public class CacheManagerModule : IComponentModule
+    public class LocalCacheManagerModule : IComponentModule
     {
         public void Initialize()
         {
