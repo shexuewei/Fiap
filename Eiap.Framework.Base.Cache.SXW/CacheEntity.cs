@@ -16,7 +16,7 @@ namespace Eiap.Framework.Base.Cache.SXW
         /// <summary>
         /// 缓存版本（乐观锁）
         /// </summary>
-        public TimeSpan CacheVersion { get; set; }
+        public int CacheVersion { get; set; }
 
         /// <summary>
         /// 过期时间

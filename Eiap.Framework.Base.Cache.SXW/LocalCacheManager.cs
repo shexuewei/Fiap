@@ -10,29 +10,27 @@ namespace Eiap.Framework.Base.Cache.SXW
 {
     public class LocalCacheManager : ICacheManager
     {
-        private ConcurrentDictionary<string, int> _DicIndex = null;//缓存Key和队列的索引
         private readonly int _CacheMaxLength; //缓存最大值（byte）
         private readonly decimal _CurrentCacheClearScale;//当前缓存清理比例
         private readonly CacheClearMode _CacheClearMode;
         private int _CurrentLength = 0;//当前缓存总大小（byte）
-        ConcurrentQueue<CacheEntity> _DictValue = null;//缓存对了
+        ConcurrentDictionary<string, CacheEntity> _DicCacheValue = null;//缓存对象
 
         public LocalCacheManager()
         {
             _CacheMaxLength = 1024000000;
             _CurrentCacheClearScale = 0.7m;
-            _CacheClearMode = CacheClearMode.FIFO;
-            _DicIndex = new ConcurrentDictionary<string, int>();
-            _DictValue = new ConcurrentQueue<CacheEntity>();
+            _CacheClearMode = CacheClearMode.LFU;
+            _DicCacheValue = new ConcurrentDictionary<string, CacheEntity>();
         }
 
         /// <summary>
         /// 设置缓存
         /// </summary>
         /// <param name="key"></param>
-        /// <param name="cachecontent"></param>
-        /// <param name="CacheExpiredTimeType"></param>
-        /// <param name="timer"></param>
+        /// <param name="cacheContent"></param>
+        /// <param name="absoluteExpiration"></param>
+        /// <param name="slidingExpiration"></param>
         public void SetCache(string key, object cacheContent, int? absoluteExpiration = null, int? slidingExpiration = null)
         {
             string jsonObject = JsonConvert.SerializeObject(cacheContent);
@@ -43,7 +41,7 @@ namespace Eiap.Framework.Base.Cache.SXW
             { 
                 //触发清理缓存事件
             }
-            throw new NotImplementedException();
+            _DicCacheValue.TryAdd(key, CreateCacheEntity(jsonObject, currentCacheLength, absoluteExpiration, slidingExpiration));
         }
 
         /// <summary>
@@ -53,16 +51,34 @@ namespace Eiap.Framework.Base.Cache.SXW
         /// <returns></returns>
         public object GetCache(string key)
         {
-            throw new NotImplementedException();
+            CacheEntity cacheEntity = null;
+            if (GetCacheEntity(key, out cacheEntity))
+            {
+                if (cacheEntity.AbsoluteExpiration.HasValue)
+                {
+                    if (DateTime.Now > cacheEntity.AbsoluteExpiration.Value)
+                    {
+                        RemoveCache(key);
+                        return null;
+                    }
+                    else if (cacheEntity.SlidingExpiration.HasValue)
+                    {
+                        cacheEntity.AbsoluteExpiration = DateTime.Now.AddSeconds(cacheEntity.SlidingExpiration.Value);
+                    }
+                }
+                return cacheEntity.CacheValue;
+            }
+            return null;
         }
 
         /// <summary>
         /// 移除缓存
         /// </summary>
         /// <param name="key"></param>
-        public void RemoveCache(string key)
+        public bool RemoveCache(string key)
         {
-            throw new NotImplementedException();
+            CacheEntity cacheEntity = null;
+            return _DicCacheValue.TryRemove(key, out cacheEntity);
         }
 
         /// <summary>
@@ -71,7 +87,11 @@ namespace Eiap.Framework.Base.Cache.SXW
         /// <returns></returns>
         public int GetCacheCount()
         {
-            throw new NotImplementedException();
+            if (_DicCacheValue.IsEmpty)
+            {
+                return 0;
+            }
+            return _DicCacheValue.Count;
         }
 
         /// <summary>
@@ -80,15 +100,56 @@ namespace Eiap.Framework.Base.Cache.SXW
         /// <returns></returns>
         public List<string> GetAllCacheKey()
         {
-            throw new NotImplementedException();
+            if (_DicCacheValue.IsEmpty)
+            {
+                return null;
+            }
+            return _DicCacheValue.Keys.ToList();
         }
 
         /// <summary>
-        /// 清理缓存（先进先出原则）
+        /// 清理缓存
         /// </summary>
         private void ClearCache()
         { 
             
+        }
+
+        /// <summary>
+        /// 创建缓存对象
+        /// </summary>
+        /// <param name="cacheValue"></param>
+        /// <param name="cacheLength"></param>
+        /// <param name="absoluteExpiration"></param>
+        /// <param name="slidingExpiration"></param>
+        /// <returns></returns>
+        private CacheEntity CreateCacheEntity(string cacheValue,int cacheLength, int? absoluteExpiration = null, int? slidingExpiration = null)
+        {
+            CacheEntity cacheEntity = new CacheEntity { CacheValue = cacheValue, CacheLength = cacheLength, CacheReferencesCount = 0, CacheVersion = 1 };
+            if (absoluteExpiration.HasValue)
+            {
+                cacheEntity.AbsoluteExpiration = DateTime.Now.AddSeconds(absoluteExpiration.Value);
+            }
+            if (slidingExpiration.HasValue)
+            {
+                cacheEntity.SlidingExpiration = slidingExpiration.Value;
+            }
+            if (!absoluteExpiration.HasValue && slidingExpiration.HasValue)
+            {
+                cacheEntity.AbsoluteExpiration = DateTime.Now.AddSeconds(slidingExpiration.Value);
+            }
+            return cacheEntity;
+        }
+
+        /// <summary>
+        /// 获取缓存对象
+        /// </summary>
+        /// <param name="key"></param>
+        /// <param name="cacheEntity"></param>
+        /// <returns></returns>
+        private bool GetCacheEntity(string key, out CacheEntity cacheEntity)
+        {
+            return _DicCacheValue.TryGetValue(key, out cacheEntity);
         }
     }
 }
