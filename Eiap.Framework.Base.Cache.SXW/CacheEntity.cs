@@ -38,5 +38,10 @@ namespace Eiap.Framework.Base.Cache.SXW
         /// </summary>
         public int CacheReferencesCount { get; set; }
 
+        /// <summary>
+        /// 最后访问时间
+        /// </summary>
+        public DateTime LastVisitDateTime { get; set; }
+
     }
 }

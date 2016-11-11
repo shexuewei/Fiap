@@ -66,6 +66,7 @@ namespace Eiap.Framework.Base.Cache.SXW
                         cacheEntity.AbsoluteExpiration = DateTime.Now.AddSeconds(cacheEntity.SlidingExpiration.Value);
                     }
                 }
+                cacheEntity.CacheReferencesCount++;
                 return cacheEntity.CacheValue;
             }
             return null;
