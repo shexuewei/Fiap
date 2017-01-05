@@ -43,5 +43,19 @@ namespace Eiap.Framework.Base.Cache.SXW
         /// </summary>
         public DateTime LastVisitDateTime { get; set; }
 
+        /// <summary>
+        /// 是否过期
+        /// </summary>
+        public bool IsExpiration
+        {
+            get {
+                if (AbsoluteExpiration.HasValue)
+                {
+                    return DateTime.Now > AbsoluteExpiration.Value;
+                }
+                return false;
+            }
+        }
+
     }
 }

@@ -14,12 +14,14 @@ namespace Eiap.Framework.Base.Cache.SXW
         private readonly decimal _CurrentCacheClearScale;//当前缓存清理比例
         private readonly CacheClearMode _CacheClearMode;
         private int _CurrentLength = 0;//当前缓存总大小（byte）
-        ConcurrentDictionary<string, CacheEntity> _DicCacheValue = null;//缓存对象
+        private ConcurrentDictionary<string, CacheEntity> _DicCacheValue = null;//缓存对象
+        private readonly int _ClearCacheCount;
 
         public LocalCacheManager()
         {
             _CacheMaxLength = 1024000000;
             _CurrentCacheClearScale = 0.7m;
+            _ClearCacheCount = 100;
             _CacheClearMode = CacheClearMode.LFU;
             _DicCacheValue = new ConcurrentDictionary<string, CacheEntity>();
         }
@@ -38,8 +40,8 @@ namespace Eiap.Framework.Base.Cache.SXW
             int currentCacheLength = UnicodeEncoding.UTF8.GetByteCount(jsonObject);
             //如果当前缓存大小+当前缓存总大小>=缓存最大值*当前缓存清理比例
             if (_CurrentLength + currentCacheLength >= _CacheMaxLength * _CurrentCacheClearScale)
-            { 
-                //触发清理缓存事件
+            {
+                ClearCache(currentCacheLength);
             }
             _DicCacheValue.TryAdd(key, CreateCacheEntity(jsonObject, currentCacheLength, absoluteExpiration, slidingExpiration));
         }
@@ -54,9 +56,9 @@ namespace Eiap.Framework.Base.Cache.SXW
             CacheEntity cacheEntity = null;
             if (GetCacheEntity(key, out cacheEntity))
             {
-                if (cacheEntity.AbsoluteExpiration.HasValue)
+                if (cacheEntity != null)
                 {
-                    if (DateTime.Now > cacheEntity.AbsoluteExpiration.Value)
+                    if (cacheEntity.IsExpiration)
                     {
                         RemoveCache(key);
                         return null;
@@ -65,9 +67,10 @@ namespace Eiap.Framework.Base.Cache.SXW
                     {
                         cacheEntity.AbsoluteExpiration = DateTime.Now.AddSeconds(cacheEntity.SlidingExpiration.Value);
                     }
+                    cacheEntity.CacheReferencesCount++;
+                    cacheEntity.LastVisitDateTime = DateTime.Now;
+                    return cacheEntity.CacheValue;
                 }
-                cacheEntity.CacheReferencesCount++;
-                return cacheEntity.CacheValue;
             }
             return null;
         }
@@ -79,7 +82,12 @@ namespace Eiap.Framework.Base.Cache.SXW
         public bool RemoveCache(string key)
         {
             CacheEntity cacheEntity = null;
-            return _DicCacheValue.TryRemove(key, out cacheEntity);
+            bool res = _DicCacheValue.TryRemove(key, out cacheEntity);
+            if (cacheEntity != null)
+            {
+                _CurrentLength -= cacheEntity.CacheLength;
+            }
+            return res;
         }
 
         /// <summary>
@@ -109,11 +117,59 @@ namespace Eiap.Framework.Base.Cache.SXW
         }
 
         /// <summary>
-        /// 清理缓存
+        /// 清理缓存（先清理过期缓存，后按清理策略清理）
         /// </summary>
-        private void ClearCache()
-        { 
-            
+        private void ClearCache(int currentCacheLength)
+        {
+            while (_CurrentLength + currentCacheLength < _CacheMaxLength * _CurrentCacheClearScale)
+            {
+                ClearExpirationCache();
+                switch (_CacheClearMode)
+                {
+                    case CacheClearMode.LFU:
+                        ClearCacheByLFU();
+                        break;
+                    case CacheClearMode.LRU:
+                        ClearCacheByLRU();
+                        break;
+                }
+            }
+        }
+
+        /// <summary>
+        /// 清理所有过期缓存
+        /// </summary>
+        private void ClearExpirationCache()
+        {
+            List<string> clearKey = _DicCacheValue.Where(m => m.Value.IsExpiration).Select(m => m.Key).ToList();
+            foreach (string key in clearKey)
+            {
+                RemoveCache(key);
+            }
+        }
+
+        /// <summary>
+        /// 按最少使用策略清理
+        /// </summary>
+        private void ClearCacheByLFU()
+        {
+            List<string> clearKey = _DicCacheValue.OrderBy(m=>m.Value.CacheReferencesCount).Take(_ClearCacheCount).Select(m => m.Key).ToList();
+            foreach (string key in clearKey)
+            {
+                RemoveCache(key);
+            }
+        }
+
+        /// <summary>
+        /// 按最远时间策略清理
+        /// </summary>
+        private void ClearCacheByLRU()
+        {
+            List<string> clearKey = _DicCacheValue.OrderBy(m => m.Value.LastVisitDateTime).Take(_ClearCacheCount).Select(m => m.Key).ToList();
+            foreach (string key in clearKey)
+            {
+                RemoveCache(key);
+            }
         }
 
         /// <summary>
@@ -139,6 +195,7 @@ namespace Eiap.Framework.Base.Cache.SXW
             {
                 cacheEntity.AbsoluteExpiration = DateTime.Now.AddSeconds(slidingExpiration.Value);
             }
+            _CurrentLength += cacheLength;
             return cacheEntity;
         }
 
