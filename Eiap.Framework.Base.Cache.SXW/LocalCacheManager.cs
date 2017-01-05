@@ -35,6 +35,10 @@ namespace Eiap.Framework.Base.Cache.SXW
         /// <param name="slidingExpiration"></param>
         public void SetCache(string key, object cacheContent, int? absoluteExpiration = null, int? slidingExpiration = null)
         {
+            if (_DicCacheValue.ContainsKey(key))
+            {
+                RemoveCache(key);
+            }
             string jsonObject = JsonConvert.SerializeObject(cacheContent);
             //当前缓存大小
             int currentCacheLength = UnicodeEncoding.UTF8.GetByteCount(jsonObject);
