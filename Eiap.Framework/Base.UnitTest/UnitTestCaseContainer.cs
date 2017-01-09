@@ -40,5 +40,15 @@ namespace Eiap.Framework.Base.UnitTest
         /// 断言类型
         /// </summary>
         public UnitTestCaseAssertType CaseAssertType { get; set; }
+
+        /// <summary>
+        /// 注释
+        /// </summary>
+        public string Remark { get; set; }
+
+        /// <summary>
+        /// 单元测试接口类型
+        /// </summary>
+        public Type UnitTestClassType { get; set; }
     }
 }

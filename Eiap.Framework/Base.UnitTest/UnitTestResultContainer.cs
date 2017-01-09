@@ -8,6 +8,30 @@ namespace Eiap.Framework.Base.UnitTest
 {
     public class UnitTestResultContainer
     {
-        public string UnitTestResultMessage { get; set; }
+        /// <summary>
+        /// 单元测试模块命名空间
+        /// </summary>
+        public string UnitTestNamespace { get; set; }
+
+        /// <summary>
+        /// 类名
+        /// </summary>
+        public string ClassName { get; set; }
+
+        /// <summary>
+        /// 方法名
+        /// </summary>
+        public string MethodName { get; set; }
+
+        /// <summary>
+        /// 异常
+        /// </summary>
+        public Exception MethodException { get; set; }
+
+        /// <summary>
+        /// Result
+        /// </summary>
+        public bool Result { get; set; }
+
     }
 }

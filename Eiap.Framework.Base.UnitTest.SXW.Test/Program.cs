@@ -16,18 +16,21 @@ namespace Eiap.Framework.Base.UnitTest.SXW.Test
         {
             AssemblyManager.Instance.LoadAllAssembly().Register(DependencyManager.Instance.Register).Register(UnitTestManager.Instance.Register);
             //注册测试用例
-            //IUnitTestManager _unitTestManager = DependencyManager.Instance.Resolver<IUnitTestManager>();
-            //_unitTestManager.Register(typeof(IUnitTestAppInterface), "Add", new UnitTestCaseContainer { CaseAssertType = UnitTestCaseAssertType.AssertEquals, MethodParas = new List<object> { 1, 2 }, MethodReturn = 3 })
-            //.Run(Assembly.GetExecutingAssembly().FullName);
-            IUnitTestCaseManager unitTestCaseManager = DependencyManager.Instance.Resolver<IUnitTestCaseManager>();
-            List<UnitTestCaseContainer> list = unitTestCaseManager.GetUnitTestCaseByMethodName("Eiap.Framework.Base.UnitTest.SXW.Test","IUnitTestAppInterface","Add");
-            Console.WriteLine(list.Count);
+            UnitTestManager.Instance.UnitTest("Eiap.Framework.Base.UnitTest.SXW.Test");
             Console.ReadLine();
         }
     }
 
     public interface IUnitTestAppInterface : IRealtimeDependency
     {
-        void Add(int a, int b);
+        string Add(int a, int b);
+    }
+
+    public class UnitTestApp : IUnitTestAppInterface
+    {
+        public string Add(int a, int b)
+        {
+            return (a + b).ToString();
+        }
     }
 }

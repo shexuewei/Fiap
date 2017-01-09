@@ -85,6 +85,7 @@
     <Compile Include="Base.UnitTest\UnitTestCaseContainer.cs">
       <SubType>Code</SubType>
     </Compile>
+    <Compile Include="Base.UnitTest\UnitTestResultContainer.cs" />
     <Compile Include="Common.DataAccess\SQL\IDataAccessConnectionString.cs" />
     <Compile Include="Common.DataAccess\SQL\ISQLCommandDataAccessConnection.cs" />
     <Compile Include="Common.DataAccess\SQL\ISQLDataAccess.cs" />

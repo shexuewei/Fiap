@@ -28,15 +28,13 @@ namespace Eiap.Framework.Base.UnitTest.SXW
         }
 
         /// <summary>
-        /// 根据方法名（命名空间、类型）获取用例集合
+        /// 根据命名空间获取用例集合
         /// </summary>
         /// <param name="unitTestNamespace"></param>
-        /// <param name="className"></param>
-        /// <param name="methodName"></param>
         /// <returns></returns>
-        public List<UnitTestCaseContainer> GetUnitTestCaseByMethodName(string unitTestNamespace, string className, string methodName)
+        public List<UnitTestCaseContainer> GetUnitTestCaseByNamespace(string unitTestNamespace)
         {
-            return _UnitTestCaseContainerList.Where(m => m.UnitTestNamespace == unitTestNamespace && m.ClassName == className && m.MethodName == methodName).ToList();
+            return _UnitTestCaseContainerList.Where(m => m.UnitTestNamespace == unitTestNamespace).ToList();
         }
 
         /// <summary>

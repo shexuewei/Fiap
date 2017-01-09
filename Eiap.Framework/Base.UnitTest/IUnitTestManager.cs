@@ -15,5 +15,12 @@ namespace Eiap.Framework.Base.UnitTest
         /// </summary>
         /// <param name="assemblyList"></param>
         void Register(List<Assembly> assemblyList);
+
+        /// <summary>
+        /// 测试指定命名空间下的方法
+        /// </summary>
+        /// <param name="unitTestNamespace"></param>
+        /// <returns></returns>
+        IUnitTestManager UnitTest(string unitTestNamespace);
     }
 }

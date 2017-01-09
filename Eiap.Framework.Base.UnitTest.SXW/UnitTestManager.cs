@@ -1,4 +1,5 @@
-﻿using System;
+﻿using Eiap.Framework.Base.Dependency.SXW;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Reflection;
@@ -42,6 +43,28 @@ namespace Eiap.Framework.Base.UnitTest.SXW
                     });
                 }
             });
+        }
+
+        public IUnitTestManager UnitTest(string unitTestNamespace)
+        {
+            IUnitTestCaseManager unitTestCaseManager = DependencyManager.Instance.Resolver<IUnitTestCaseManager>();
+            List<UnitTestCaseContainer> unitTestCaseContainerList = unitTestCaseManager.GetUnitTestCaseByNamespace(unitTestNamespace);
+            foreach (UnitTestCaseContainer unitTestCase in unitTestCaseContainerList)
+            {
+                object obj = DependencyManager.Instance.Resolver(unitTestCase.UnitTestClassType);
+                var xx = obj.GetType().GetMethod(unitTestCase.MethodName).Invoke(obj, unitTestCase.MethodParas.ToArray());
+                switch (unitTestCase.CaseAssertType)
+                {
+                    case UnitTestCaseAssertType.AssertEquals:
+                        if (xx.Equals(unitTestCase.MethodReturn))
+                        {
+
+                        }
+                        break;
+                }
+            }
+            
+            return this;
         }
     }
 }
