@@ -21,6 +21,13 @@ namespace Eiap.Framework.Base.UnitTest
         /// </summary>
         /// <param name="unitTestNamespace"></param>
         /// <returns></returns>
-        IUnitTestManager UnitTest(string unitTestNamespace);
+        IUnitTestManager Run(string unitTestNamespace);
+
+        /// <summary>
+        /// 输出指定命名空间下的测试结果
+        /// </summary>
+        /// <param name="unitTestNamespace"></param>
+        /// <returns></returns>
+        IUnitTestManager Print(string unitTestNamespace);
     }
 }

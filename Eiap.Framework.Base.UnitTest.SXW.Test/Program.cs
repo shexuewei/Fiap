@@ -16,21 +16,21 @@ namespace Eiap.Framework.Base.UnitTest.SXW.Test
         {
             AssemblyManager.Instance.LoadAllAssembly().Register(DependencyManager.Instance.Register).Register(UnitTestManager.Instance.Register);
             //注册测试用例
-            UnitTestManager.Instance.UnitTest("Eiap.Framework.Base.UnitTest.SXW.Test");
+            UnitTestManager.Instance.Run("Eiap.Framework.Base.UnitTest.SXW.Test").Print("Eiap.Framework.Base.UnitTest.SXW.Test");
             Console.ReadLine();
         }
     }
 
     public interface IUnitTestAppInterface : IRealtimeDependency
     {
-        string Add(int a, int b);
+        int Add(int a, int b);
     }
 
     public class UnitTestApp : IUnitTestAppInterface
     {
-        public string Add(int a, int b)
+        public int Add(int a, int b)
         {
-            return (a + b).ToString();
+            return a + b;
         }
     }
 }

@@ -32,7 +32,7 @@ namespace Eiap.Framework.Base.UnitTest.SXW.Test
                 MethodParas = new List<object> { 3, 5 },
                 CaseAssertType = UnitTestCaseAssertType.AssertEquals,
                 UnitTestClassType = typeof(IUnitTestAppInterface),
-                MethodReturn = "8"
+                MethodReturn = 7
             });
         }
     }

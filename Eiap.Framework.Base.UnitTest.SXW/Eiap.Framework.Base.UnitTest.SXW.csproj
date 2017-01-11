@@ -30,6 +30,10 @@
     <WarningLevel>4</WarningLevel>
   </PropertyGroup>
   <ItemGroup>
+    <Reference Include="Newtonsoft.Json, Version=9.0.0.0, Culture=neutral, PublicKeyToken=30ad4fe6b2a6aeed, processorArchitecture=MSIL">
+      <HintPath>..\packages\Newtonsoft.Json.9.0.1\lib\net45\Newtonsoft.Json.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
     <Reference Include="System" />
     <Reference Include="System.Core" />
     <Reference Include="System.Xml.Linq" />
@@ -44,6 +48,8 @@
     <Compile Include="UnitTestCaseManager.cs" />
     <Compile Include="UnitTestManager.cs" />
     <Compile Include="UnitTestModule.cs" />
+    <Compile Include="UnitTestResultContainerManager.cs" />
+    <Compile Include="UnitTestResultManager.cs" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\Eiap.Framework.Dependency.SXW\Eiap.Framework.Base.Dependency.SXW.csproj">
@@ -58,6 +64,9 @@
       <Project>{a29d9e5f-1889-4c23-a991-6bcd9cc91a45}</Project>
       <Name>Eiap.Framework</Name>
     </ProjectReference>
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="packages.config" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 

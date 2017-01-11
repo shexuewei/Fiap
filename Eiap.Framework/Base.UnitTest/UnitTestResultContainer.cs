@@ -29,9 +29,14 @@ namespace Eiap.Framework.Base.UnitTest
         public Exception MethodException { get; set; }
 
         /// <summary>
-        /// Result
+        /// 测试结果
         /// </summary>
         public bool Result { get; set; }
+
+        /// <summary>
+        /// 参数
+        /// </summary>
+        public List<object> MethodParas { get; set; }
 
     }
 }
