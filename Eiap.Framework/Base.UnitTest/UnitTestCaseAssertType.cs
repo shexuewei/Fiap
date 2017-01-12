@@ -8,12 +8,12 @@ namespace Eiap.Framework.Base.UnitTest
 {
     public enum UnitTestCaseAssertType
     {
-        AssertEquals,//引用对象的比较（内存地址的比较）
-        AssertFalse,
-        AssertTrue,
-        AssertNotNull,
-        AssertNull,
-        AssertNotSame,
-        AssertSame,//==比较
+        AssertEquals,//值相等
+        AssertFalse,//等于False
+        AssertTrue,//等于True
+        AssertNotNull,//不为Null
+        AssertNull,//为Null
+        AssertNotSame,//引用不相等
+        AssertSame,//引用相等
     }
 }

@@ -36,7 +36,7 @@ namespace Eiap.Framework.Base.UnitTest.SXW
                 Console.WriteLine("MethodName:" + unitTestResultContainer.MethodName);
                 Console.WriteLine("MethodParas:" + JsonConvert.SerializeObject(unitTestResultContainer.MethodParas));
                 Console.WriteLine("Result:" + unitTestResultContainer.Result);
-                if (!unitTestResultContainer.Result && unitTestResultContainer.MethodException != null)
+                if (unitTestResultContainer.MethodException != null)
                 {
                     Console.WriteLine("MethodExceptionErrorMessage:" + unitTestResultContainer.MethodException.Message);
                 }

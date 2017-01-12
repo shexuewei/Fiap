@@ -53,7 +53,8 @@ namespace Eiap.Framework.Base.UnitTest.SXW
             foreach (UnitTestCaseContainer unitTestCase in unitTestCaseContainerList)
             {
                 object unitTestInstance = DependencyManager.Instance.Resolver(unitTestCase.UnitTestClassType);
-                object unitTestInstanceMethodReturn = unitTestInstance.GetType().GetMethod(unitTestCase.MethodName).Invoke(unitTestInstance, unitTestCase.MethodParas.ToArray());
+                object unitTestInstanceMethodReturn = null;
+                Exception tmpException = null;
                 UnitTestResultContainer unitTestResult = new UnitTestResultContainer
                 {
                     ClassName = unitTestCase.ClassName,
@@ -61,6 +62,15 @@ namespace Eiap.Framework.Base.UnitTest.SXW
                     UnitTestNamespace = unitTestCase.UnitTestNamespace,
                     MethodParas = unitTestCase.MethodParas
                 };
+                try
+                {
+                    unitTestInstanceMethodReturn = unitTestInstance.GetType().GetMethod(unitTestCase.MethodName).Invoke(unitTestInstance, unitTestCase.MethodParas.ToArray());
+                }
+                catch (Exception ex)
+                {
+                    tmpException = ex;
+                }
+
                 switch (unitTestCase.CaseAssertType)
                 {
                     case UnitTestCaseAssertType.AssertEquals:
@@ -70,10 +80,8 @@ namespace Eiap.Framework.Base.UnitTest.SXW
                         }
                         else
                         {
-                            unitTestResult.Result = false;
-                            unitTestResult.MethodException = new Exception("");
+                            SetUnitTestResultFalse(unitTestResult, tmpException);
                         }
-                        unitTestResultManager.AddUnitTestResult(unitTestResult);
                         break;
                     case UnitTestCaseAssertType.AssertSame:
                         if (unitTestInstanceMethodReturn == unitTestCase.MethodReturn)
@@ -82,15 +90,78 @@ namespace Eiap.Framework.Base.UnitTest.SXW
                         }
                         else
                         {
-                            unitTestResult.Result = false;
-                            unitTestResult.MethodException = new Exception("");
+                            SetUnitTestResultFalse(unitTestResult, tmpException);
                         }
-                        unitTestResultManager.AddUnitTestResult(unitTestResult);
+                        break;
+                    case UnitTestCaseAssertType.AssertFalse:
+                        if (unitTestInstanceMethodReturn is bool && !(bool)unitTestInstanceMethodReturn)
+                        {
+                            unitTestResult.Result = true;
+                        }
+                        else
+                        {
+                            SetUnitTestResultFalse(unitTestResult, tmpException);
+                        }
+                        break;
+                    case UnitTestCaseAssertType.AssertTrue:
+                        if (unitTestInstanceMethodReturn is bool && (bool)unitTestInstanceMethodReturn)
+                        {
+                            unitTestResult.Result = true;
+                        }
+                        else
+                        {
+                            SetUnitTestResultFalse(unitTestResult, tmpException);
+                        }
+                        break;
+                    case UnitTestCaseAssertType.AssertNull:
+                        if (unitTestInstanceMethodReturn == null)
+                        {
+                            unitTestResult.Result = true;
+                        }
+                        else
+                        {
+                            SetUnitTestResultFalse(unitTestResult, tmpException);
+                        }
+                        break;
+                    case UnitTestCaseAssertType.AssertNotNull:
+                        if (unitTestInstanceMethodReturn != null)
+                        {
+                            unitTestResult.Result = true;
+                        }
+                        else
+                        {
+                            SetUnitTestResultFalse(unitTestResult, tmpException);
+                        }
+                        break;
+                    case UnitTestCaseAssertType.AssertNotSame:
+                        if (unitTestInstanceMethodReturn != unitTestCase.MethodReturn)
+                        {
+                            unitTestResult.Result = true;
+                        }
+                        else
+                        {
+                            SetUnitTestResultFalse(unitTestResult, tmpException);
+                        }
                         break;
                 }
+                unitTestResultManager.AddUnitTestResult(unitTestResult);
             }
-            
             return this;
+        }
+
+        /// <summary>
+        /// 设置单元测试结果为False
+        /// </summary>
+        /// <param name="unitTestResult"></param>
+        /// <param name="result"></param>
+        /// <param name="tmpException"></param>
+        private void SetUnitTestResultFalse(UnitTestResultContainer unitTestResult, Exception tmpException)
+        {
+            unitTestResult.Result = false;
+            if (tmpException != null)
+            {
+                unitTestResult.MethodException = tmpException;
+            }
         }
 
         /// <summary>
