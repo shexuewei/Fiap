@@ -148,11 +148,11 @@ namespace Eiap.Framework.Base.DynamicProxy.SXW
                     il.Emit(OpCodes.Ret);
                 }
                 dynamicProxyType = typeBuilder.CreateType();
-                _DynamicProxyContainerManager.AddDynamicProxyContainer(new DynamicProxyContainer { DynamicProxyTypeFullName = dynamicProxyTypeFullName, DynamicProxyType = dynamicProxyType });
+                _DynamicProxyContainerManager.AddDynamicProxyContainer(new DynamicProxyContainer { DynamicProxyTypeFullName = dynamicProxyTypeFullName, DynamicProxyTypeHandle = dynamicProxyType.TypeHandle });
             }
             else
             {
-                dynamicProxyType = dynamicProxyContainer.DynamicProxyType;
+                dynamicProxyType =  dynamicProxyContainer.DynamicProxyType;
             }
             
             //持久化
