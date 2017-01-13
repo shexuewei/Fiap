@@ -16,6 +16,6 @@ namespace Eiap.Framework.Base.DynamicProxy
         /// <summary>
         /// 动态代理类型名称
         /// </summary>
-        public string DynamicProxyTypeName { get; set; }
+        public string DynamicProxyTypeFullName { get; set; }
     }
 }

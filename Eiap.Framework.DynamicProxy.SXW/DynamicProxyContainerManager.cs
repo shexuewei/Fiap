@@ -21,7 +21,7 @@ namespace Eiap.Framework.Base.DynamicProxy.SXW
         /// <param name="container"></param>
         public void AddDynamicProxyContainer(DynamicProxyContainer container)
         {
-            _DynamicProxyContainerList.Add(container.DynamicProxyTypeName, container);
+            _DynamicProxyContainerList.Add(container.DynamicProxyTypeFullName, container);
         }
 
         /// <summary>

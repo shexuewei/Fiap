@@ -28,7 +28,8 @@ namespace Eiap.Framework.Base.DynamicProxy.SXW
         {
             Type interceptorType = _InterceptorInstance.GetType();
             Type instanceType = objInstance == null ? interfaceType : objInstance.GetType();
-            DynamicProxyContainer dynamicProxyContainer = _DynamicProxyContainerManager.GetDynamicProxyContainerByDynamicProxyTypeName(instanceType.Name + DynamicProxyName);
+            string dynamicProxyTypeFullName = instanceType.Namespace + instanceType.Name + DynamicProxyName;
+            DynamicProxyContainer dynamicProxyContainer = _DynamicProxyContainerManager.GetDynamicProxyContainerByDynamicProxyTypeName(dynamicProxyTypeFullName);
             Type dynamicProxyType = null;
             if (dynamicProxyContainer == null)
             {
@@ -39,9 +40,8 @@ namespace Eiap.Framework.Base.DynamicProxy.SXW
                 //持久化模块
                 //var modulebuilder = asm.DefineDynamicModule(instanceType.Name, instanceType.Name + "EiapProxy.dll");
                 //瞬时模块
-                string dynamicProxyTypeName = instanceType.Name + DynamicProxyName;
-                var modulebuilder = asm.DefineDynamicModule(dynamicProxyTypeName + ".dll");
-                var typeBuilder = modulebuilder.DefineType(dynamicProxyTypeName, TypeAttributes.Public, typeof(object), new Type[] { interfaceType });
+                var modulebuilder = asm.DefineDynamicModule(dynamicProxyTypeFullName + ".dll");
+                var typeBuilder = modulebuilder.DefineType(dynamicProxyTypeFullName, TypeAttributes.Public, typeof(object), new Type[] { interfaceType });
 
                 //定义字段
                 var interceptorField = typeBuilder.DefineField("_" + interceptorType.Name, interceptorType, FieldAttributes.Private);
@@ -148,7 +148,7 @@ namespace Eiap.Framework.Base.DynamicProxy.SXW
                     il.Emit(OpCodes.Ret);
                 }
                 dynamicProxyType = typeBuilder.CreateType();
-                _DynamicProxyContainerManager.AddDynamicProxyContainer(new DynamicProxyContainer { DynamicProxyTypeName = dynamicProxyTypeName, DynamicProxyType = dynamicProxyType });
+                _DynamicProxyContainerManager.AddDynamicProxyContainer(new DynamicProxyContainer { DynamicProxyTypeFullName = dynamicProxyTypeFullName, DynamicProxyType = dynamicProxyType });
             }
             else
             {
