@@ -10,11 +10,11 @@ namespace Eiap.Framework.Base.Interceptor
     {
         protected static IInterceptorMethodContainerManager _IInterceptorMethodContainerManager;
 
-        protected List<InterceptorMethodContainer> _InterceptorMethodContainerList = null;
+        protected Dictionary<string, InterceptorMethodContainer> _InterceptorMethodContainerList = null;
 
         protected InterceptorMethodContainerManagerBase()
         {
-            _InterceptorMethodContainerList = new List<InterceptorMethodContainer>();
+            _InterceptorMethodContainerList = new Dictionary<string, InterceptorMethodContainer>();
         }
 
         /// <summary>
@@ -44,13 +44,9 @@ namespace Eiap.Framework.Base.Interceptor
         protected InterceptorMethodContainer IsExistSameInterceptorMethodAttibute(Type interceptorMethodAttibute)
         {
             InterceptorMethodContainer res = null;
-            foreach (InterceptorMethodContainer item in _InterceptorMethodContainerList)
+            if (_InterceptorMethodContainerList.ContainsKey(interceptorMethodAttibute.FullName))
             {
-                if (item.InterceptorMethodAttibuteName == interceptorMethodAttibute.FullName)
-                {
-                    res = item;
-                    break;
-                }   
+                res = _InterceptorMethodContainerList[interceptorMethodAttibute.FullName];
             }
             return res;
         }

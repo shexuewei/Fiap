@@ -31,7 +31,7 @@ namespace Eiap.Framework.Base.Interceptor.SXW
                 }
                 else
                 {
-                    _InterceptorMethodContainerList.Add(new InterceptorMethodContainer { InterceptorMethodAttibute = interceptorMethodAttibute, InterceptorMethodList = { interceptorMethod } });
+                    _InterceptorMethodContainerList.Add(interceptorMethodAttibute.FullName, new InterceptorMethodContainer { InterceptorMethodAttibuteTypeHandle = interceptorMethodAttibute.TypeHandle, InterceptorMethodList = { interceptorMethod } });
                 }
             }
         }
@@ -46,13 +46,7 @@ namespace Eiap.Framework.Base.Interceptor.SXW
             InterceptorMethodContainer interceptorMethodContainer = null;
             if (interceptorMethodAttibute.IsAssignableFrom(typeof(InterceptorMethodAttibute)))
             {
-                _InterceptorMethodContainerList.ForEach(m =>
-                {
-                    if (m.InterceptorMethodAttibuteName == interceptorMethodAttibute.FullName)
-                    {
-                        interceptorMethodContainer = m;
-                    }
-                });
+                interceptorMethodContainer = IsExistSameInterceptorMethodAttibute(interceptorMethodAttibute);
             }
             return interceptorMethodContainer;
         }

@@ -9,11 +9,13 @@ namespace Eiap.Framework.Base.Dependency
     public abstract class DependencyContainerManagerBase : IDependencyContainerManager
     {
         protected static IDependencyContainerManager _DependencyContainerManager = null;
+        //protected Dictionary<string, DependencyContainer> _DepeDicList = null;
         protected List<DependencyContainer> _DepeDicList = null;
 
         protected DependencyContainerManagerBase()
         {
             _DepeDicList = new List<DependencyContainer>();
+            //_DepeDicList = new Dictionary<string, DependencyContainer>();
         }
 
 
@@ -25,6 +27,7 @@ namespace Eiap.Framework.Base.Dependency
         /// <returns></returns>
         protected bool IsExistSameDependencyInterfaceClass(Type dependencyInterface, Type dependencyInterfaceClass)
         {
+            //return _DepeDicList.ContainsKey(dependencyInterfaceClass.FullName + "." + dependencyInterface.FullName);
             foreach (DependencyContainer container in _DepeDicList)
             {
                 if (container.DependencyInterfaceClassName == dependencyInterfaceClass.FullName

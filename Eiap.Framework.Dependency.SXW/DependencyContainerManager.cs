@@ -30,9 +30,10 @@ namespace Eiap.Framework.Base.Dependency.SXW
             if (!IsExistSameDependencyInterfaceClass(dependencyInterface, dependencyInterfaceClass))
             {
                 DependencyContainer cont = new DependencyContainer();
-                cont.DependencyInterfaceClass = dependencyInterfaceClass;
-                cont.DependencyInterface = dependencyInterface;
+                cont.DependencyInterfaceClassTypeHandle = dependencyInterfaceClass.TypeHandle;
+                cont.DependencyInterfaceTypeHandle = dependencyInterface.TypeHandle;
                 cont.IsDirectRelation = isDirectRelation;
+                //_DepeDicList.Add(dependencyInterfaceClass.FullName+"."+ dependencyInterface.FullName, cont);
                 _DepeDicList.Add(cont);
             }
         }
