@@ -49,6 +49,17 @@ namespace Eiap.Framework.Base.UnitTest
         /// <summary>
         /// 单元测试接口类型
         /// </summary>
-        public Type UnitTestClassType { get; set; }
+        public Type UnitTestClassType
+        {
+            get
+            {
+                return Type.GetTypeFromHandle(UnitTestClassTypeHandle);
+            }
+        }
+
+        /// <summary>
+        /// 单元测试接口类型句柄
+        /// </summary>
+        public RuntimeTypeHandle UnitTestClassTypeHandle { get; set; }
     }
 }
