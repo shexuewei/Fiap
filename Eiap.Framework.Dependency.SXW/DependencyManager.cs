@@ -8,6 +8,7 @@ using System.IO;
 using System.Runtime.Remoting.Messaging;
 using Eiap.Framework.Base.DynamicProxy;
 using Eiap.Framework.Base.AssemblyService;
+using System.Diagnostics;
 
 namespace Eiap.Framework.Base.Dependency.SXW
 {
@@ -315,10 +316,29 @@ namespace Eiap.Framework.Base.Dependency.SXW
         }
 
         /// <summary>
-        /// 根据程序集集合，注册依赖接口和依赖实现类
+        /// 注册依赖接口和依赖实现类
         /// </summary>
         /// <param name="assemblyList"></param>
         public virtual void Register(List<Assembly> assemblyList)
+        {
+            string dependencyManagerconfig = Directory.GetFiles(AppDomain.CurrentDomain.BaseDirectory).Where(m => m == "dependencyManager.json").FirstOrDefault();
+            if (string.IsNullOrEmpty(dependencyManagerconfig))
+            {
+                //从所有程序集中注册
+                RegisterAllAssembly(assemblyList);
+            }
+            else
+            {
+                //TODO:从配置文件中注册
+
+            }
+        }
+
+        /// <summary>
+        /// 根据程序集集合，注册依赖接口和依赖实现类
+        /// </summary>
+        /// <param name="assemblyList"></param>
+        private void RegisterAllAssembly(List<Assembly> assemblyList)
         {
             assemblyList.ForEach(assemblyItem =>
             {

@@ -6,6 +6,7 @@ using System.Reflection;
 using System.Text;
 using System.Threading.Tasks;
 using Eiap.Framework.Base.Extension;
+using System.Diagnostics;
 
 namespace Eiap.Framework.Base.AssemblyService
 {
@@ -42,7 +43,11 @@ namespace Eiap.Framework.Base.AssemblyService
         /// <returns></returns>
         public AssemblyManager Register(Action<List<Assembly>> reg)
         {
+            Stopwatch stopwatch = new Stopwatch();
+            stopwatch.Start();
             reg(assemblyList);
+            stopwatch.Stop();
+            Console.WriteLine("AssemblyManager Register:" + stopwatch.ElapsedMilliseconds);
             return Instance;
         }
 
