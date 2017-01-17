@@ -316,7 +316,7 @@ namespace Eiap.Framework.Base.Dependency.SXW
         }
 
         /// <summary>
-        /// 注册依赖接口和依赖实现类
+        /// 注册依赖接口和依赖实现类，非常耗时
         /// </summary>
         /// <param name="assemblyList"></param>
         public virtual void Register(List<Assembly> assemblyList)

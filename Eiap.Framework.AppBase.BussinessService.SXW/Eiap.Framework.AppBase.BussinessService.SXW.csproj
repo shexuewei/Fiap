@@ -61,11 +61,11 @@
       <Project>{1efe8b75-d3d9-4608-b29a-ef026770bdc5}</Project>
       <Name>Eiap.Framework.Common.DataMapping.SQLServer</Name>
     </ProjectReference>
-    <ProjectReference Include="..\Eiap.Framework.Dependency.SXW\Eiap.Framework.Base.Dependency.SXW.csproj">
+    <ProjectReference Include="..\Eiap.Framework.Base.Dependency.SXW\Eiap.Framework.Base.Dependency.SXW.csproj">
       <Project>{efca732e-18cf-410e-adf5-b8a3e4c28ff3}</Project>
       <Name>Eiap.Framework.Base.Dependency.SXW</Name>
     </ProjectReference>
-    <ProjectReference Include="..\Eiap.Framework.DynamicProxy.SXW\Eiap.Framework.Base.DynamicProxy.SXW.csproj">
+    <ProjectReference Include="..\Eiap.Framework.Base.DynamicProxy.SXW\Eiap.Framework.Base.DynamicProxy.SXW.csproj">
       <Project>{c0281458-6ce2-42dd-a807-c1c74557f354}</Project>
       <Name>Eiap.Framework.Base.DynamicProxy.SXW</Name>
     </ProjectReference>

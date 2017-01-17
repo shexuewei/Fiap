@@ -9,9 +9,9 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Eiap.Framework.Common.DataA
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Eiap.Framework.Common.DataMapping.SQLServer", "Eiap.Framework.DataMapping.SQLServer\Eiap.Framework.Common.DataMapping.SQLServer.csproj", "{1EFE8B75-D3D9-4608-B29A-EF026770BDC5}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Eiap.Framework.Base.Dependency.SXW", "Eiap.Framework.Dependency.SXW\Eiap.Framework.Base.Dependency.SXW.csproj", "{EFCA732E-18CF-410E-ADF5-B8A3E4C28FF3}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Eiap.Framework.Base.Dependency.SXW", "Eiap.Framework.Base.Dependency.SXW\Eiap.Framework.Base.Dependency.SXW.csproj", "{EFCA732E-18CF-410E-ADF5-B8A3E4C28FF3}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Eiap.Framework.Base.DynamicProxy.SXW", "Eiap.Framework.DynamicProxy.SXW\Eiap.Framework.Base.DynamicProxy.SXW.csproj", "{C0281458-6CE2-42DD-A807-C1C74557F354}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Eiap.Framework.Base.DynamicProxy.SXW", "Eiap.Framework.Base.DynamicProxy.SXW\Eiap.Framework.Base.DynamicProxy.SXW.csproj", "{C0281458-6CE2-42DD-A807-C1C74557F354}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Eiap.Framework.Common.Logger.SQLServer", "Eiap.Framework.Common.Logger.SQLServer\Eiap.Framework.Common.Logger.SQLServer.csproj", "{304FB927-68A0-47FB-A86D-28BF11B3D2C6}"
 EndProject

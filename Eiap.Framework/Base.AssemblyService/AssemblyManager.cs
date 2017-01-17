@@ -43,11 +43,11 @@ namespace Eiap.Framework.Base.AssemblyService
         /// <returns></returns>
         public AssemblyManager Register(Action<List<Assembly>> reg)
         {
-            Stopwatch stopwatch = new Stopwatch();
-            stopwatch.Start();
+            //Stopwatch stopwatch = new Stopwatch();
+            //stopwatch.Start();
             reg(assemblyList);
-            stopwatch.Stop();
-            Console.WriteLine("AssemblyManager Register:" + stopwatch.ElapsedMilliseconds);
+            //stopwatch.Stop();
+            //Console.WriteLine("AssemblyManager Register:" + stopwatch.ElapsedMilliseconds);
             return Instance;
         }
 
