@@ -26,6 +26,7 @@ namespace Eiap.Framework.Base.DynamicProxy.SXW
             MethodInfo methodinfo = null;
             InterceptorMethodArgs args = null;
             Stopwatch stopwatch = null;
+            ClearInterceptorActionList();
             try
             {
                 if (instance != null)
@@ -36,8 +37,12 @@ namespace Eiap.Framework.Base.DynamicProxy.SXW
                         stopwatch = new Stopwatch();
                         args = new InterceptorMethodArgs { Instance = instance, MethodName = name, MethodDateTime = DateTime.Now, MethodParameters = parameters };
 
-                        methodinfo.GetCustomAttributes(typeof(InterceptorMethodAttibute)).ToList().ForEach(m => {
-                            _InterceptorActionList.AddRange(_InterceptorMethodManager.GetInterceptorMethodList(m.GetType()));
+                        methodinfo.GetCustomAttributes(typeof(InterceptorMethodAttibute), true).ToList().ForEach(m => {
+                            List<Func<InterceptorMethodArgs, bool>> tmpInterceptorActionList = _InterceptorMethodManager.GetInterceptorMethodList(m.GetType());
+                            if (tmpInterceptorActionList != null && tmpInterceptorActionList.Count > 0)
+                            {
+                                _InterceptorActionList.AddRange(tmpInterceptorActionList);
+                            }
                         });
 
                         foreach (Func<InterceptorMethodArgs, bool> interceptorActionItem in _InterceptorActionList)
@@ -57,7 +62,7 @@ namespace Eiap.Framework.Base.DynamicProxy.SXW
                         stopwatch.Start();
                         if (methodinfo.IsGenericMethod)
                         {
-                            Type[] genericArgumentsList = methodinfo.GetGenericArguments().Select(m=>m.DeclaringType).ToArray();
+                            Type[] genericArgumentsList = methodinfo.GetGenericArguments().Select(m => m.DeclaringType).ToArray();
                             objres = methodinfo.MakeGenericMethod(genericArgumentsList).Invoke(instance, parameters);
                         }
                         else
@@ -83,7 +88,19 @@ namespace Eiap.Framework.Base.DynamicProxy.SXW
                 //TODO：异常处理
                 throw ex;
             }
+            ClearInterceptorActionList();
             return objres;
+        }
+
+        /// <summary>
+        /// 清理拦截方法
+        /// </summary>
+        private void ClearInterceptorActionList()
+        {
+            if (_InterceptorActionList != null && _InterceptorActionList.Count > 0)
+            {
+                _InterceptorActionList.Clear();
+            }
         }
     }
 }

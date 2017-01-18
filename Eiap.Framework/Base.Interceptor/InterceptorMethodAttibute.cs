@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace Eiap.Framework.Base.Interceptor
 {
-    [AttributeUsage(AttributeTargets.Property, Inherited = true, AllowMultiple = true)]
+    [AttributeUsage(AttributeTargets.Method, Inherited = true, AllowMultiple = true)]
     public class InterceptorMethodAttibute : Attribute
     {
     }

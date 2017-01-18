@@ -3,7 +3,6 @@ using System.Collections.Concurrent;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
-using System.Threading.Tasks;
 using Newtonsoft.Json;
 
 namespace Eiap.Framework.Base.Cache.SXW
@@ -33,6 +32,7 @@ namespace Eiap.Framework.Base.Cache.SXW
         /// <param name="cacheContent"></param>
         /// <param name="absoluteExpiration"></param>
         /// <param name="slidingExpiration"></param>
+        [LocalCacheManagerInterceptorMethodAttibute]
         public void SetCache(string key, object cacheContent, int? absoluteExpiration = null, int? slidingExpiration = null)
         {
             if (_DicCacheValue.ContainsKey(key))
@@ -55,6 +55,7 @@ namespace Eiap.Framework.Base.Cache.SXW
         /// </summary>
         /// <param name="key"></param>
         /// <returns></returns>
+        [LocalCacheManagerInterceptorMethodAttibute]
         public object GetCache(string key)
         {
             CacheEntity cacheEntity = null;

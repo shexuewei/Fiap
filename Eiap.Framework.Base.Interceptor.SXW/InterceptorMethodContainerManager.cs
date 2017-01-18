@@ -15,7 +15,7 @@ namespace Eiap.Framework.Base.Interceptor.SXW
         /// <param name="interceptorMethod"></param>
         public override void RegisterAttibuteAndInterceptorMethod(Type interceptorMethodAttibute, Func<InterceptorMethodArgs, bool> interceptorMethod)
         {
-            if (interceptorMethodAttibute.IsAssignableFrom(typeof(InterceptorMethodAttibute)))
+            if (typeof(InterceptorMethodAttibute).IsAssignableFrom(interceptorMethodAttibute))
             {
                 InterceptorMethodContainer containter = IsExistSameInterceptorMethodAttibute(interceptorMethodAttibute);
                 if (containter != null)
@@ -44,7 +44,7 @@ namespace Eiap.Framework.Base.Interceptor.SXW
         public override InterceptorMethodContainer GetInterceptorMethodContainer(Type interceptorMethodAttibute)
         {
             InterceptorMethodContainer interceptorMethodContainer = null;
-            if (interceptorMethodAttibute.IsAssignableFrom(typeof(InterceptorMethodAttibute)))
+            if (typeof(InterceptorMethodAttibute).IsAssignableFrom(interceptorMethodAttibute))
             {
                 interceptorMethodContainer = IsExistSameInterceptorMethodAttibute(interceptorMethodAttibute);
             }

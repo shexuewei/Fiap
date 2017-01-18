@@ -32,11 +32,6 @@ namespace Eiap.Framework.Base.Interceptor
         }
 
         /// <summary>
-        /// 拦截方法特性名称
-        /// </summary>
-        public string InterceptorMethodAttibuteName { get { return InterceptorMethodAttibute.FullName; } }
-
-        /// <summary>
         /// 拦截方法特性类型句柄
         /// </summary>
         public RuntimeTypeHandle InterceptorMethodAttibuteTypeHandle { get; set; }
