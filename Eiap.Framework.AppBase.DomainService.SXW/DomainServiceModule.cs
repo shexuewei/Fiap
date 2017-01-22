@@ -10,9 +10,14 @@ namespace Eiap.Framework.AppBase.DomainService.SXW
 {
     public class DomainServiceModule : IComponentModule
     {
-        public void Initialize()
+        public void AssemblyInitialize()
         {
             AssemblyManager.Instance.RegisterAssembly(Assembly.GetExecutingAssembly());
+        }
+
+        public void RegisterInitialize()
+        {
+            
         }
     }
 }

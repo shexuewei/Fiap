@@ -11,10 +11,15 @@ namespace Eiap.Framework.Base.Dependency.SXW.Test
 {
     public class DependencyTestModule : IComponentModule
     {
-        public void Initialize()
+        public void AssemblyInitialize()
         {
             //注册当前程序集
             AssemblyManager.Instance.RegisterAssembly(Assembly.GetExecutingAssembly());
+        }
+
+        public void RegisterInitialize()
+        {
+            
         }
     }
 }

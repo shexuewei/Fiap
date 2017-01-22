@@ -10,9 +10,14 @@ namespace Eiap.Framework.Common.DataAccess.SQLServer
 {
     public class DataAccessSQLServerModule : IComponentModule
     {
-        public void Initialize()
+        public void AssemblyInitialize()
         {
             AssemblyManager.Instance.RegisterAssembly(Assembly.GetExecutingAssembly());
+        }
+
+        public void RegisterInitialize()
+        {
+            
         }
     }
 }

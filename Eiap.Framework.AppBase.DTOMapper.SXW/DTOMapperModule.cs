@@ -10,9 +10,14 @@ namespace Eiap.Framework.AppBase.DTOMapper.SXW
 {
     public class DTOMapperModule : IComponentModule
     {
-        public void Initialize()
+        public void AssemblyInitialize()
         {
             AssemblyManager.Instance.RegisterAssembly(Assembly.GetExecutingAssembly());
+        }
+
+        public void RegisterInitialize()
+        {
+            
         }
     }
 }

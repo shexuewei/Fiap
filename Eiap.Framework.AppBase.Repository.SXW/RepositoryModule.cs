@@ -10,9 +10,14 @@ namespace Eiap.Framework.AppBase.Repository.SXW
 {
     public class RepositoryModule : IComponentModule
     {
-        public void Initialize()
+        public void AssemblyInitialize()
         {
             AssemblyManager.Instance.RegisterAssembly(Assembly.GetExecutingAssembly());
+        }
+
+        public void RegisterInitialize()
+        {
+            
         }
     }
 }

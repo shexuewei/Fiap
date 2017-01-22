@@ -10,9 +10,14 @@ namespace Eiap.Framework.Base.DynamicProxy.SXW
 {
     public class DynamicProxyModule : IComponentModule
     {
-        public void Initialize()
+        public void AssemblyInitialize()
         {
             AssemblyManager.Instance.RegisterAssembly(Assembly.GetExecutingAssembly());
+        }
+
+        public void RegisterInitialize()
+        {
+            
         }
     }
 }

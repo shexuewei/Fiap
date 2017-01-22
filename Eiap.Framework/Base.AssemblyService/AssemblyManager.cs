@@ -70,7 +70,7 @@ namespace Eiap.Framework.Base.AssemblyService
         /// </summary>
         /// <param name="assemblyPath"></param>
         /// <returns></returns>
-        public AssemblyManager LoadAllAssembly()
+        public AssemblyManager AssemblyInitialize()
         {
             var loadDllList = Directory.GetFiles(AppDomain.CurrentDomain.BaseDirectory).Where(m => m.EndsWith(".dll") || m.EndsWith(".exe")).ToList();
             //初始化组件
@@ -109,8 +109,23 @@ namespace Eiap.Framework.Base.AssemblyService
             if (componentModuleType.IsNotNull() && !componentModuleType.IsInterface)
             {
                 IComponentModule componentModule = (IComponentModule)Activator.CreateInstance(componentModuleType);
-                componentModule.Initialize();
+                componentModule.AssemblyInitialize();
             }
+        }
+
+        /// <summary>
+        /// 模块初始化注册信息
+        /// </summary>
+        public void RegisterInitialize()
+        {
+            assemblyList.ForEach(assemblyItem => {
+                Type componentModuleType = assemblyItem.GetTypes().Where(m => typeof(IComponentModule).IsAssignableFrom(m)).FirstOrDefault();
+                if (componentModuleType.IsNotNull() && !componentModuleType.IsInterface)
+                {
+                    IComponentModule componentModule = (IComponentModule)Activator.CreateInstance(componentModuleType);
+                    componentModule.RegisterInitialize();
+                }
+            });
         }
     }
 }

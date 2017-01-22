@@ -10,9 +10,14 @@ namespace Eiap.Framework.AppBase.ApplicationService.SXW
 {
     public class ApplicationServiceModule : IComponentModule
     {
-        public void Initialize()
+        public void AssemblyInitialize()
         {
             AssemblyManager.Instance.RegisterAssembly(Assembly.GetExecutingAssembly());
+        }
+
+        public void RegisterInitialize()
+        {
+            
         }
     }
 }

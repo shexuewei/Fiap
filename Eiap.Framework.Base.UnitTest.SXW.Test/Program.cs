@@ -14,7 +14,7 @@ namespace Eiap.Framework.Base.UnitTest.SXW.Test
     {
         static void Main(string[] args)
         {
-            AssemblyManager.Instance.LoadAllAssembly().Register(DependencyManager.Instance.Register).Register(UnitTestManager.Instance.Register);
+            AssemblyManager.Instance.AssemblyInitialize().Register(DependencyManager.Instance.Register).Register(UnitTestManager.Instance.Register);
             //注册测试用例
             UnitTestManager.Instance.Run("Eiap.Framework.Base.UnitTest.SXW.Test").Print("Eiap.Framework.Base.UnitTest.SXW.Test");
             Console.ReadLine();

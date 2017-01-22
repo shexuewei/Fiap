@@ -13,7 +13,7 @@ namespace Eiap.Framework.Base.Dependency.SXW.Test
     {
         static void Main(string[] args)
         {
-            AssemblyManager.Instance.LoadAllAssembly().Register(DependencyManager.Instance.Register);
+            AssemblyManager.Instance.AssemblyInitialize().Register(DependencyManager.Instance.Register);
             Stopwatch stopwatch = new Stopwatch();
             stopwatch.Start();
             for (int i = 0; i < 1000; i++)

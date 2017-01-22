@@ -10,9 +10,14 @@ namespace Eiap.Framework.AppBase.DomainEvent.SXW
 {
     public class DomainEventModule : IComponentModule
     {
-        public void Initialize()
+        public void AssemblyInitialize()
         {
             AssemblyManager.Instance.RegisterAssembly(Assembly.GetExecutingAssembly());
+        }
+
+        public void RegisterInitialize()
+        {
+            
         }
     }
 }

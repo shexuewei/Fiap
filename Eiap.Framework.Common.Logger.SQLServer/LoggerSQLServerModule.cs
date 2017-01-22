@@ -9,7 +9,12 @@ namespace Eiap.Framework.Common.Logger.SQLServer
 {
     public class LoggerSQLServerModule : IComponentModule
     {
-        public void Initialize()
+        public void AssemblyInitialize()
+        {
+            
+        }
+
+        public void RegisterInitialize()
         {
             
         }

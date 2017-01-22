@@ -15,10 +15,7 @@ namespace Eiap.Framework.Base.Interceptor.SXW.Test
     {
         static void Main(string[] args)
         {
-            AssemblyManager.Instance.LoadAllAssembly().Register(DependencyManager.Instance.Register);
-            IInterceptorMethodManager interceptorMethodManager = DependencyManager.Instance.Resolver<IInterceptorMethodManager>();
-            FrameworkLogInterceptorMethod xx = new FrameworkLogInterceptorMethod();
-            interceptorMethodManager.RegisterAttibuteAndInterceptorMethod(typeof(LocalCacheManagerInterceptorMethodAttibute), xx.Test);
+            AssemblyManager.Instance.AssemblyInitialize().Register(DependencyManager.Instance.Register).RegisterInitialize();
             ICacheManager cacheManager = DependencyManager.Instance.Resolver<ICacheManager>();
             CacheEntityTest t1 = new CacheEntityTest { Age = 20, Birthday = DateTime.Now, Id = Guid.NewGuid(), Money = 100m, Name = "123456" };
             cacheManager.SetCache(t1.Id.ToString(), t1);

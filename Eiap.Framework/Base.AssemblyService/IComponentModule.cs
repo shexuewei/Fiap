@@ -8,6 +8,14 @@ namespace Eiap.Framework.Base.AssemblyService
 {
     public interface IComponentModule
     {
-        void Initialize(); 
+        /// <summary>
+        /// 初始化程序集
+        /// </summary>
+        void AssemblyInitialize();
+
+        /// <summary>
+        /// 初始化注册信息
+        /// </summary>
+        void RegisterInitialize();
     }
 }

@@ -10,9 +10,14 @@ namespace Eiap.Framework.Common.Logger.LocalFile
 {
     public class LoggerLocalFileModule : IComponentModule
     {
-        public void Initialize()
+        public void AssemblyInitialize()
         {
             AssemblyManager.Instance.RegisterAssembly(Assembly.GetExecutingAssembly());
+        }
+
+        public void RegisterInitialize()
+        {
+            
         }
     }
 }

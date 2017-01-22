@@ -10,9 +10,14 @@ namespace Eiap.Framework.AppBase.UnitOfWork.SXW
 {
     public class UnitOfWorkModule : IComponentModule
     {
-        public void Initialize()
+        public void AssemblyInitialize()
         {
             AssemblyManager.Instance.RegisterAssembly(Assembly.GetExecutingAssembly());
+        }
+
+        public void RegisterInitialize()
+        {
+            
         }
     }
 }

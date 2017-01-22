@@ -10,9 +10,14 @@ namespace Eiap.Framework.Common.DataMapping.SQLServer
 {
     public class DataMappingSQLServerModule : IComponentModule
     {
-        public void Initialize()
+        public void AssemblyInitialize()
         {
             AssemblyManager.Instance.RegisterAssembly(Assembly.GetExecutingAssembly());
+        }
+
+        public void RegisterInitialize()
+        {
+            
         }
     }
 }
