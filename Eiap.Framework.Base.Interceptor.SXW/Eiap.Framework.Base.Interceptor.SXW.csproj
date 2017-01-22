@@ -39,7 +39,6 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="FrameworkLogInterceptorMethod.cs" />
     <Compile Include="InterceptorMethodManager.cs" />
     <Compile Include="InterceptorMethodContainerManager.cs" />
     <Compile Include="InterceptorMethodModule.cs" />

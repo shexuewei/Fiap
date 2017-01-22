@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Reflection;
 using System.Text;
 using System.Threading.Tasks;
 
@@ -19,9 +20,13 @@ namespace Eiap.Framework.Base.Interceptor.SXW
         /// </summary>
         /// <param name="interceptorMethodAttibute"></param>
         /// <param name="interceptorMethod"></param>
-        public void RegisterAttibuteAndInterceptorMethod(Type interceptorMethodAttibute, Func<InterceptorMethodArgs, bool> interceptorMethod)
+        public void RegisterAttibuteAndInterceptorMethod(Type interceptorMethodAttibute)
         {
-            _InterceptorMethodContainerManager.RegisterAttibuteAndInterceptorMethod(interceptorMethodAttibute, interceptorMethod);
+            if (typeof(IInterceptorMethod).IsAssignableFrom(interceptorMethodAttibute))
+            {
+                IInterceptorMethod interceptorMethod = (IInterceptorMethod)Activator.CreateInstance(interceptorMethodAttibute);
+                _InterceptorMethodContainerManager.RegisterAttibuteAndInterceptorMethod(interceptorMethodAttibute, interceptorMethod.Test);
+            }
         }
 
         /// <summary>

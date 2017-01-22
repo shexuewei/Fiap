@@ -15,7 +15,7 @@ namespace Eiap.Framework.Base.Interceptor
         /// </summary>
         /// <param name="interceptorMethodAttibute"></param>
         /// <param name="interceptorMethod"></param>
-        void RegisterAttibuteAndInterceptorMethod(Type interceptorMethodAttibute, Func<InterceptorMethodArgs, bool> interceptorMethod);
+        void RegisterAttibuteAndInterceptorMethod(Type interceptorMethodAttibute);
 
         /// <summary>
         /// 根据拦截属性获取拦截方法

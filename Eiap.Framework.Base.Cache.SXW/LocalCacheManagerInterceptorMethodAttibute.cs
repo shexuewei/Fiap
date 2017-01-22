@@ -7,7 +7,12 @@ using System.Threading.Tasks;
 
 namespace Eiap.Framework.Base.Cache.SXW
 {
-    public class LocalCacheManagerInterceptorMethodAttibute: InterceptorMethodAttibute
+    public class LocalCacheManagerInterceptorMethodAttibute: InterceptorMethodAttibute, IInterceptorMethod
     {
+        public bool Test(InterceptorMethodArgs args)
+        {
+            Console.WriteLine("test");
+            return true;
+        }
     }
 }
