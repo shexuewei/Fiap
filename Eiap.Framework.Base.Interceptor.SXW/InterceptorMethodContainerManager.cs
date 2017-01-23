@@ -12,11 +12,12 @@ namespace Eiap.Framework.Base.Interceptor.SXW
         /// 注册特性和对应的拦截方法
         /// </summary>
         /// <param name="interceptorMethodAttibute"></param>
-        /// <param name="interceptorMethod"></param>
-        public override void RegisterAttibuteAndInterceptorMethod(Type interceptorMethodAttibute, Func<InterceptorMethodArgs, bool> interceptorMethod)
+        public override void RegisterAttibuteAndInterceptorMethod(Type interceptorMethodAttibute)
         {
-            if (typeof(InterceptorMethodAttibute).IsAssignableFrom(interceptorMethodAttibute))
+            if (typeof(InterceptorMethodAttibute).IsAssignableFrom(interceptorMethodAttibute)&& typeof(IInterceptorMethod).IsAssignableFrom(interceptorMethodAttibute))
             {
+                object interceptorMethodAttibuteInstance = Activator.CreateInstance(interceptorMethodAttibute);
+                Func<InterceptorMethodArgs, bool> interceptorMethod = ((IInterceptorMethod)interceptorMethodAttibuteInstance).Execute;
                 InterceptorMethodContainer containter = IsExistSameInterceptorMethodAttibute(interceptorMethodAttibute);
                 if (containter != null)
                 {
@@ -44,7 +45,7 @@ namespace Eiap.Framework.Base.Interceptor.SXW
         public override InterceptorMethodContainer GetInterceptorMethodContainer(Type interceptorMethodAttibute)
         {
             InterceptorMethodContainer interceptorMethodContainer = null;
-            if (typeof(InterceptorMethodAttibute).IsAssignableFrom(interceptorMethodAttibute))
+            if (typeof(InterceptorMethodAttibute).IsAssignableFrom(interceptorMethodAttibute) && typeof(IInterceptorMethod).IsAssignableFrom(interceptorMethodAttibute))
             {
                 interceptorMethodContainer = IsExistSameInterceptorMethodAttibute(interceptorMethodAttibute);
             }

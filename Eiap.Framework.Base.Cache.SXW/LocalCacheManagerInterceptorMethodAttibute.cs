@@ -7,9 +7,9 @@ using System.Threading.Tasks;
 
 namespace Eiap.Framework.Base.Cache.SXW
 {
-    public class LocalCacheManagerInterceptorMethodAttibute: InterceptorMethodAttibute, IInterceptorMethod
+    public class LocalCacheManagerInterceptorMethodAttibute: InterceptorMethodAttibute
     {
-        public bool Test(InterceptorMethodArgs args)
+        public override bool Execute(InterceptorMethodArgs args)
         {
             Console.WriteLine("test");
             return true;

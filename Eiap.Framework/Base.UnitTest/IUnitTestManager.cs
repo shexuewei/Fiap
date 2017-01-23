@@ -8,7 +8,7 @@ using System.Threading.Tasks;
 
 namespace Eiap.Framework.Base.UnitTest
 {
-    public interface IUnitTestManager : IRealtimeDependency
+    public interface IUnitTestManager : IRealtimeDependency, IDynamicProxyDisable
     {
         /// <summary>
         /// 根据程序集集合，注册用例

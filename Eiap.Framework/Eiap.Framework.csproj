@@ -73,6 +73,7 @@
     <Compile Include="Base.Dependency\IDependencyContainerManager.cs" />
     <Compile Include="Base.Dependency\IPropertyDependency.cs" />
     <Compile Include="Base.Dependency\IDynamicProxyDisable.cs" />
+    <Compile Include="Base.Interceptor\IInterceptorManager.cs" />
     <Compile Include="Base.Interceptor\IInterceptorMethod.cs" />
     <Compile Include="Base.Interceptor\IInterceptorMethodManager.cs" />
     <Compile Include="Base.Interceptor\InterceptorMethodContainerManagerBase.cs" />

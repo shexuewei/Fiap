@@ -7,7 +7,11 @@ using System.Threading.Tasks;
 namespace Eiap.Framework.Base.Interceptor
 {
     [AttributeUsage(AttributeTargets.Method, Inherited = true, AllowMultiple = true)]
-    public class InterceptorMethodAttibute : Attribute
+    public class InterceptorMethodAttibute : Attribute, IInterceptorMethod
     {
+        public virtual bool Execute(InterceptorMethodArgs args)
+        {
+            return true;
+        }
     }
 }

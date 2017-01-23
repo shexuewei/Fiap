@@ -56,7 +56,7 @@ namespace Eiap.Framework.Base.Interceptor
         /// </summary>
         /// <param name="interceptorMethodAttibute"></param>
         /// <param name="interceptorMethod"></param>
-        public virtual void RegisterAttibuteAndInterceptorMethod(Type interceptorMethodAttibute, Func<InterceptorMethodArgs, bool> interceptorMethod) { }
+        public virtual void RegisterAttibuteAndInterceptorMethod(Type interceptorMethodAttibute) { }
 
         /// <summary>
         /// 根据特性名称获取拦截容器

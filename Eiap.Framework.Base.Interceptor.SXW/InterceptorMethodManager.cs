@@ -22,11 +22,7 @@ namespace Eiap.Framework.Base.Interceptor.SXW
         /// <param name="interceptorMethod"></param>
         public void RegisterAttibuteAndInterceptorMethod(Type interceptorMethodAttibute)
         {
-            if (typeof(IInterceptorMethod).IsAssignableFrom(interceptorMethodAttibute))
-            {
-                IInterceptorMethod interceptorMethod = (IInterceptorMethod)Activator.CreateInstance(interceptorMethodAttibute);
-                _InterceptorMethodContainerManager.RegisterAttibuteAndInterceptorMethod(interceptorMethodAttibute, interceptorMethod.Test);
-            }
+            _InterceptorMethodContainerManager.RegisterAttibuteAndInterceptorMethod(interceptorMethodAttibute);
         }
 
         /// <summary>

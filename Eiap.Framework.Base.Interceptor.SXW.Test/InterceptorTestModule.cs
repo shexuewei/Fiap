@@ -20,8 +20,7 @@ namespace Eiap.Framework.Base.Interceptor.SXW.Test
 
         public void RegisterInitialize()
         {
-            IInterceptorMethodManager interceptorMethodManager = DependencyManager.Instance.Resolver<IInterceptorMethodManager>();
-            interceptorMethodManager.RegisterAttibuteAndInterceptorMethod(typeof(LocalCacheManagerInterceptorMethodAttibute));
+            
         }
     }
 }

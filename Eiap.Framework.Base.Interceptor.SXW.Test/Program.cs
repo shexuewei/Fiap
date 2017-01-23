@@ -15,7 +15,11 @@ namespace Eiap.Framework.Base.Interceptor.SXW.Test
     {
         static void Main(string[] args)
         {
-            AssemblyManager.Instance.AssemblyInitialize().Register(DependencyManager.Instance.Register).RegisterInitialize();
+            AssemblyManager.Instance
+                .AssemblyInitialize()
+                .Register(DependencyManager.Instance.Register)
+                .Register(InterceptorManager.Instance.Register)
+                .RegisterInitialize();
             ICacheManager cacheManager = DependencyManager.Instance.Resolver<ICacheManager>();
             CacheEntityTest t1 = new CacheEntityTest { Age = 20, Birthday = DateTime.Now, Id = Guid.NewGuid(), Money = 100m, Name = "123456" };
             cacheManager.SetCache(t1.Id.ToString(), t1);

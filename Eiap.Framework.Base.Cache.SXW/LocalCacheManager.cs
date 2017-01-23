@@ -84,6 +84,7 @@ namespace Eiap.Framework.Base.Cache.SXW
         /// 移除缓存
         /// </summary>
         /// <param name="key"></param>
+        [LocalCacheManagerInterceptorMethodAttibute]
         public bool RemoveCache(string key)
         {
             CacheEntity cacheEntity = null;
@@ -99,6 +100,7 @@ namespace Eiap.Framework.Base.Cache.SXW
         /// 获取缓存个数
         /// </summary>
         /// <returns></returns>
+        [LocalCacheManagerInterceptorMethodAttibute]
         public int GetCacheCount()
         {
             if (_DicCacheValue.IsEmpty)
@@ -112,6 +114,7 @@ namespace Eiap.Framework.Base.Cache.SXW
         /// 获取缓存所有键
         /// </summary>
         /// <returns></returns>
+        [LocalCacheManagerInterceptorMethodAttibute]
         public List<string> GetAllCacheKey()
         {
             if (_DicCacheValue.IsEmpty)

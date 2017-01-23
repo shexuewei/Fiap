@@ -9,7 +9,7 @@ namespace Eiap.Framework.Base.Interceptor
 {
     public interface IInterceptorMethodContainerManager : ISingletonDependency
     {
-        void RegisterAttibuteAndInterceptorMethod(Type interceptorMethodAttibute, Func<InterceptorMethodArgs, bool> interceptorMethod);
+        void RegisterAttibuteAndInterceptorMethod(Type interceptorMethodAttibute);
 
         InterceptorMethodContainer GetInterceptorMethodContainer(Type interceptorMethodAttibute);
     }
