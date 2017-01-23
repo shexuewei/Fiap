@@ -32,7 +32,6 @@ namespace Eiap.Framework.Base.Cache.SXW
         /// <param name="cacheContent"></param>
         /// <param name="absoluteExpiration"></param>
         /// <param name="slidingExpiration"></param>
-        [LocalCacheManagerInterceptorMethodAttibute]
         public void SetCache(string key, object cacheContent, int? absoluteExpiration = null, int? slidingExpiration = null)
         {
             if (_DicCacheValue.ContainsKey(key))
@@ -55,7 +54,6 @@ namespace Eiap.Framework.Base.Cache.SXW
         /// </summary>
         /// <param name="key"></param>
         /// <returns></returns>
-        [LocalCacheManagerInterceptorMethodAttibute]
         public object GetCache(string key)
         {
             CacheEntity cacheEntity = null;
@@ -84,7 +82,6 @@ namespace Eiap.Framework.Base.Cache.SXW
         /// 移除缓存
         /// </summary>
         /// <param name="key"></param>
-        [LocalCacheManagerInterceptorMethodAttibute]
         public bool RemoveCache(string key)
         {
             CacheEntity cacheEntity = null;
@@ -100,7 +97,6 @@ namespace Eiap.Framework.Base.Cache.SXW
         /// 获取缓存个数
         /// </summary>
         /// <returns></returns>
-        [LocalCacheManagerInterceptorMethodAttibute]
         public int GetCacheCount()
         {
             if (_DicCacheValue.IsEmpty)
@@ -114,7 +110,6 @@ namespace Eiap.Framework.Base.Cache.SXW
         /// 获取缓存所有键
         /// </summary>
         /// <returns></returns>
-        [LocalCacheManagerInterceptorMethodAttibute]
         public List<string> GetAllCacheKey()
         {
             if (_DicCacheValue.IsEmpty)

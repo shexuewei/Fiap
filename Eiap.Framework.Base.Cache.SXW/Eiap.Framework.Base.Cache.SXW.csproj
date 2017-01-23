@@ -47,7 +47,6 @@
     <Compile Include="CacheClearMode.cs" />
     <Compile Include="CacheEntity.cs" />
     <Compile Include="LocalCacheManager.cs" />
-    <Compile Include="LocalCacheManagerInterceptorMethodAttibute.cs" />
     <Compile Include="LocalCacheManagerModule.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
