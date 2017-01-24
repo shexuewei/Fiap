@@ -14,10 +14,23 @@ namespace Eiap.Framework.Base.Interceptor.SXW
         /// <param name="interceptorMethodAttibute"></param>
         public override void RegisterAttibuteAndInterceptorMethod(Type interceptorMethodAttibute)
         {
-            if (typeof(InterceptorMethodAttibute).IsAssignableFrom(interceptorMethodAttibute)&& typeof(IInterceptorMethod).IsAssignableFrom(interceptorMethodAttibute))
+            if (typeof(InterceptorMethodBeginAttibute).IsAssignableFrom(interceptorMethodAttibute)&& typeof(IInterceptorMethod).IsAssignableFrom(interceptorMethodAttibute))
             {
                 object interceptorMethodAttibuteInstance = Activator.CreateInstance(interceptorMethodAttibute);
-                Func<InterceptorMethodArgs, bool> interceptorMethod = ((IInterceptorMethod)interceptorMethodAttibuteInstance).Execute;
+                Action<InterceptorMethodArgs> interceptorMethod = null;
+                if (typeof(IInterceptorMethodBegin).IsAssignableFrom(interceptorMethodAttibuteInstance.GetType()))
+                {
+                    interceptorMethod = ((IInterceptorMethodBegin)interceptorMethodAttibuteInstance).Execute;
+                }
+                else if (typeof(IInterceptorMethodEnd).IsAssignableFrom(interceptorMethodAttibuteInstance.GetType()))
+                {
+                    interceptorMethod = ((IInterceptorMethodEnd)interceptorMethodAttibuteInstance).Execute;
+                }
+                else if (typeof(IInterceptorMethodException).IsAssignableFrom(interceptorMethodAttibuteInstance.GetType()))
+                {
+                    interceptorMethod = ((IInterceptorMethodException)interceptorMethodAttibuteInstance).Execute;
+                }
+
                 InterceptorMethodContainer containter = IsExistSameInterceptorMethodAttibute(interceptorMethodAttibute);
                 if (containter != null)
                 {
@@ -45,7 +58,7 @@ namespace Eiap.Framework.Base.Interceptor.SXW
         public override InterceptorMethodContainer GetInterceptorMethodContainer(Type interceptorMethodAttibute)
         {
             InterceptorMethodContainer interceptorMethodContainer = null;
-            if (typeof(InterceptorMethodAttibute).IsAssignableFrom(interceptorMethodAttibute) && typeof(IInterceptorMethod).IsAssignableFrom(interceptorMethodAttibute))
+            if (typeof(InterceptorMethodBeginAttibute).IsAssignableFrom(interceptorMethodAttibute) && typeof(IInterceptorMethod).IsAssignableFrom(interceptorMethodAttibute))
             {
                 interceptorMethodContainer = IsExistSameInterceptorMethodAttibute(interceptorMethodAttibute);
             }

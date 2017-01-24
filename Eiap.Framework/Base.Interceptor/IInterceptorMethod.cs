@@ -8,6 +8,21 @@ namespace Eiap.Framework.Base.Interceptor
 {
     public interface IInterceptorMethod
     {
-        bool Execute(InterceptorMethodArgs args);
+
+    }
+
+    public interface IInterceptorMethodBegin: IInterceptorMethod
+    {
+        void Execute(InterceptorMethodArgs args);
+    }
+
+    public interface IInterceptorMethodEnd : IInterceptorMethod
+    {
+        void Execute(InterceptorMethodArgs args);
+    }
+
+    public interface IInterceptorMethodException : IInterceptorMethod
+    {
+        void Execute(InterceptorMethodArgs args);
     }
 }

@@ -11,13 +11,13 @@ namespace Eiap.Framework.Base.DynamicProxy.SXW
 {
     public class DynamicProxyInterceptor : IDynamicProxyInterceptor
     {
-        private List<Func<InterceptorMethodArgs, bool>> _InterceptorActionList = null;
+        private List<Action<InterceptorMethodArgs>> _InterceptorActionList = null;
         private readonly IInterceptorMethodManager _InterceptorMethodManager;
 
         public DynamicProxyInterceptor(IInterceptorMethodManager interceptorMethodManager)
         {
             _InterceptorMethodManager = interceptorMethodManager;
-            _InterceptorActionList = new List<Func<InterceptorMethodArgs, bool>>();
+            _InterceptorActionList = new List<Action<InterceptorMethodArgs>>();
         }
 
         public object Invoke(object instance, string name, object[] parameters)
@@ -26,7 +26,6 @@ namespace Eiap.Framework.Base.DynamicProxy.SXW
             MethodInfo methodinfo = null;
             InterceptorMethodArgs args = null;
             Stopwatch stopwatch = null;
-            ClearInterceptorActionList();
             try
             {
                 if (instance != null)
@@ -35,31 +34,9 @@ namespace Eiap.Framework.Base.DynamicProxy.SXW
                     if (methodinfo != null)
                     {
                         stopwatch = new Stopwatch();
-                        args = new InterceptorMethodArgs { Instance = instance, MethodName = name, MethodDateTime = DateTime.Now, MethodParameters = parameters };
-
-                        methodinfo.GetCustomAttributes(typeof(InterceptorMethodAttibute), true).ToList().ForEach(m => {
-                            List<Func<InterceptorMethodArgs, bool>> tmpInterceptorActionList = _InterceptorMethodManager.GetInterceptorMethodList(m.GetType());
-                            if (tmpInterceptorActionList != null && tmpInterceptorActionList.Count > 0)
-                            {
-                                _InterceptorActionList.AddRange(tmpInterceptorActionList);
-                            }
-                        });
-
-                        foreach (Func<InterceptorMethodArgs, bool> interceptorActionItem in _InterceptorActionList)
-                        {
-                            if (!interceptorActionItem(args))
-                            {
-                                if (methodinfo.ReturnType.IsValueType)
-                                {
-                                    return Activator.CreateInstance(methodinfo.ReturnType);
-                                }
-                                else
-                                {
-                                    return null;
-                                }
-                            }
-                        }
                         stopwatch.Start();
+                        args = new InterceptorMethodArgs { MethodName = name, MethodDateTime = DateTime.Now, MethodParameters = parameters };
+                        InvokeBegin(methodinfo, args);
                         if (methodinfo.IsGenericMethod)
                         {
                             Type[] genericArgumentsList = methodinfo.GetGenericArguments().Select(m => m.DeclaringType).ToArray();
@@ -70,6 +47,9 @@ namespace Eiap.Framework.Base.DynamicProxy.SXW
                             objres = methodinfo.Invoke(instance, parameters);
                         }
                         stopwatch.Stop();
+                        args.MethodExecute = stopwatch.ElapsedMilliseconds;
+                        args.ReturnValue = objres;
+                        InvokeEnd(methodinfo, args);
                     }
                     else
                     {
@@ -85,10 +65,13 @@ namespace Eiap.Framework.Base.DynamicProxy.SXW
             }
             catch (Exception ex)
             {
-                //TODO：异常处理
+                if (args != null && methodinfo != null)
+                {
+                    args.MethodException = ex;
+                    InvokeException(methodinfo, args);
+                }
                 throw ex;
             }
-            ClearInterceptorActionList();
             return objres;
         }
 
@@ -100,6 +83,89 @@ namespace Eiap.Framework.Base.DynamicProxy.SXW
             if (_InterceptorActionList != null && _InterceptorActionList.Count > 0)
             {
                 _InterceptorActionList.Clear();
+            }
+        }
+
+        /// <summary>
+        /// 方法前拦截方法
+        /// </summary>
+        /// <param name="methodinfo"></param>
+        /// <param name="args"></param>
+        /// <returns>True：成功执行拦截方法；False：拦截方法终止</returns>
+        private void InvokeBegin(MethodInfo methodinfo, InterceptorMethodArgs args)
+        {
+            ClearInterceptorActionList();
+            methodinfo.GetCustomAttributes(typeof(InterceptorMethodBeginAttibute), true).ToList().ForEach(m => {
+                List<Action<InterceptorMethodArgs>> tmpInterceptorActionList = _InterceptorMethodManager.GetInterceptorMethodList(m.GetType());
+                if (tmpInterceptorActionList != null && tmpInterceptorActionList.Count > 0)
+                {
+                    _InterceptorActionList.AddRange(tmpInterceptorActionList);
+                }
+            });
+            foreach (Action<InterceptorMethodArgs> interceptorActionItem in _InterceptorActionList)
+            {
+                interceptorActionItem(args);
+               
+            }
+        }
+
+        /// <summary>
+        /// 方法后拦截方法
+        /// </summary>
+        /// <param name="methodinfo"></param>
+        /// <param name="args"></param>
+        private void InvokeEnd(MethodInfo methodinfo, InterceptorMethodArgs args)
+        {
+            ClearInterceptorActionList();
+            methodinfo.GetCustomAttributes(typeof(InterceptorMethodEndAttibute), true).ToList().ForEach(m => {
+                List<Action<InterceptorMethodArgs>> tmpInterceptorActionList = _InterceptorMethodManager.GetInterceptorMethodList(m.GetType());
+                if (tmpInterceptorActionList != null && tmpInterceptorActionList.Count > 0)
+                {
+                    _InterceptorActionList.AddRange(tmpInterceptorActionList);
+                }
+            });
+
+            foreach (Action<InterceptorMethodArgs> interceptorActionItem in _InterceptorActionList)
+            {
+                interceptorActionItem(args);
+            }
+        }
+
+        /// <summary>
+        /// 方法异常拦截
+        /// </summary>
+        /// <param name="methodinfo"></param>
+        /// <param name="args"></param>
+        private void InvokeException(MethodInfo methodinfo, InterceptorMethodArgs args)
+        {
+            ClearInterceptorActionList();
+            methodinfo.GetCustomAttributes(typeof(InterceptorMethodExceptionAttibute), true).ToList().ForEach(m => {
+                List<Action<InterceptorMethodArgs>> tmpInterceptorActionList = _InterceptorMethodManager.GetInterceptorMethodList(m.GetType());
+                if (tmpInterceptorActionList != null && tmpInterceptorActionList.Count > 0)
+                {
+                    _InterceptorActionList.AddRange(tmpInterceptorActionList);
+                }
+            });
+            foreach (Action<InterceptorMethodArgs> interceptorActionItem in _InterceptorActionList)
+            {
+                interceptorActionItem(args);
+            }
+        }
+
+        /// <summary>
+        /// 由于拦截器终止，返回方法默认返回值
+        /// </summary>
+        /// <param name="methodinfo"></param>
+        /// <returns></returns>
+        private object GetDefaultMethodReturnType(MethodInfo methodinfo)
+        {
+            if (methodinfo.ReturnType.IsValueType)
+            {
+                return Activator.CreateInstance(methodinfo.ReturnType);
+            }
+            else
+            {
+                return null;
             }
         }
     }

@@ -30,7 +30,7 @@ namespace Eiap.Framework.Base.Interceptor.SXW
         /// </summary>
         /// <param name="interceptorMethodAttibute"></param>
         /// <returns></returns>
-        public List<Func<InterceptorMethodArgs, bool>> GetInterceptorMethodList(Type interceptorMethodAttibute)
+        public List<Action<InterceptorMethodArgs>> GetInterceptorMethodList(Type interceptorMethodAttibute)
         {
             InterceptorMethodContainer container = _InterceptorMethodContainerManager.GetInterceptorMethodContainer(interceptorMethodAttibute);
             if (container != null)

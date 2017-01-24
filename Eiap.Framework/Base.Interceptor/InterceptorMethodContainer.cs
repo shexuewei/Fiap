@@ -13,13 +13,13 @@ namespace Eiap.Framework.Base.Interceptor
     {
         public InterceptorMethodContainer()
         {
-            InterceptorMethodList = new List<Func<InterceptorMethodArgs, bool>>();
+            InterceptorMethodList = new List<Action<InterceptorMethodArgs>>();
         }
 
         /// <summary>
         /// 拦截方法列表
         /// </summary>
-        public List<Func<InterceptorMethodArgs, bool>> InterceptorMethodList { get; set; }
+        public List<Action<InterceptorMethodArgs>> InterceptorMethodList { get; set; }
 
         /// <summary>
         /// 拦截方法特性

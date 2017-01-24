@@ -23,7 +23,7 @@ namespace Eiap.Framework.Base.Interceptor
         /// <param name="interceptorMethodAttibute"></param>
         /// <param name="interceptorMethod"></param>
         /// <returns></returns>
-        protected bool IsExistSameInterceptorMethod(InterceptorMethodContainer interceptorMethodContainer, Func<InterceptorMethodArgs, bool> interceptorMethod)
+        protected bool IsExistSameInterceptorMethod(InterceptorMethodContainer interceptorMethodContainer, Action<InterceptorMethodArgs> interceptorMethod)
         {
             bool res = false;
             interceptorMethodContainer.InterceptorMethodList.ForEach(n =>
@@ -44,9 +44,12 @@ namespace Eiap.Framework.Base.Interceptor
         protected InterceptorMethodContainer IsExistSameInterceptorMethodAttibute(Type interceptorMethodAttibute)
         {
             InterceptorMethodContainer res = null;
-            if (_InterceptorMethodContainerList.ContainsKey(interceptorMethodAttibute.FullName))
+            if (interceptorMethodAttibute != null)
             {
-                res = _InterceptorMethodContainerList[interceptorMethodAttibute.FullName];
+                if (_InterceptorMethodContainerList.ContainsKey(interceptorMethodAttibute.FullName))
+                {
+                    res = _InterceptorMethodContainerList[interceptorMethodAttibute.FullName];
+                }
             }
             return res;
         }

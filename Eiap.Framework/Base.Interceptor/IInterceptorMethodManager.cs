@@ -22,6 +22,6 @@ namespace Eiap.Framework.Base.Interceptor
         /// </summary>
         /// <param name="interceptorMethodAttibute"></param>
         /// <returns></returns>
-        List<Func<InterceptorMethodArgs, bool>> GetInterceptorMethodList(Type interceptorMethodAttibute);
+        List<Action<InterceptorMethodArgs>> GetInterceptorMethodList(Type interceptorMethodAttibute);
     }
 }

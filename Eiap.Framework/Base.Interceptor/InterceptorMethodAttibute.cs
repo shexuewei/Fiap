@@ -1,17 +1,30 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace Eiap.Framework.Base.Interceptor
 {
     [AttributeUsage(AttributeTargets.Method, Inherited = true, AllowMultiple = true)]
-    public class InterceptorMethodAttibute : Attribute, IInterceptorMethod
+    public class InterceptorMethodBeginAttibute : Attribute, IInterceptorMethodBegin
     {
-        public virtual bool Execute(InterceptorMethodArgs args)
+        public virtual void Execute(InterceptorMethodArgs args)
         {
-            return true;
+        }
+    }
+
+    [AttributeUsage(AttributeTargets.Method, Inherited = true, AllowMultiple = true)]
+    public class InterceptorMethodEndAttibute : Attribute, IInterceptorMethodEnd
+    {
+        public virtual void Execute(InterceptorMethodArgs args)
+        {
+            
+        }
+    }
+
+    [AttributeUsage(AttributeTargets.Method, Inherited = true, AllowMultiple = true)]
+    public class InterceptorMethodExceptionAttibute : Attribute, IInterceptorMethodException
+    {
+        public virtual void Execute(InterceptorMethodArgs args)
+        {
+
         }
     }
 }
