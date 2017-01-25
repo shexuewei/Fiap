@@ -4,8 +4,11 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace Eiap.Framework.Common.Logger.LocalFile
+namespace Eiap.Framework.Common.Logger
 {
+    /// <summary>
+    /// 日志级别
+    /// </summary>
     public enum LogLevel
     {
         DEBUG = 0,

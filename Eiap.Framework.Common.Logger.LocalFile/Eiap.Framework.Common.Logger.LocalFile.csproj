@@ -40,14 +40,10 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="LogBody.cs" />
     <Compile Include="Logger.cs" />
     <Compile Include="ILoggerConfigeration.cs" />
     <Compile Include="LoggerConfigeration.cs" />
     <Compile Include="LoggerLocalFileModule.cs" />
-    <Compile Include="LogHead.cs" />
-    <Compile Include="LogLevel.cs" />
-    <Compile Include="LogMessage.cs" />
     <Compile Include="LogStatistics.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>

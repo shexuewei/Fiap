@@ -55,16 +55,9 @@ namespace Eiap.Framework.Common.Logger.LocalFile
                 {
                     Id = Guid.NewGuid(),
                     LogBodyKey = logBodyKey,
-                    LogDay = DateTime.Now.Day,
                     LogDateTime = DateTime.Now,
-                    LogHour = DateTime.Now.Hour,
                     LogKey = logKey,
                     LogLevel = logLevel,
-                    LogMillisecond = DateTime.Now.Millisecond,
-                    LogMinute = DateTime.Now.Minute,
-                    LogMonth = DateTime.Now.Month,
-                    LogSecond = DateTime.Now.Second,
-                    LogYear = DateTime.Now.Year,
                     //TODO:后续完善
                     LogName = logName,
                     LogSource = logSource,

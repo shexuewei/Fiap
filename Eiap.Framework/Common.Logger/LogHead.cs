@@ -5,7 +5,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace Eiap.Framework.Common.Logger.SQLServer
+namespace Eiap.Framework.Common.Logger
 {
     public class LogHead : IEntity<Guid>
     {
@@ -19,47 +19,12 @@ namespace Eiap.Framework.Common.Logger.SQLServer
         /// <summary>
         /// 日志类型
         /// </summary>
-        public virtual int LogLevel { get; set; }
+        public virtual LogLevel LogLevel { get; set; }
 
         /// <summary>
         /// 日志来源（应用程序）
         /// </summary>
         public virtual int LogSource { get; set; }
-
-        /// <summary>
-        /// 年
-        /// </summary>
-        public virtual int LogYear { get; set; }
-
-        /// <summary>
-        /// 月
-        /// </summary>
-        public virtual int LogMonth { get; set; }
-
-        /// <summary>
-        /// 日
-        /// </summary>
-        public virtual int LogDay { get; set; }
-
-        /// <summary>
-        /// 时
-        /// </summary>
-        public virtual int LogHour { get; set; }
-
-        /// <summary>
-        /// 分
-        /// </summary>
-        public virtual int LogMinute { get; set; }
-
-        /// <summary>
-        /// 秒
-        /// </summary>
-        public virtual int LogSecond { get; set; }
-
-        /// <summary>
-        /// 毫秒
-        /// </summary>
-        public virtual int LogMillisecond { get; set; }
 
         /// <summary>
         /// 服务器Ip

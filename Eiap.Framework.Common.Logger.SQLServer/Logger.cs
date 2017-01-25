@@ -53,7 +53,7 @@ namespace Eiap.Framework.Common.Logger.SQLServer
             SaveLogMessage(logMessage);
         }
 
-        private LogMessage GetLogMessage(string message, string logKey, int logLevel, string logName, int logSource)
+        private LogMessage GetLogMessage(string message, string logKey, LogLevel logLevel, string logName, int logSource)
         {
             Guid logBodyKey = Guid.NewGuid();
             LogMessage logmessage = new LogMessage
@@ -62,16 +62,9 @@ namespace Eiap.Framework.Common.Logger.SQLServer
                 {
                     Id = Guid.NewGuid(),
                     LogBodyKey = logBodyKey,
-                    LogDay = DateTime.Now.Day,
                     LogDateTime = DateTime.Now,
-                    LogHour = DateTime.Now.Hour,
                     LogKey = logKey,
                     LogLevel = logLevel,
-                    LogMillisecond = DateTime.Now.Millisecond,
-                    LogMinute = DateTime.Now.Minute,
-                    LogMonth = DateTime.Now.Month,
-                    LogSecond = DateTime.Now.Second,
-                    LogYear = DateTime.Now.Year,
                     //TODO:后续完善
                     LogName = logName,
                     LogSource = logSource,
