@@ -13,7 +13,7 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Eiap.Framework.Base.Depende
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Eiap.Framework.Base.DynamicProxy.SXW", "Eiap.Framework.Base.DynamicProxy.SXW\Eiap.Framework.Base.DynamicProxy.SXW.csproj", "{C0281458-6CE2-42DD-A807-C1C74557F354}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Eiap.Framework.Common.Logger.SQLServer", "Eiap.Framework.Common.Logger.SQLServer\Eiap.Framework.Common.Logger.SQLServer.csproj", "{304FB927-68A0-47FB-A86D-28BF11B3D2C6}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Eiap.Framework.Base.Logger.SQLServer", "Eiap.Framework.Base.Logger.SQLServer\Eiap.Framework.Base.Logger.SQLServer.csproj", "{304FB927-68A0-47FB-A86D-28BF11B3D2C6}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Eiap.Framework.AppBase.DTOMapper.SXW", "Eiap.Framework.AppBase.DTOMapper.SXW\Eiap.Framework.AppBase.DTOMapper.SXW.csproj", "{02740774-D816-47C0-8605-006A92B79FC5}"
 EndProject
@@ -29,7 +29,7 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Eiap.Framework.AppBase.Unit
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Eiap.Framework.AppBase.BussinessService.SXW", "Eiap.Framework.AppBase.BussinessService.SXW\Eiap.Framework.AppBase.BussinessService.SXW.csproj", "{23FA8FA4-C448-4921-B19B-E7DECFCF641D}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Eiap.Framework.Common.Logger.LocalFile", "Eiap.Framework.Common.Logger.LocalFile\Eiap.Framework.Common.Logger.LocalFile.csproj", "{C9F8075B-770C-4959-92CE-78F89F6EF2AA}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Eiap.Framework.Base.Logger.LocalFile", "Eiap.Framework.Base.Logger.LocalFile\Eiap.Framework.Base.Logger.LocalFile.csproj", "{C9F8075B-770C-4959-92CE-78F89F6EF2AA}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Eiap.Framework.Base.Interceptor.SXW", "Eiap.Framework.Base.Interceptor.SXW\Eiap.Framework.Base.Interceptor.SXW.csproj", "{D75B6A91-8FE7-4B06-A52C-0A7FC998BD6F}"
 EndProject

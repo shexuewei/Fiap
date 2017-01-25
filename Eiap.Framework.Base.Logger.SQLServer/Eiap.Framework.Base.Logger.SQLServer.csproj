@@ -7,8 +7,8 @@
     <ProjectGuid>{304FB927-68A0-47FB-A86D-28BF11B3D2C6}</ProjectGuid>
     <OutputType>Library</OutputType>
     <AppDesignerFolder>Properties</AppDesignerFolder>
-    <RootNamespace>Eiap.Framework.Common.Logger.SQLServer</RootNamespace>
-    <AssemblyName>Eiap.Framework.Common.Logger.SQLServer</AssemblyName>
+    <RootNamespace>Eiap.Framework.Base.Logger.SQLServer</RootNamespace>
+    <AssemblyName>Eiap.Framework.Base.Logger.SQLServer</AssemblyName>
     <TargetFrameworkVersion>v4.5.1</TargetFrameworkVersion>
     <FileAlignment>512</FileAlignment>
   </PropertyGroup>

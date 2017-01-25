@@ -1,6 +1,6 @@
 ﻿using Eiap.Framework.AppBase.DTOMapper;
 using Eiap.Framework.Base.Dependency;
-using Eiap.Framework.Common.Logger;
+using Eiap.Framework.Base.Logger;
 using System;
 using System.Collections.Generic;
 using System.Linq;

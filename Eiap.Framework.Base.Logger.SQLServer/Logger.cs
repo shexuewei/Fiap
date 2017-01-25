@@ -7,7 +7,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace Eiap.Framework.Common.Logger.SQLServer
+namespace Eiap.Framework.Base.Logger.SQLServer
 {
     public class Logger //: ILogger
     {

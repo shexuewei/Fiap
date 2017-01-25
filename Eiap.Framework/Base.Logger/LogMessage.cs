@@ -4,7 +4,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace Eiap.Framework.Common.Logger
+namespace Eiap.Framework.Base.Logger
 {
     public class LogMessage
     {

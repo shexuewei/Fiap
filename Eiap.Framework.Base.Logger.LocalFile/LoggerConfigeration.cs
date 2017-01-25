@@ -5,7 +5,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace Eiap.Framework.Common.Logger.LocalFile
+namespace Eiap.Framework.Base.Logger.LocalFile
 {
     public class LoggerConfigeration : ILoggerConfigeration
     {

@@ -7,8 +7,8 @@
     <ProjectGuid>{C9F8075B-770C-4959-92CE-78F89F6EF2AA}</ProjectGuid>
     <OutputType>Library</OutputType>
     <AppDesignerFolder>Properties</AppDesignerFolder>
-    <RootNamespace>Eiap.Framework.Common.Logger.LocalFile</RootNamespace>
-    <AssemblyName>Eiap.Framework.Common.Logger.LocalFile</AssemblyName>
+    <RootNamespace>Eiap.Framework.Base.Logger.LocalFile</RootNamespace>
+    <AssemblyName>Eiap.Framework.Base.Logger.LocalFile</AssemblyName>
     <TargetFrameworkVersion>v4.5.1</TargetFrameworkVersion>
     <FileAlignment>512</FileAlignment>
   </PropertyGroup>

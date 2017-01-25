@@ -2,7 +2,7 @@
 using Eiap.Framework.AppBase.UnitOfWork;
 using Eiap.Framework.Base.Dependency;
 using Eiap.Framework.Base.Dependency.SXW;
-using Eiap.Framework.Common.Logger;
+using Eiap.Framework.Base.Logger;
 using System;
 using System.Collections.Generic;
 using System.Linq;

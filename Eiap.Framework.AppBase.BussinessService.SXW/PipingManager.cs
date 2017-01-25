@@ -1,5 +1,5 @@
 ﻿using Eiap.Framework.AppBase.BussinessService;
-using Eiap.Framework.Common.Logger;
+using Eiap.Framework.Base.Logger;
 using Eiap.Framework.Base.Dependency.SXW;
 using Eiap.Framework.Base.Dependency;
 using System;

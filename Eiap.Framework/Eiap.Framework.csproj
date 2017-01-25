@@ -124,12 +124,12 @@
     <Compile Include="Common.Entity\IIsDelete.cs" />
     <Compile Include="Common.Entity\IEntity.cs" />
     <Compile Include="Common.Entity\IModifyEntity.cs" />
-    <Compile Include="Common.Logger\ILogger.cs" />
+    <Compile Include="Base.Logger\ILogger.cs" />
     <Compile Include="Base.AssemblyService\IComponentModule.cs" />
-    <Compile Include="Common.Logger\LogBody.cs" />
-    <Compile Include="Common.Logger\LogHead.cs" />
-    <Compile Include="Common.Logger\LogLevel.cs" />
-    <Compile Include="Common.Logger\LogMessage.cs" />
+    <Compile Include="Base.Logger\LogBody.cs" />
+    <Compile Include="Base.Logger\LogHead.cs" />
+    <Compile Include="Base.Logger\LogLevel.cs" />
+    <Compile Include="Base.Logger\LogMessage.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup />
