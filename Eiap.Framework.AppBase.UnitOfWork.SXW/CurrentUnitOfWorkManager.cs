@@ -11,7 +11,7 @@ namespace Eiap.Framework.AppBase.UnitOfWork.SXW
     {
         public IUnitOfWork CurrentUnitOfWork
         {
-            get { return (IUnitOfWork)DependencyManager.Instance.Resolver<IUnitOfWork>(); }
+            get { return DependencyManager.Instance.Resolver<IUnitOfWork>(); }
         }
     }
 }

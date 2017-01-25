@@ -9,7 +9,7 @@ using System.Threading.Tasks;
 
 namespace Eiap.Framework.Base.Logger.SQLServer
 {
-    public class Logger //: ILogger
+    public class Logger : ILogger
     {
         private readonly ISQLCommandMapping<LogHead, Guid> _headCommand;
         private readonly ISQLCommandMapping<LogBody, Guid> _bodyCommand;
@@ -23,37 +23,37 @@ namespace Eiap.Framework.Base.Logger.SQLServer
             _bodyCommand.SQLDataAccessConnection = _Con;
         }
 
-        public void Debug(string message, string logKey, int logSource = 0, string logName = null)
+        public void Debug(string message, string logKey, int logSource = 0, string logName = null, LoggerTrace logTrace = null)
         {
-            LogMessage logMessage = GetLogMessage(message, logKey, LogLevel.DEBUG, logName, logSource);
+            LogMessage logMessage = GetLogMessage(message, logKey, LogLevel.DEBUG, logName, logSource, logTrace);
             SaveLogMessage(logMessage);
         }
 
-        public void Error(string message, string logKey, int logSource = 0, string logName = null)
+        public void Error(string message, string logKey, int logSource = 0, string logName = null, LoggerTrace logTrace = null)
         {
-            LogMessage logMessage = GetLogMessage(message, logKey, LogLevel.ERROR, logName, logSource);
+            LogMessage logMessage = GetLogMessage(message, logKey, LogLevel.ERROR, logName, logSource, logTrace);
             SaveLogMessage(logMessage);
         }
 
-        public void Fatal(string message, string logKey, int logSource = 0, string logName = null)
+        public void Fatal(string message, string logKey, int logSource = 0, string logName = null, LoggerTrace logTrace = null)
         {
-            LogMessage logMessage = GetLogMessage(message, logKey, LogLevel.FATAL, logName, logSource);
+            LogMessage logMessage = GetLogMessage(message, logKey, LogLevel.FATAL, logName, logSource, logTrace);
             SaveLogMessage(logMessage);
         }
 
-        public void Info(string message, string logKey, int logSource = 0, string logName = null)
+        public void Info(string message, string logKey, int logSource = 0, string logName = null, LoggerTrace logTrace = null)
         {
-            LogMessage logMessage = GetLogMessage(message, logKey, LogLevel.INFO, logName, logSource);
+            LogMessage logMessage = GetLogMessage(message, logKey, LogLevel.INFO, logName, logSource, logTrace);
             SaveLogMessage(logMessage);
         }
 
-        public void Warn(string message, string logKey, int logSource = 0, string logName = null)
+        public void Warn(string message, string logKey, int logSource = 0, string logName = null, LoggerTrace logTrace = null)
         {
-            LogMessage logMessage = GetLogMessage(message, logKey, LogLevel.WARN, logName, logSource);
+            LogMessage logMessage = GetLogMessage(message, logKey, LogLevel.WARN, logName, logSource, logTrace);
             SaveLogMessage(logMessage);
         }
 
-        private LogMessage GetLogMessage(string message, string logKey, LogLevel logLevel, string logName, int logSource)
+        private LogMessage GetLogMessage(string message, string logKey, LogLevel logLevel, string logName, int logSource, LoggerTrace logTrace)
         {
             Guid logBodyKey = Guid.NewGuid();
             LogMessage logmessage = new LogMessage
@@ -78,6 +78,12 @@ namespace Eiap.Framework.Base.Logger.SQLServer
                     LogBodyContent = message
                 }
             };
+            if (logTrace != null)
+            {
+                logmessage.LogHead.TraceId = logTrace.TraceId;
+                logmessage.LogHead.LocalId = logTrace.LocalId;
+                logmessage.LogHead.ParentId = logTrace.ParentId;
+            }
             return logmessage;
         }
 

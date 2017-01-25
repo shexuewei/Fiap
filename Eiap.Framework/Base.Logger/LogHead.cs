@@ -56,5 +56,20 @@ namespace Eiap.Framework.Base.Logger
         /// </summary>
         public virtual Guid LogBodyKey { get; set; }
 
+        /// <summary>
+        /// 调用链Id
+        /// </summary>
+        public virtual Guid TraceId { get; set; }
+
+        /// <summary>
+        /// 调用层次关联ID
+        /// </summary>
+        public virtual int LocalId { get; set; }
+
+        /// <summary>
+        /// 调用层次关联父ID
+        /// </summary>
+        public virtual int ParentId { get; set; }
+
     }
 }
