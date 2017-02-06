@@ -7,8 +7,8 @@
     <ProjectGuid>{537A3FF5-BAFB-45B6-96C8-7CA2263CAC72}</ProjectGuid>
     <OutputType>WinExe</OutputType>
     <AppDesignerFolder>Properties</AppDesignerFolder>
-    <RootNamespace>Eiap.Framework.Common.Logger.LocalFile.Test</RootNamespace>
-    <AssemblyName>Eiap.Framework.Common.Logger.LocalFile.Test</AssemblyName>
+    <RootNamespace>Eiap.Framework.Base.Logger.LocalFile.Test</RootNamespace>
+    <AssemblyName>Eiap.Framework.Base.Logger.LocalFile.Test</AssemblyName>
     <TargetFrameworkVersion>v4.5.1</TargetFrameworkVersion>
     <FileAlignment>512</FileAlignment>
     <AutoGenerateBindingRedirects>true</AutoGenerateBindingRedirects>
@@ -33,6 +33,10 @@
     <WarningLevel>4</WarningLevel>
   </PropertyGroup>
   <ItemGroup>
+    <Reference Include="Newtonsoft.Json, Version=9.0.0.0, Culture=neutral, PublicKeyToken=30ad4fe6b2a6aeed, processorArchitecture=MSIL">
+      <HintPath>..\packages\Newtonsoft.Json.9.0.1\lib\net45\Newtonsoft.Json.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
     <Reference Include="System" />
     <Reference Include="System.Core" />
     <Reference Include="System.Xml.Linq" />
@@ -64,7 +68,9 @@
     <Compile Include="Properties\Resources.Designer.cs">
       <AutoGen>True</AutoGen>
       <DependentUpon>Resources.resx</DependentUpon>
+      <DesignTime>True</DesignTime>
     </Compile>
+    <None Include="packages.config" />
     <None Include="Properties\Settings.settings">
       <Generator>SettingsSingleFileGenerator</Generator>
       <LastGenOutput>Settings.Designer.cs</LastGenOutput>
@@ -79,15 +85,19 @@
     <None Include="App.config" />
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\Eiap.Framework.Common.Logger.LocalFile\Eiap.Framework.Common.Logger.LocalFile.csproj">
-      <Project>{c9f8075b-770c-4959-92ce-78f89f6ef2aa}</Project>
-      <Name>Eiap.Framework.Common.Logger.LocalFile</Name>
+    <ProjectReference Include="..\Eiap.Framework.Base.Interceptor.SXW\Eiap.Framework.Base.Interceptor.SXW.csproj">
+      <Project>{d75b6a91-8fe7-4b06-a52c-0a7fc998bd6f}</Project>
+      <Name>Eiap.Framework.Base.Interceptor.SXW</Name>
     </ProjectReference>
-    <ProjectReference Include="..\Eiap.Framework.Dependency.SXW\Eiap.Framework.Base.Dependency.SXW.csproj">
+    <ProjectReference Include="..\Eiap.Framework.Base.Logger.LocalFile\Eiap.Framework.Base.Logger.LocalFile.csproj">
+      <Project>{c9f8075b-770c-4959-92ce-78f89f6ef2aa}</Project>
+      <Name>Eiap.Framework.Base.Logger.LocalFile</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\Eiap.Framework.Base.Dependency.SXW\Eiap.Framework.Base.Dependency.SXW.csproj">
       <Project>{efca732e-18cf-410e-adf5-b8a3e4c28ff3}</Project>
       <Name>Eiap.Framework.Base.Dependency.SXW</Name>
     </ProjectReference>
-    <ProjectReference Include="..\Eiap.Framework.DynamicProxy.SXW\Eiap.Framework.Base.DynamicProxy.SXW.csproj">
+    <ProjectReference Include="..\Eiap.Framework.Base.DynamicProxy.SXW\Eiap.Framework.Base.DynamicProxy.SXW.csproj">
       <Project>{c0281458-6ce2-42dd-a807-c1c74557f354}</Project>
       <Name>Eiap.Framework.Base.DynamicProxy.SXW</Name>
     </ProjectReference>

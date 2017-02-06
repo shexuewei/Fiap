@@ -4,6 +4,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using System.IO;
+using Newtonsoft.Json;
 
 namespace Eiap.Framework.Base.Logger.LocalFile
 {
@@ -11,6 +12,7 @@ namespace Eiap.Framework.Base.Logger.LocalFile
     {
         private readonly ILoggerConfigeration _LoggerConfigeration;
         private object lockobj = new object();
+
         public Logger(ILoggerConfigeration loggerConfigeration)
         {
             _LoggerConfigeration = loggerConfigeration;
@@ -103,7 +105,7 @@ namespace Eiap.Framework.Base.Logger.LocalFile
                 {
                     logpath = logpath.Replace(".log", "_" + DateTime.Now.Ticks.ToString() + ".log");
                 }
-                File.AppendAllText(logpath, logMessage.ToString(), Encoding.UTF8);
+                File.AppendAllText(logpath, JsonConvert.SerializeObject(logMessage), Encoding.UTF8);
             }
         }
     }

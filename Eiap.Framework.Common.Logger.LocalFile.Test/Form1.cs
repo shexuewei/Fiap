@@ -1,5 +1,6 @@
 ﻿using Eiap.Framework.Base.AssemblyService;
 using Eiap.Framework.Base.Dependency.SXW;
+using Eiap.Framework.Base.Interceptor.SXW;
 using System;
 using System.Collections.Generic;
 using System.ComponentModel;
@@ -12,7 +13,7 @@ using System.Threading;
 using System.Threading.Tasks;
 using System.Windows.Forms;
 
-namespace Eiap.Framework.Common.Logger.LocalFile.Test
+namespace Eiap.Framework.Base.Logger.LocalFile.Test
 {
     public partial class Form1 : Form
     {
@@ -20,9 +21,14 @@ namespace Eiap.Framework.Common.Logger.LocalFile.Test
         public Form1()
         {
             InitializeComponent();
-            AssemblyManager.Instance.RegisterAssembly(@"C:\MyWork\EiapV3.0\Eiap.Framework\Eiap.Framework.Common.Logger.LocalFile.Test\bin\Debug")
-                .Register(DependencyManager.Instance.Register);
-            logger = (ILogger)DependencyManager.Instance.Resolver(typeof(ILogger));
+            AssemblyManager.Instance
+                .AssemblyInitialize()
+                .Register(DependencyManager.Instance.Register)
+                .Register(InterceptorManager.Instance.Register)
+                .RegisterInitialize();
+            logger = DependencyManager.Instance.Resolver<ILogger>();
+            ILoggerTraceManager loggerTraceManager = DependencyManager.Instance.Resolver<ILoggerTraceManager>();
+            loggerTraceManager.SetLogTrace(new LoggerTrace { TraceId = Guid.NewGuid(), LocalId = 10, ParentId = 0 });
         }
 
         private void button1_Click(object sender, EventArgs e)
@@ -33,8 +39,9 @@ namespace Eiap.Framework.Common.Logger.LocalFile.Test
 
         private void WriteLog()
         {
-            for (int i = 0; i < 1000; i++)
+            for (int i = 0; i < 100; i++)
             {
+                ILoggerTraceManager loggerTraceManager = DependencyManager.Instance.Resolver<ILoggerTraceManager>();
                 logger.Error(@"Abp.WebApi.Controllers.Filters.AbpExceptionFilterAttribute
 Abp.UserFriendlyException: 对不起,在处理您的请求期间,产生了一个服务器内部错误!
    在 YMC.ECService.Core.AbpWebApiClient.<RequestAsync>d__e`1.MoveNext() 位置 c:\work\YaoMaiChe\源代码\YMC_Platform\YMC_ECService\YMC.ECService.Modules\YMC.ECService.Core\Application\Client\AbpWebApiClient.cs:行号 186
@@ -117,8 +124,22 @@ Abp.UserFriendlyException: 对不起,在处理您的请求期间,产生了一个
    在 System.Runtime.CompilerServices.TaskAwaiter.ThrowForNonSuccess(Task task)
    在 System.Runtime.CompilerServices.TaskAwaiter.HandleNonSuccessAndDebuggerNotification(Task task)
    在 System.Runtime.CompilerServices.TaskAwaiter`1.GetResult()
-   在 System.Web.Http.Controllers.ExceptionFilterResult.<ExecuteAsync>d__0.MoveNext()", "", 0, "LocalFileTest");
+   在 System.Web.Http.Controllers.ExceptionFilterResult.<ExecuteAsync>d__0.MoveNext()", "", 0, "LocalFileTest", loggerTraceManager.GetLogTrace());
             }
+        }
+    }
+
+    public class LocalFileTestModule : IComponentModule
+    {
+        public void AssemblyInitialize()
+        {
+            //注册当前程序集
+            AssemblyManager.Instance.RegisterAssembly(Assembly.GetExecutingAssembly());
+        }
+
+        public void RegisterInitialize()
+        {
+
         }
     }
 }

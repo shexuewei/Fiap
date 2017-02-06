@@ -1,4 +1,4 @@
-﻿namespace Eiap.Framework.Common.Logger.LocalFile.Test
+﻿namespace Eiap.Framework.Base.Logger.LocalFile.Test
 {
     partial class Form1
     {

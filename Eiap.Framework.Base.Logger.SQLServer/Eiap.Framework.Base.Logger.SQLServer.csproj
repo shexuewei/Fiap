@@ -42,6 +42,7 @@
   <ItemGroup>
     <Compile Include="LoggerSQLServerModule.cs" />
     <Compile Include="Logger.cs" />
+    <Compile Include="LoggerTraceManager.cs" />
     <Compile Include="LogStatistics.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>

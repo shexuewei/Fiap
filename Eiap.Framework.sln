@@ -43,6 +43,8 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Eiap.Framework.Base.Depende
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Eiap.Framework.Base.Interceptor.SXW.Test", "Eiap.Framework.Base.Interceptor.SXW.Test\Eiap.Framework.Base.Interceptor.SXW.Test.csproj", "{6127D6C2-14D6-484A-8815-300FBA05D948}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Eiap.Framework.Base.Logger.LocalFile.Test", "Eiap.Framework.Common.Logger.LocalFile.Test\Eiap.Framework.Base.Logger.LocalFile.Test.csproj", "{537A3FF5-BAFB-45B6-96C8-7CA2263CAC72}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -129,6 +131,10 @@ Global
 		{6127D6C2-14D6-484A-8815-300FBA05D948}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{6127D6C2-14D6-484A-8815-300FBA05D948}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{6127D6C2-14D6-484A-8815-300FBA05D948}.Release|Any CPU.Build.0 = Release|Any CPU
+		{537A3FF5-BAFB-45B6-96C8-7CA2263CAC72}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{537A3FF5-BAFB-45B6-96C8-7CA2263CAC72}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{537A3FF5-BAFB-45B6-96C8-7CA2263CAC72}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{537A3FF5-BAFB-45B6-96C8-7CA2263CAC72}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

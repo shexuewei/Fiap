@@ -12,21 +12,11 @@ namespace Eiap.Framework.AppBase.DomainService.SXW
 {
     public class AppDomainService : IDomainService
     {
-        private IUnitOfWork _CurrentUnitOfWork;
-
-        public AppDomainService()
-        {
-            _CurrentUnitOfWork = DependencyManager.Instance.Resolver<IUnitOfWork>(ObjectLifeCycle.Context);
-        }
-
         public ILogger Log { get; set; }
 
-        public IUnitOfWork CurrentUnitOfWork 
+        public ICurrentUnitOfWork CurrentUnitOfWork
         {
-            get 
-            {
-                return _CurrentUnitOfWork;
-            }
+            get { return DependencyManager.Instance.Resolver<ICurrentUnitOfWork>(); }
         }
     }
 }

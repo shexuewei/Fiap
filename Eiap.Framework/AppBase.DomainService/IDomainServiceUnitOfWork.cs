@@ -9,6 +9,6 @@ namespace Eiap.Framework.AppBase.DomainService
 {
     public interface IDomainServiceUnitOfWork
     {
-        IUnitOfWork CurrentUnitOfWork { get; }
+        ICurrentUnitOfWork CurrentUnitOfWork { get; }
     }
 }

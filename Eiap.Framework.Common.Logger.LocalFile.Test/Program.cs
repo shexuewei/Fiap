@@ -4,7 +4,7 @@ using System.Linq;
 using System.Threading.Tasks;
 using System.Windows.Forms;
 
-namespace Eiap.Framework.Common.Logger.LocalFile.Test
+namespace Eiap.Framework.Base.Logger.LocalFile.Test
 {
     static class Program
     {
