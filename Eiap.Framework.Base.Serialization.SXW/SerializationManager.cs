@@ -4,11 +4,14 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using System.Reflection;
+using System.Collections;
 
 namespace Eiap.Framework.Base.Serialization.SXW
 {
     public class SerializationManager : ISerializationManager
     {
+        private const string DefaultDataTimeFomatter = "yyyy-MM-dd HH:mm:ss";
+
         /// <summary>
         /// 将字符串反序列化成对象
         /// </summary>
@@ -28,8 +31,12 @@ namespace Eiap.Framework.Base.Serialization.SXW
         /// <returns></returns>
         public string SerializeObject(object serializeObject, SerializationSetting setting = null)
         {
+            if (serializeObject == null)
+            {
+                throw new Exception("Object is null");
+            }
             string value = "";
-            setting = setting ?? new SerializationSetting { DataTimeFomatter = "yyyy-MM-dd HH:mm:ss", SerializationType = SerializationType.JSON };
+            setting = setting ?? new SerializationSetting { DataTimeFomatter = DefaultDataTimeFomatter, SerializationType = SerializationType.JSON };
             switch (setting.SerializationType)
             {
                 case SerializationType.JSON:
@@ -50,16 +57,181 @@ namespace Eiap.Framework.Base.Serialization.SXW
         /// <returns></returns>
         private string SerializeObjectJSON(object serializeObject, SerializationSetting setting)
         {
-            StringBuilder value = new StringBuilder("{");
-            PropertyInfo[] propertyInfoList = serializeObject.GetType().GetProperties();
-            foreach (PropertyInfo propertyInfoItem in propertyInfoList)
+            Type serializeObjectType = serializeObject.GetType();
+            //判断常用类型
+            if (serializeObjectType == typeof(Decimal)
+                || serializeObjectType == typeof(Int32)
+                || serializeObjectType == typeof(String)
+                || serializeObjectType == typeof(Boolean))
             {
-                if (propertyInfoItem.PropertyType == typeof(DateTime))
+                return serializeObject.ToString();
+            }
+
+            if (serializeObjectType == typeof(DateTime))
+            {
+                return DateTime.Parse(serializeObject.ToString()).ToString(setting.DataTimeFomatter);
+            }
+
+            if (serializeObjectType.IsGenericType && serializeObjectType.GetGenericTypeDefinition().Equals(typeof(Nullable<>)))
+            {
+                if (serializeObjectType.GenericTypeArguments[0] == typeof(DateTime))
                 {
-                    value.Append("\"" + propertyInfoItem.Name + "\":" + "\"" + Convert.ToDateTime(propertyInfoItem.GetValue(serializeObject)).ToString(setting.DataTimeFomatter) + "\"");
+                    return DateTime.Parse(serializeObject.ToString()).ToString(setting.DataTimeFomatter); ;
+                }
+                else
+                {
+                    return serializeObject.ToString();
                 }
             }
-            return value.ToString();
+            StringBuilder valueSb = new StringBuilder();
+            if (serializeObjectType.IsClass && !serializeObjectType.IsGenericType && !typeof(IEnumerable).IsAssignableFrom(serializeObjectType))
+            {
+                SerializeObjectPropertyJSON(valueSb, serializeObject, setting);
+            }
+            if (typeof(IEnumerable).IsAssignableFrom(serializeObjectType))
+            {
+                IEnumerable objectValue = (IEnumerable)serializeObject;
+                IEnumerableProcess(objectValue, valueSb, setting);
+            }
+            return valueSb.ToString();
+        }
+
+
+        private void SerializeObjectPropertyJSON(StringBuilder valueSb, object serializeObject, SerializationSetting setting, bool isShowPropertyName = true)
+        {
+            valueSb.Append("{");
+            PropertyInfo[] propertyInfoList = serializeObject.GetType().GetProperties();
+            int propertyCount = propertyInfoList.Length;
+            int propertyIndex = 0;
+            foreach (PropertyInfo propertyInfoItem in propertyInfoList)
+            {
+                Type objectPropertyType = propertyInfoItem.PropertyType;
+                //判断常用类型
+                if (objectPropertyType == typeof(DateTime)
+                    || objectPropertyType == typeof(Int32)
+                    || objectPropertyType == typeof(String)
+                    || objectPropertyType == typeof(Boolean)
+                    || objectPropertyType == typeof(Decimal))
+                {
+                    ValueTypeProcess(objectPropertyType, propertyInfoItem, serializeObject, valueSb,setting, isShowPropertyName);
+                }
+                //判断常用类型的可空类型
+                else if (objectPropertyType.IsGenericType && objectPropertyType.GetGenericTypeDefinition().Equals(typeof(Nullable<>)))
+                {
+                    ValueTypeProcess(objectPropertyType.GenericTypeArguments[0], propertyInfoItem, serializeObject, valueSb,setting, isShowPropertyName);
+                }
+                //判断数组
+                else if (objectPropertyType.IsArray)
+                {
+                    ArrayProcess(objectPropertyType, propertyInfoItem, serializeObject, valueSb,setting, true);
+                }
+                //判断集合类型
+                else if (typeof(IEnumerable).IsAssignableFrom(objectPropertyType))
+                {
+                    IEnumerable propertyObject = (IEnumerable)propertyInfoItem.GetValue(serializeObject);
+                    IEnumerableProcess(propertyObject, valueSb, setting, propertyInfoItem.Name);
+                }
+                propertyIndex++;
+                if (propertyIndex < propertyCount)
+                {
+                    valueSb.Append(",");
+                }
+            }
+            valueSb.Append("}");
+        }
+
+        private void IEnumerableProcess(IEnumerable serializeObject, StringBuilder valueSb, SerializationSetting setting, string propertyInfoItemName = "")
+        {
+            if (string.IsNullOrWhiteSpace(propertyInfoItemName))
+            {
+                valueSb.Append("[");
+            }
+            else
+            {
+                valueSb.Append("\"" + propertyInfoItemName + "\":[");
+            }
+            bool isShowPropertyName = !string.IsNullOrWhiteSpace(propertyInfoItemName);
+            IEnumerator enumeratorList = serializeObject.GetEnumerator();
+            int objCount = 0;
+            while (enumeratorList.MoveNext())
+            {
+                objCount++;
+            }
+            enumeratorList.Reset();
+            int tmpObjCount = 0;
+            while (enumeratorList.MoveNext())
+            {
+                SerializeObjectPropertyJSON(valueSb, enumeratorList.Current, setting, isShowPropertyName);
+                tmpObjCount++;
+                if (tmpObjCount < objCount)
+                {
+                    valueSb.Append(",");
+                }
+            }
+            valueSb.Append("]");
+        }
+
+        private void ValueTypeProcess(Type objectPropertyType, PropertyInfo propertyInfoItem, object serializeObject, StringBuilder valueSb, SerializationSetting setting, bool isShowPropertyName)
+        {
+            object propertyValue = propertyInfoItem.GetValue(serializeObject);
+            string propertyInfoItemName = isShowPropertyName ? "\"" + propertyInfoItem.Name + "\":" : "";
+            Process(objectPropertyType, propertyValue, valueSb,setting, propertyInfoItemName);
+        }
+
+        private void ArrayProcess(Type objectPropertyType, PropertyInfo propertyInfoItem, object serializeObject, StringBuilder valueSb, SerializationSetting setting, bool isShowPropertyName)
+        {
+            IEnumerable propertyValue = (IEnumerable)propertyInfoItem.GetValue(serializeObject);
+            valueSb.Append("\"" + propertyInfoItem.Name + "\":[");
+            IEnumerator enumeratorList = propertyValue.GetEnumerator();
+            int objCount = 0;
+            while (enumeratorList.MoveNext())
+            {
+                objCount++;
+            }
+            enumeratorList.Reset();
+            int tmpObjCount = 0;
+            while (enumeratorList.MoveNext())
+            {
+                Process(enumeratorList.Current.GetType(), enumeratorList.Current, valueSb, setting);
+                tmpObjCount++;
+                if (tmpObjCount < objCount)
+                {
+                    valueSb.Append(",");
+                }
+            }
+            valueSb.Append("]");
+        }
+
+        private void Process(Type objectPropertyType, object propertyValue, StringBuilder valueSb, SerializationSetting setting, string propertyInfoItemName = "")
+        {
+            if (propertyValue != null)
+            {
+                if (objectPropertyType == typeof(DateTime))
+                {
+                    valueSb.Append(propertyInfoItemName + "\"" + DateTime.Parse(propertyValue.ToString()).ToString(setting.DataTimeFomatter) + "\"");
+                }
+                else if (objectPropertyType == typeof(Int32))
+                {
+                    valueSb.Append(propertyInfoItemName + propertyValue.ToString());
+                }
+                else if (objectPropertyType == typeof(String))
+                {
+                    valueSb.Append(propertyInfoItemName + "\"" + propertyValue.ToString() + "\"");
+                }
+                else if (objectPropertyType == typeof(Boolean))
+                {
+                    string tmpPropertyValue = propertyValue.ToString();
+                    valueSb.Append(propertyInfoItemName + tmpPropertyValue.Substring(0, 1).ToLower() + tmpPropertyValue.Substring(1));
+                }
+                else if (objectPropertyType == typeof(Decimal))
+                {
+                    valueSb.Append(propertyInfoItemName + propertyValue.ToString());
+                }
+            }
+            else
+            {
+                valueSb.Append(propertyInfoItemName + " null");
+            }
         }
     }
 }
