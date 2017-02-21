@@ -62,7 +62,8 @@ namespace Eiap.Framework.Base.Serialization.SXW
             if (serializeObjectType == typeof(Decimal)
                 || serializeObjectType == typeof(Int32)
                 || serializeObjectType == typeof(String)
-                || serializeObjectType == typeof(Boolean))
+                || serializeObjectType == typeof(Boolean)
+                || serializeObjectType == typeof(Guid))
             {
                 return serializeObject.ToString();
             }
@@ -117,7 +118,8 @@ namespace Eiap.Framework.Base.Serialization.SXW
                     || objectPropertyType == typeof(Int32)
                     || objectPropertyType == typeof(String)
                     || objectPropertyType == typeof(Boolean)
-                    || objectPropertyType == typeof(Decimal))
+                    || objectPropertyType == typeof(Decimal)
+                    || objectPropertyType == typeof(Guid))
                 {
                     ValueTypeProcess(objectPropertyType, propertyInfoItem, serializeObject, valueSb,setting, isShowPropertyName);
                 }
@@ -178,7 +180,8 @@ namespace Eiap.Framework.Base.Serialization.SXW
                         || enumeratorCurrentType == typeof(Int32)
                         || enumeratorCurrentType == typeof(String)
                         || enumeratorCurrentType == typeof(Boolean)
-                        || enumeratorCurrentType == typeof(Decimal))
+                        || enumeratorCurrentType == typeof(Decimal)
+                        || enumeratorCurrentType == typeof(Guid))
                     {
                         Process(enumeratorCurrentType, enumeratorList.Current, valueSb, setting);
                     }
@@ -282,7 +285,9 @@ namespace Eiap.Framework.Base.Serialization.SXW
                 {
                     valueSb.Append(propertyInfoItemName + "\"" + DateTime.Parse(propertyValue.ToString()).ToString(setting.DataTimeFomatter) + "\"");
                 }
-                else if (objectPropertyType == typeof(Int32))
+                else if (objectPropertyType == typeof(Int32)
+                    || objectPropertyType == typeof(Decimal)
+                    || objectPropertyType == typeof(Guid))
                 {
                     valueSb.Append(propertyInfoItemName + propertyValue.ToString());
                 }
@@ -294,10 +299,6 @@ namespace Eiap.Framework.Base.Serialization.SXW
                 {
                     string tmpPropertyValue = propertyValue.ToString();
                     valueSb.Append(propertyInfoItemName + tmpPropertyValue.Substring(0, 1).ToLower() + tmpPropertyValue.Substring(1));
-                }
-                else if (objectPropertyType == typeof(Decimal))
-                {
-                    valueSb.Append(propertyInfoItemName + propertyValue.ToString());
                 }
             }
             else
