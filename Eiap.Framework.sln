@@ -47,6 +47,8 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Eiap.Framework.Base.Logger.
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Eiap.Framework.Base.Serialization.SXW", "Eiap.Framework.Base.Serialization.SXW\Eiap.Framework.Base.Serialization.SXW.csproj", "{DD0AE186-343C-4DB1-AC1C-9E0566FC7D7D}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Eiap.Framework.Base.Serialization.SXW.Test", "Eiap.Framework.Base.Serialization.SXW.Test\Eiap.Framework.Base.Serialization.SXW.Test.csproj", "{D65981F6-2660-4461-B111-37E3872BE039}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -141,6 +143,10 @@ Global
 		{DD0AE186-343C-4DB1-AC1C-9E0566FC7D7D}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{DD0AE186-343C-4DB1-AC1C-9E0566FC7D7D}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{DD0AE186-343C-4DB1-AC1C-9E0566FC7D7D}.Release|Any CPU.Build.0 = Release|Any CPU
+		{D65981F6-2660-4461-B111-37E3872BE039}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{D65981F6-2660-4461-B111-37E3872BE039}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{D65981F6-2660-4461-B111-37E3872BE039}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{D65981F6-2660-4461-B111-37E3872BE039}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

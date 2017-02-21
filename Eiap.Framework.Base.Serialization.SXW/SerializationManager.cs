@@ -96,7 +96,13 @@ namespace Eiap.Framework.Base.Serialization.SXW
             return valueSb.ToString();
         }
 
-
+        /// <summary>
+        /// 属性序列化
+        /// </summary>
+        /// <param name="valueSb"></param>
+        /// <param name="serializeObject"></param>
+        /// <param name="setting"></param>
+        /// <param name="isShowPropertyName"></param>
         private void SerializeObjectPropertyJSON(StringBuilder valueSb, object serializeObject, SerializationSetting setting, bool isShowPropertyName = true)
         {
             valueSb.Append("{");
@@ -140,68 +146,134 @@ namespace Eiap.Framework.Base.Serialization.SXW
             valueSb.Append("}");
         }
 
+        /// <summary>
+        /// 处理类型集合
+        /// </summary>
+        /// <param name="serializeObject"></param>
+        /// <param name="valueSb"></param>
+        /// <param name="setting"></param>
+        /// <param name="propertyInfoItemName"></param>
         private void IEnumerableProcess(IEnumerable serializeObject, StringBuilder valueSb, SerializationSetting setting, string propertyInfoItemName = "")
         {
-            if (string.IsNullOrWhiteSpace(propertyInfoItemName))
+            if (serializeObject != null)
             {
-                valueSb.Append("[");
+                if (string.IsNullOrWhiteSpace(propertyInfoItemName))
+                {
+                    valueSb.Append("[");
+                }
+                else
+                {
+                    valueSb.Append("\"" + propertyInfoItemName + "\":[");
+                }
+                bool isShowPropertyName = !string.IsNullOrWhiteSpace(propertyInfoItemName);
+                IEnumerator enumeratorList = serializeObject.GetEnumerator();
+                int objCount = GetEnumeratorCount(enumeratorList);
+                enumeratorList.Reset();
+                int tmpObjCount = 0;
+                while (enumeratorList.MoveNext())
+                {
+                    Type enumeratorCurrentType = enumeratorList.Current.GetType();
+                    //判断常用类型
+                    if (enumeratorCurrentType == typeof(DateTime)
+                        || enumeratorCurrentType == typeof(Int32)
+                        || enumeratorCurrentType == typeof(String)
+                        || enumeratorCurrentType == typeof(Boolean)
+                        || enumeratorCurrentType == typeof(Decimal))
+                    {
+                        Process(enumeratorCurrentType, enumeratorList.Current, valueSb, setting);
+                    }
+                    else
+                    {
+                        SerializeObjectPropertyJSON(valueSb, enumeratorList.Current, setting, isShowPropertyName);
+                    }
+                    tmpObjCount++;
+                    if (tmpObjCount < objCount)
+                    {
+                        valueSb.Append(",");
+                    }
+                }
+                valueSb.Append("]");
             }
             else
             {
-                valueSb.Append("\"" + propertyInfoItemName + "\":[");
-            }
-            bool isShowPropertyName = !string.IsNullOrWhiteSpace(propertyInfoItemName);
-            IEnumerator enumeratorList = serializeObject.GetEnumerator();
-            int objCount = 0;
-            while (enumeratorList.MoveNext())
-            {
-                objCount++;
-            }
-            enumeratorList.Reset();
-            int tmpObjCount = 0;
-            while (enumeratorList.MoveNext())
-            {
-                SerializeObjectPropertyJSON(valueSb, enumeratorList.Current, setting, isShowPropertyName);
-                tmpObjCount++;
-                if (tmpObjCount < objCount)
+                if (string.IsNullOrWhiteSpace(propertyInfoItemName))
                 {
-                    valueSb.Append(",");
+                    valueSb.Append("null");
+                }
+                else
+                {
+                    valueSb.Append("\"" + propertyInfoItemName + "\":null");
                 }
             }
-            valueSb.Append("]");
         }
 
+        /// <summary>
+        /// 值类型处理
+        /// </summary>
+        /// <param name="objectPropertyType"></param>
+        /// <param name="propertyInfoItem"></param>
+        /// <param name="serializeObject"></param>
+        /// <param name="valueSb"></param>
+        /// <param name="setting"></param>
+        /// <param name="isShowPropertyName"></param>
         private void ValueTypeProcess(Type objectPropertyType, PropertyInfo propertyInfoItem, object serializeObject, StringBuilder valueSb, SerializationSetting setting, bool isShowPropertyName)
         {
             object propertyValue = propertyInfoItem.GetValue(serializeObject);
             string propertyInfoItemName = isShowPropertyName ? "\"" + propertyInfoItem.Name + "\":" : "";
-            Process(objectPropertyType, propertyValue, valueSb,setting, propertyInfoItemName);
+            Process(objectPropertyType, propertyValue, valueSb, setting, propertyInfoItemName);
         }
 
+        /// <summary>
+        /// 数组处理
+        /// </summary>
+        /// <param name="objectPropertyType"></param>
+        /// <param name="propertyInfoItem"></param>
+        /// <param name="serializeObject"></param>
+        /// <param name="valueSb"></param>
+        /// <param name="setting"></param>
+        /// <param name="isShowPropertyName"></param>
         private void ArrayProcess(Type objectPropertyType, PropertyInfo propertyInfoItem, object serializeObject, StringBuilder valueSb, SerializationSetting setting, bool isShowPropertyName)
         {
             IEnumerable propertyValue = (IEnumerable)propertyInfoItem.GetValue(serializeObject);
-            valueSb.Append("\"" + propertyInfoItem.Name + "\":[");
-            IEnumerator enumeratorList = propertyValue.GetEnumerator();
-            int objCount = 0;
-            while (enumeratorList.MoveNext())
+            if (isShowPropertyName)
             {
-                objCount++;
-            }
-            enumeratorList.Reset();
-            int tmpObjCount = 0;
-            while (enumeratorList.MoveNext())
-            {
-                Process(enumeratorList.Current.GetType(), enumeratorList.Current, valueSb, setting);
-                tmpObjCount++;
-                if (tmpObjCount < objCount)
+                if (propertyValue != null)
                 {
-                    valueSb.Append(",");
+                    valueSb.Append("\"" + propertyInfoItem.Name + "\":[");
+                    IEnumerator enumeratorList = propertyValue.GetEnumerator();
+                    int objCount = GetEnumeratorCount(enumeratorList);
+                    enumeratorList.Reset();
+                    int tmpObjCount = 0;
+                    while (enumeratorList.MoveNext())
+                    {
+                        Process(enumeratorList.Current.GetType(), enumeratorList.Current, valueSb, setting);
+                        tmpObjCount++;
+                        if (tmpObjCount < objCount)
+                        {
+                            valueSb.Append(",");
+                        }
+                    }
+                    valueSb.Append("]");
+                }
+                else
+                {
+                    valueSb.Append("\"" + propertyInfoItem.Name + "\":null");
                 }
             }
-            valueSb.Append("]");
+            else
+            {
+                //TODO:不显示属性名时的处理
+            }
         }
 
+        /// <summary>
+        /// 序列化处理
+        /// </summary>
+        /// <param name="objectPropertyType"></param>
+        /// <param name="propertyValue"></param>
+        /// <param name="valueSb"></param>
+        /// <param name="setting"></param>
+        /// <param name="propertyInfoItemName"></param>
         private void Process(Type objectPropertyType, object propertyValue, StringBuilder valueSb, SerializationSetting setting, string propertyInfoItemName = "")
         {
             if (propertyValue != null)
@@ -232,6 +304,21 @@ namespace Eiap.Framework.Base.Serialization.SXW
             {
                 valueSb.Append(propertyInfoItemName + " null");
             }
+        }
+
+        /// <summary>
+        /// 获取集合数
+        /// </summary>
+        /// <param name="enumeratorList"></param>
+        /// <returns></returns>
+        private int GetEnumeratorCount(IEnumerator enumeratorList)
+        {
+            int objCount = 0;
+            while (enumeratorList.MoveNext())
+            {
+                objCount++;
+            }
+            return objCount;
         }
     }
 }
