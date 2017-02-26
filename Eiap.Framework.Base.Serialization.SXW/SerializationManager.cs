@@ -35,18 +35,18 @@ namespace Eiap.Framework.Base.Serialization.SXW
             {
                 throw new Exception("Object is null");
             }
-            string value = "";
+            StringBuilder valueSb = new StringBuilder();
             setting = setting ?? new SerializationSetting { DataTimeFomatter = DefaultDataTimeFomatter, SerializationType = SerializationType.JSON };
             switch (setting.SerializationType)
             {
                 case SerializationType.JSON:
-                    value = SerializeObjectJSON(serializeObject, setting);
+                    SerializeObjectJSON(serializeObject, setting, false, valueSb);
                     break;
                 default:
-                    value = SerializeObjectJSON(serializeObject, setting);
+                    SerializeObjectJSON(serializeObject, setting, false, valueSb);
                     break;
             }
-            return value;
+            return valueSb.ToString();
         }
 
         /// <summary>
@@ -55,201 +55,42 @@ namespace Eiap.Framework.Base.Serialization.SXW
         /// <param name="serializeObject"></param>
         /// <param name="setting"></param>
         /// <returns></returns>
-        private string SerializeObjectJSON(object serializeObject, SerializationSetting setting)
+        private void SerializeObjectJSON(object serializeObject, SerializationSetting setting, bool isShowPropertyName, StringBuilder valueSb, string propertyName = "")
         {
-            Type serializeObjectType = serializeObject.GetType();
-            //判断常用类型
-            if (serializeObjectType == typeof(Decimal)
-                || serializeObjectType == typeof(Int32)
-                || serializeObjectType == typeof(String)
-                || serializeObjectType == typeof(Boolean)
-                || serializeObjectType == typeof(Guid))
+            if (serializeObject == null)
             {
-                return serializeObject.ToString();
-            }
-
-            if (serializeObjectType == typeof(DateTime))
-            {
-                return DateTime.Parse(serializeObject.ToString()).ToString(setting.DataTimeFomatter);
-            }
-
-            if (serializeObjectType.IsGenericType && serializeObjectType.GetGenericTypeDefinition().Equals(typeof(Nullable<>)))
-            {
-                if (serializeObjectType.GenericTypeArguments[0] == typeof(DateTime))
+                if (isShowPropertyName)
                 {
-                    return DateTime.Parse(serializeObject.ToString()).ToString(setting.DataTimeFomatter); ;
+                    valueSb.Append("\"" + propertyName + "\": null");
                 }
                 else
-                {
-                    return serializeObject.ToString();
-                }
-            }
-            StringBuilder valueSb = new StringBuilder();
-            if (serializeObjectType.IsClass && !serializeObjectType.IsGenericType && !typeof(IEnumerable).IsAssignableFrom(serializeObjectType))
-            {
-                SerializeObjectPropertyJSON(valueSb, serializeObject, setting);
-            }
-            if (typeof(IEnumerable).IsAssignableFrom(serializeObjectType))
-            {
-                IEnumerable objectValue = (IEnumerable)serializeObject;
-                IEnumerableProcess(objectValue, valueSb, setting);
-            }
-            return valueSb.ToString();
-        }
-
-        /// <summary>
-        /// 属性序列化
-        /// </summary>
-        /// <param name="valueSb"></param>
-        /// <param name="serializeObject"></param>
-        /// <param name="setting"></param>
-        /// <param name="isShowPropertyName"></param>
-        private void SerializeObjectPropertyJSON(StringBuilder valueSb, object serializeObject, SerializationSetting setting, bool isShowPropertyName = true)
-        {
-            valueSb.Append("{");
-            PropertyInfo[] propertyInfoList = serializeObject.GetType().GetProperties();
-            int propertyCount = propertyInfoList.Length;
-            int propertyIndex = 0;
-            foreach (PropertyInfo propertyInfoItem in propertyInfoList)
-            {
-                Type objectPropertyType = propertyInfoItem.PropertyType;
-                //判断常用类型
-                if (objectPropertyType == typeof(DateTime)
-                    || objectPropertyType == typeof(Int32)
-                    || objectPropertyType == typeof(String)
-                    || objectPropertyType == typeof(Boolean)
-                    || objectPropertyType == typeof(Decimal)
-                    || objectPropertyType == typeof(Guid))
-                {
-                    ValueTypeProcess(objectPropertyType, propertyInfoItem, serializeObject, valueSb,setting, isShowPropertyName);
-                }
-                //判断常用类型的可空类型
-                else if (objectPropertyType.IsGenericType && objectPropertyType.GetGenericTypeDefinition().Equals(typeof(Nullable<>)))
-                {
-                    ValueTypeProcess(objectPropertyType.GenericTypeArguments[0], propertyInfoItem, serializeObject, valueSb,setting, isShowPropertyName);
-                }
-                //判断数组
-                else if (objectPropertyType.IsArray)
-                {
-                    ArrayProcess(objectPropertyType, propertyInfoItem, serializeObject, valueSb,setting, true);
-                }
-                //判断集合类型
-                else if (typeof(IEnumerable).IsAssignableFrom(objectPropertyType))
-                {
-                    IEnumerable propertyObject = (IEnumerable)propertyInfoItem.GetValue(serializeObject);
-                    IEnumerableProcess(propertyObject, valueSb, setting, propertyInfoItem.Name);
-                }
-                propertyIndex++;
-                if (propertyIndex < propertyCount)
-                {
-                    valueSb.Append(",");
-                }
-            }
-            valueSb.Append("}");
-        }
-
-        /// <summary>
-        /// 处理类型集合
-        /// </summary>
-        /// <param name="serializeObject"></param>
-        /// <param name="valueSb"></param>
-        /// <param name="setting"></param>
-        /// <param name="propertyInfoItemName"></param>
-        private void IEnumerableProcess(IEnumerable serializeObject, StringBuilder valueSb, SerializationSetting setting, string propertyInfoItemName = "")
-        {
-            if (serializeObject != null)
-            {
-                if (string.IsNullOrWhiteSpace(propertyInfoItemName))
-                {
-                    valueSb.Append("[");
-                }
-                else
-                {
-                    valueSb.Append("\"" + propertyInfoItemName + "\":[");
-                }
-                bool isShowPropertyName = !string.IsNullOrWhiteSpace(propertyInfoItemName);
-                IEnumerator enumeratorList = serializeObject.GetEnumerator();
-                int objCount = GetEnumeratorCount(enumeratorList);
-                enumeratorList.Reset();
-                int tmpObjCount = 0;
-                while (enumeratorList.MoveNext())
-                {
-                    Type enumeratorCurrentType = enumeratorList.Current.GetType();
-                    //判断常用类型
-                    if (enumeratorCurrentType == typeof(DateTime)
-                        || enumeratorCurrentType == typeof(Int32)
-                        || enumeratorCurrentType == typeof(String)
-                        || enumeratorCurrentType == typeof(Boolean)
-                        || enumeratorCurrentType == typeof(Decimal)
-                        || enumeratorCurrentType == typeof(Guid))
-                    {
-                        Process(enumeratorCurrentType, enumeratorList.Current, valueSb, setting);
-                    }
-                    else
-                    {
-                        SerializeObjectPropertyJSON(valueSb, enumeratorList.Current, setting, isShowPropertyName);
-                    }
-                    tmpObjCount++;
-                    if (tmpObjCount < objCount)
-                    {
-                        valueSb.Append(",");
-                    }
-                }
-                valueSb.Append("]");
-            }
-            else
-            {
-                if (string.IsNullOrWhiteSpace(propertyInfoItemName))
                 {
                     valueSb.Append("null");
                 }
-                else
-                {
-                    valueSb.Append("\"" + propertyInfoItemName + "\":null");
-                }
+                return;
             }
-        }
-
-        /// <summary>
-        /// 值类型处理
-        /// </summary>
-        /// <param name="objectPropertyType"></param>
-        /// <param name="propertyInfoItem"></param>
-        /// <param name="serializeObject"></param>
-        /// <param name="valueSb"></param>
-        /// <param name="setting"></param>
-        /// <param name="isShowPropertyName"></param>
-        private void ValueTypeProcess(Type objectPropertyType, PropertyInfo propertyInfoItem, object serializeObject, StringBuilder valueSb, SerializationSetting setting, bool isShowPropertyName)
-        {
-            object propertyValue = propertyInfoItem.GetValue(serializeObject);
-            string propertyInfoItemName = isShowPropertyName ? "\"" + propertyInfoItem.Name + "\":" : "";
-            Process(objectPropertyType, propertyValue, valueSb, setting, propertyInfoItemName);
-        }
-
-        /// <summary>
-        /// 数组处理
-        /// </summary>
-        /// <param name="objectPropertyType"></param>
-        /// <param name="propertyInfoItem"></param>
-        /// <param name="serializeObject"></param>
-        /// <param name="valueSb"></param>
-        /// <param name="setting"></param>
-        /// <param name="isShowPropertyName"></param>
-        private void ArrayProcess(Type objectPropertyType, PropertyInfo propertyInfoItem, object serializeObject, StringBuilder valueSb, SerializationSetting setting, bool isShowPropertyName)
-        {
-            IEnumerable propertyValue = (IEnumerable)propertyInfoItem.GetValue(serializeObject);
-            if (isShowPropertyName)
+            Type serializeObjectType = serializeObject.GetType();
+            if (typeof(IEnumerable).IsAssignableFrom(serializeObjectType) && serializeObjectType != typeof(String) && !typeof(IDictionary).IsAssignableFrom(serializeObjectType))
             {
-                if (propertyValue != null)
+                IEnumerable objectValue = (IEnumerable)serializeObject;
+                IEnumerator enumeratorList = objectValue.GetEnumerator();
+                int objCount = GetEnumeratorCount(enumeratorList);
+                enumeratorList.Reset();
+                int tmpObjCount = 0;
+                if (!isShowPropertyName)
                 {
-                    valueSb.Append("\"" + propertyInfoItem.Name + "\":[");
-                    IEnumerator enumeratorList = propertyValue.GetEnumerator();
-                    int objCount = GetEnumeratorCount(enumeratorList);
-                    enumeratorList.Reset();
-                    int tmpObjCount = 0;
+                    valueSb.Append("[");
                     while (enumeratorList.MoveNext())
                     {
-                        Process(enumeratorList.Current.GetType(), enumeratorList.Current, valueSb, setting);
+                        Type enumeratorCurrentType = enumeratorList.Current.GetType();
+                        if (IsNormalType(enumeratorCurrentType))
+                        {
+                            SerializeObjectJSON(enumeratorList.Current, setting, false, valueSb);
+                        }
+                        else
+                        {
+                            SerializeObjectJSON(enumeratorList.Current, setting, true, valueSb);
+                        }
                         tmpObjCount++;
                         if (tmpObjCount < objCount)
                         {
@@ -260,50 +101,157 @@ namespace Eiap.Framework.Base.Serialization.SXW
                 }
                 else
                 {
-                    valueSb.Append("\"" + propertyInfoItem.Name + "\":null");
+                    valueSb.Append("\"" + propertyName + "\":[");
+                    while (enumeratorList.MoveNext())
+                    {
+                        Type enumeratorCurrentType = enumeratorList.Current.GetType();
+                        if (IsNormalType(enumeratorCurrentType))
+                        {
+                            SerializeObjectJSON(enumeratorList.Current, setting, false, valueSb);
+                        }
+                        else if (typeof(IDictionary).IsAssignableFrom(enumeratorCurrentType))
+                        {
+                            IDictionary dictObject = (IDictionary)enumeratorList.Current;
+                        }
+                        else
+                        {
+                            SerializeObjectJSON(enumeratorList.Current, setting, true, valueSb);
+                        }
+                        tmpObjCount++;
+                        if (tmpObjCount < objCount)
+                        {
+                            valueSb.Append(",");
+                        }
+                    }
+                    valueSb.Append("]");
                 }
+            }
+            else if(typeof(IDictionary).IsAssignableFrom(serializeObjectType))
+            {
+                IDictionary objectValue = (IDictionary)serializeObject;
+                int objCount = objectValue.Count;
+                ICollection keyList = objectValue.Keys;
+                IEnumerator enumeratorList = keyList.GetEnumerator();
+                int tmpObjCount = 0;
+                if (!isShowPropertyName)
+                {
+                    valueSb.Append("{");
+                    while (enumeratorList.MoveNext())
+                    {
+                        if (enumeratorList.Current == null)
+                        {
+                            throw new Exception("Key Is Not Null");
+                        }
+                        Type enumeratorCurrentType = objectValue[enumeratorList.Current].GetType();
+                        SerializeObjectJSON(objectValue[enumeratorList.Current], setting, true, valueSb, enumeratorList.Current.ToString());
+                        tmpObjCount++;
+                        if (tmpObjCount < objCount)
+                        {
+                            valueSb.Append(",");
+                        }
+                    }
+                    valueSb.Append("}");
+                }
+                else
+                {
+                    valueSb.Append("\"" + propertyName + "\":{");
+                    while (enumeratorList.MoveNext())
+                    {
+                        if (enumeratorList.Current == null)
+                        {
+                            throw new Exception("Key Is Not Null");
+                        }
+                        Type enumeratorCurrentType = objectValue[enumeratorList.Current].GetType();
+                        SerializeObjectJSON(objectValue[enumeratorList.Current], setting, true, valueSb, enumeratorList.Current.ToString());
+                        tmpObjCount++;
+                        if (tmpObjCount < objCount)
+                        {
+                            valueSb.Append(",");
+                        }
+
+                    }
+                    valueSb.Append("}");
+                }
+            }
+            else if (IsNormalType(serializeObjectType))
+            {
+                Process(serializeObject, valueSb, setting, isShowPropertyName, propertyName);
             }
             else
             {
-                //TODO:不显示属性名时的处理
+                valueSb.Append("{");
+                PropertyInfo[] propertyInfoList = serializeObject.GetType().GetProperties();
+                int propertyCount = propertyInfoList.Length;
+                int propertyIndex = 0;
+                foreach (PropertyInfo propertyInfoItem in propertyInfoList)
+                {
+                    object objectValue = propertyInfoItem.GetValue(serializeObject);
+                    SerializeObjectJSON(objectValue, setting, true, valueSb, propertyInfoItem.Name);
+                    propertyIndex++;
+                    if (propertyIndex < propertyCount)
+                    {
+                        valueSb.Append(",");
+                    }
+                }
+                valueSb.Append("}");
             }
         }
 
         /// <summary>
-        /// 序列化处理
+        /// 判断是否常用类型
         /// </summary>
-        /// <param name="objectPropertyType"></param>
-        /// <param name="propertyValue"></param>
+        /// <param name="objectType"></param>
+        /// <returns></returns>
+        private bool IsNormalType(Type objectType)
+        {
+            if (objectType == typeof(DateTime)
+                        || objectType == typeof(Int32)
+                        || objectType == typeof(String)
+                        || objectType == typeof(Boolean)
+                        || objectType == typeof(Decimal)
+                        || objectType == typeof(Guid))
+            {
+                return true;
+            }
+            return false;
+        }
+
+        /// <summary>
+        /// 常用类型对象序列化处理
+        /// </summary>
+        /// <param name="objectValue"></param>
         /// <param name="valueSb"></param>
         /// <param name="setting"></param>
-        /// <param name="propertyInfoItemName"></param>
-        private void Process(Type objectPropertyType, object propertyValue, StringBuilder valueSb, SerializationSetting setting, string propertyInfoItemName = "")
+        /// <param name="isShowPropertyName"></param>
+        private void Process(object objectValue, StringBuilder valueSb, SerializationSetting setting, bool isShowPropertyName, string propertyName = "")
         {
-            if (propertyValue != null)
+            Type objectType = objectValue.GetType();
+            string tmpPropertyName = isShowPropertyName ? "\"" + propertyName + "\":" : "";
+            if (objectValue != null)
             {
-                if (objectPropertyType == typeof(DateTime))
+                if (objectType == typeof(DateTime))
                 {
-                    valueSb.Append(propertyInfoItemName + "\"" + DateTime.Parse(propertyValue.ToString()).ToString(setting.DataTimeFomatter) + "\"");
+                    valueSb.Append(tmpPropertyName + "\"" + DateTime.Parse(objectValue.ToString()).ToString(setting.DataTimeFomatter) + "\"");
                 }
-                else if (objectPropertyType == typeof(Int32)
-                    || objectPropertyType == typeof(Decimal)
-                    || objectPropertyType == typeof(Guid))
+                else if (objectType == typeof(Int32)
+                    || objectType == typeof(Decimal)
+                    || objectType == typeof(Guid))
                 {
-                    valueSb.Append(propertyInfoItemName + propertyValue.ToString());
+                    valueSb.Append(tmpPropertyName + objectValue.ToString());
                 }
-                else if (objectPropertyType == typeof(String))
+                else if (objectType == typeof(String))
                 {
-                    valueSb.Append(propertyInfoItemName + "\"" + propertyValue.ToString() + "\"");
+                    valueSb.Append(tmpPropertyName + "\"" + objectValue.ToString() + "\"");
                 }
-                else if (objectPropertyType == typeof(Boolean))
+                else if (objectType == typeof(Boolean))
                 {
-                    string tmpPropertyValue = propertyValue.ToString();
-                    valueSb.Append(propertyInfoItemName + tmpPropertyValue.Substring(0, 1).ToLower() + tmpPropertyValue.Substring(1));
+                    string tmpPropertyValue = objectValue.ToString();
+                    valueSb.Append(tmpPropertyName + tmpPropertyValue.Substring(0, 1).ToLower() + tmpPropertyValue.Substring(1));
                 }
             }
             else
             {
-                valueSb.Append(propertyInfoItemName + " null");
+                valueSb.Append(tmpPropertyName + "null");
             }
         }
 
