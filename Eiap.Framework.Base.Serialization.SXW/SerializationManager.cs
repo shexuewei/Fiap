@@ -11,6 +11,12 @@ namespace Eiap.Framework.Base.Serialization.SXW
     public class SerializationManager : ISerializationManager
     {
         private const string DefaultDataTimeFomatter = "yyyy-MM-dd HH:mm:ss";
+        private readonly IPropertyAccessorManager _PropertyAccessorManager;
+
+        public SerializationManager(IPropertyAccessorManager propertyAccessorManager)
+        {
+            _PropertyAccessorManager = propertyAccessorManager;
+        }
 
         /// <summary>
         /// 将字符串反序列化成对象
@@ -185,7 +191,9 @@ namespace Eiap.Framework.Base.Serialization.SXW
                 int propertyIndex = 0;
                 foreach (PropertyInfo propertyInfoItem in propertyInfoList)
                 {
-                    object objectValue = propertyInfoItem.GetValue(serializeObject);
+                    string propertyKey = serializeObjectType.FullName + "." + propertyInfoItem.Name;
+                    PropertyInfoContainer container = new PropertyInfoContainer { PropertyName = propertyInfoItem.Name, InstanceTypeHandle = serializeObjectType.TypeHandle, PropertyTypeHandle = propertyInfoItem.PropertyType.TypeHandle };
+                    object objectValue = _PropertyAccessorManager.GetPropertyAccessor(propertyKey, container).GetValue(serializeObject); //propertyInfoItem.GetValue(serializeObject);
                     SerializeObjectJSON(objectValue, setting, true, valueSb, propertyInfoItem.Name);
                     propertyIndex++;
                     if (propertyIndex < propertyCount)

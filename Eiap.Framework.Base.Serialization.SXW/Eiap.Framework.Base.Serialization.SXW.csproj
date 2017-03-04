@@ -40,6 +40,14 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="IPropertyAccessor.cs" />
+    <Compile Include="IPropertyAccessorManager.cs" />
+    <Compile Include="PropertyAccessor.cs" />
+    <Compile Include="PropertyAccessorManager.cs" />
+    <Compile Include="PropertyInfoContainer.cs" />
+    <Compile Include="IPropertyInfoContainerManager.cs" />
+    <Compile Include="PropertyInfoContainerManager.cs" />
+    <Compile Include="PropertyInfoContainerExtend .cs" />
     <Compile Include="SerializationManager.cs" />
     <Compile Include="SerializationManagerModule.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />

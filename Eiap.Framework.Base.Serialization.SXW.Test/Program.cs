@@ -39,12 +39,12 @@ namespace Eiap.Framework.Base.Serialization.SXW.Test
             };
             List<Schools> schoolList = new List<Schools>();
             schoolList.Add(school1);
-            ISerializationManager serliz = DependencyManager.Instance.Resolver<ISerializationManager>();
+           
             Stopwatch stopwatch = new Stopwatch();
 
             StringBuilder sb1 = new StringBuilder();
             stopwatch.Start();
-            for (int i = 0; i<100000;i++)
+            for (int i = 0; i<500000;i++)
             {
                 sb1.Append(JsonConvert.SerializeObject(school1));
                 
@@ -53,8 +53,9 @@ namespace Eiap.Framework.Base.Serialization.SXW.Test
             Console.WriteLine("Newtonsoft:" + stopwatch.ElapsedMilliseconds);
 
             StringBuilder sb2 = new StringBuilder();
+            ISerializationManager serliz = DependencyManager.Instance.Resolver<ISerializationManager>();
             stopwatch.Restart();
-            for (int i = 0; i < 100000; i++)
+            for (int i = 0; i < 500000; i++)
             {
                 sb2.Append(serliz.SerializeObject(school1));
             }
