@@ -8,7 +8,7 @@ using System.Threading.Tasks;
 
 namespace Eiap.Framework.Base.Serialization.SXW
 {
-    public interface IPropertyInfoContainerManager: ISingletonDependency
+    public interface IPropertyInfoContainerManager: ISingletonDependency, IDynamicProxyDisable
     {
         /// <summary>
         /// 添加属性容器

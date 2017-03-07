@@ -39,28 +39,38 @@ namespace Eiap.Framework.Base.Serialization.SXW.Test
             };
             List<Schools> schoolList = new List<Schools>();
             schoolList.Add(school1);
-           
+
+            int count = 10;
+            int num = 50000;
+            long sum = 0;
             Stopwatch stopwatch = new Stopwatch();
-
-            StringBuilder sb1 = new StringBuilder();
-            stopwatch.Start();
-            for (int i = 0; i<500000;i++)
+            for (int m = 0; m < count; m++)
             {
-                sb1.Append(JsonConvert.SerializeObject(school1));
-                
+                stopwatch.Restart();
+                for (int i = 0; i < num; i++)
+                {
+                    JsonConvert.SerializeObject(school1);
+                }
+                stopwatch.Stop();
+                Console.WriteLine("Newtonsoft:" + stopwatch.ElapsedMilliseconds);
+                sum += stopwatch.ElapsedMilliseconds;
             }
-            stopwatch.Stop();
-            Console.WriteLine("Newtonsoft:" + stopwatch.ElapsedMilliseconds);
+            Console.WriteLine("Newtonsoft Avg:" + sum / count);
 
-            StringBuilder sb2 = new StringBuilder();
+            sum = 0;
             ISerializationManager serliz = DependencyManager.Instance.Resolver<ISerializationManager>();
-            stopwatch.Restart();
-            for (int i = 0; i < 500000; i++)
+            for (int m = 0; m < count; m++)
             {
-                sb2.Append(serliz.SerializeObject(school1));
+                stopwatch.Restart();
+                for (int i = 0; i < num; i++)
+                {
+                    serliz.SerializeObject(school1);
+                }
+                stopwatch.Stop();
+                Console.WriteLine("SXW:" + stopwatch.ElapsedMilliseconds);
+                sum += stopwatch.ElapsedMilliseconds;
             }
-            stopwatch.Stop();
-            Console.WriteLine("SXW:" + stopwatch.ElapsedMilliseconds);
+            Console.WriteLine("SXW Avg:" + sum / count);
             Console.ReadLine();
         }
     }

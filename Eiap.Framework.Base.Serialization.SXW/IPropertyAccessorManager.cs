@@ -7,7 +7,7 @@ using System.Threading.Tasks;
 
 namespace Eiap.Framework.Base.Serialization.SXW
 {
-    public interface IPropertyAccessorManager: ISingletonDependency
+    public interface IPropertyAccessorManager: ISingletonDependency, IDynamicProxyDisable
     {
         /// <summary>
         /// 根据属性Key获取属性访问器

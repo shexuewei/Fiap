@@ -45,8 +45,6 @@
     <Compile Include="PropertyAccessor.cs" />
     <Compile Include="PropertyAccessorManager.cs" />
     <Compile Include="PropertyInfoContainer.cs" />
-    <Compile Include="IPropertyInfoContainerManager.cs" />
-    <Compile Include="PropertyInfoContainerManager.cs" />
     <Compile Include="PropertyInfoContainerExtend .cs" />
     <Compile Include="SerializationManager.cs" />
     <Compile Include="SerializationManagerModule.cs" />
