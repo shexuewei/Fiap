@@ -15,8 +15,11 @@ namespace Eiap.Framework.Base.Serialization.SXW
         /// </summary>
         /// <param name="serializeObject"></param>
         /// <param name="setting"></param>
-        /// <returns></returns>
-        public static void SerializeObjectJSON(object serializeObject, SerializationSetting setting, bool isShowPropertyName, StringBuilder valueSb, IPropertyAccessorManager propertyAccessorManager, string propertyName = "")
+        /// <param name="isShowPropertyName"></param>
+        /// <param name="valueSb"></param>
+        /// <param name="propertyAccessorManager"></param>
+        /// <param name="propertyName"></param>
+        public static void Serialize(object serializeObject, SerializationSetting setting, bool isShowPropertyName, StringBuilder valueSb, IPropertyAccessorManager propertyAccessorManager, string propertyName = "")
         {
             if (serializeObject == null)
             {
@@ -39,7 +42,7 @@ namespace Eiap.Framework.Base.Serialization.SXW
             {
                 IEnumerable objectValue = (IEnumerable)serializeObject;
                 IEnumerator enumeratorList = objectValue.GetEnumerator();
-                int objCount = GetEnumeratorCount(enumeratorList);
+                int objCount = enumeratorList.GetEnumeratorCount();
                 enumeratorList.Reset();
                 int tmpObjCount = 0;
                 if (!isShowPropertyName)
@@ -48,13 +51,13 @@ namespace Eiap.Framework.Base.Serialization.SXW
                     while (enumeratorList.MoveNext())
                     {
                         Type enumeratorCurrentType = enumeratorList.Current.GetType();
-                        if (IsNormalType(enumeratorCurrentType))
+                        if (enumeratorCurrentType.IsNormalType())
                         {
-                            SerializeObjectJSON(enumeratorList.Current, setting, false, valueSb, propertyAccessorManager);
+                            Serialize(enumeratorList.Current, setting, false, valueSb, propertyAccessorManager);
                         }
                         else
                         {
-                            SerializeObjectJSON(enumeratorList.Current, setting, true, valueSb, propertyAccessorManager);
+                            Serialize(enumeratorList.Current, setting, true, valueSb, propertyAccessorManager);
                         }
                         tmpObjCount++;
                         if (tmpObjCount < objCount)
@@ -74,9 +77,9 @@ namespace Eiap.Framework.Base.Serialization.SXW
                     while (enumeratorList.MoveNext())
                     {
                         Type enumeratorCurrentType = enumeratorList.Current.GetType();
-                        if (IsNormalType(enumeratorCurrentType))
+                        if (enumeratorCurrentType.IsNormalType())
                         {
-                            SerializeObjectJSON(enumeratorList.Current, setting, false, valueSb, propertyAccessorManager);
+                            Serialize(enumeratorList.Current, setting, false, valueSb, propertyAccessorManager);
                         }
                         else if (typeof(IDictionary).IsAssignableFrom(enumeratorCurrentType))
                         {
@@ -84,7 +87,7 @@ namespace Eiap.Framework.Base.Serialization.SXW
                         }
                         else
                         {
-                            SerializeObjectJSON(enumeratorList.Current, setting, true, valueSb, propertyAccessorManager);
+                            Serialize(enumeratorList.Current, setting, true, valueSb, propertyAccessorManager);
                         }
                         tmpObjCount++;
                         if (tmpObjCount < objCount)
@@ -112,7 +115,7 @@ namespace Eiap.Framework.Base.Serialization.SXW
                             throw new Exception("Key Is Not Null");
                         }
                         Type enumeratorCurrentType = objectValue[enumeratorList.Current].GetType();
-                        SerializeObjectJSON(objectValue[enumeratorList.Current], setting, true, valueSb, propertyAccessorManager, enumeratorList.Current.ToString());
+                        Serialize(objectValue[enumeratorList.Current], setting, true, valueSb, propertyAccessorManager, enumeratorList.Current.ToString());
                         tmpObjCount++;
                         if (tmpObjCount < objCount)
                         {
@@ -135,7 +138,7 @@ namespace Eiap.Framework.Base.Serialization.SXW
                             throw new Exception("Key Is Not Null");
                         }
                         Type enumeratorCurrentType = objectValue[enumeratorList.Current].GetType();
-                        SerializeObjectJSON(objectValue[enumeratorList.Current], setting, true, valueSb, propertyAccessorManager, enumeratorList.Current.ToString());
+                        Serialize(objectValue[enumeratorList.Current], setting, true, valueSb, propertyAccessorManager, enumeratorList.Current.ToString());
                         tmpObjCount++;
                         if (tmpObjCount < objCount)
                         {
@@ -146,7 +149,7 @@ namespace Eiap.Framework.Base.Serialization.SXW
                     valueSb.Append(JsonSymbol.JsonObjectSymbol_End);
                 }
             }
-            else if (IsNormalType(serializeObjectType))
+            else if (serializeObjectType.IsNormalType())
             {
                 Process(serializeObject, valueSb, setting, isShowPropertyName, propertyName);
             }
@@ -162,7 +165,7 @@ namespace Eiap.Framework.Base.Serialization.SXW
                     string propertyKey = serializeObjectType.FullName + "." + propertyInfoItem.Name;
                     PropertyInfoContainer container = new PropertyInfoContainer { PropertyName = propertyInfoItem.Name, InstanceTypeHandle = serializeObjectType.TypeHandle, PropertyTypeHandle = propertyInfoItem.PropertyType.TypeHandle };
                     object objectValue = propertyAccessorManager.GetPropertyAccessor(propertyKey, container).GetValue(serializeObject); //propertyInfoItem.GetValue(serializeObject);//
-                    SerializeObjectJSON(objectValue, setting, true, valueSb, propertyAccessorManager, propertyInfoItem.Name);
+                    Serialize(objectValue, setting, true, valueSb, propertyAccessorManager, propertyInfoItem.Name);
                     propertyIndex++;
                     if (propertyIndex < propertyCount)
                     {
@@ -174,31 +177,13 @@ namespace Eiap.Framework.Base.Serialization.SXW
         }
 
         /// <summary>
-        /// 判断是否常用类型
-        /// </summary>
-        /// <param name="objectType"></param>
-        /// <returns></returns>
-        private static bool IsNormalType(Type objectType)
-        {
-            if (objectType == typeof(DateTime)
-                        || objectType == typeof(Int32)
-                        || objectType == typeof(String)
-                        || objectType == typeof(Boolean)
-                        || objectType == typeof(Decimal)
-                        || objectType == typeof(Guid))
-            {
-                return true;
-            }
-            return false;
-        }
-
-        /// <summary>
         /// 常用类型对象序列化处理
         /// </summary>
         /// <param name="objectValue"></param>
         /// <param name="valueSb"></param>
         /// <param name="setting"></param>
         /// <param name="isShowPropertyName"></param>
+        /// <param name="propertyName"></param>
         private static void Process(object objectValue, StringBuilder valueSb, SerializationSetting setting, bool isShowPropertyName, string propertyName = "")
         {
             Type objectType = objectValue.GetType();
@@ -238,21 +223,6 @@ namespace Eiap.Framework.Base.Serialization.SXW
             {
                 valueSb.Append(JsonSymbol.JsonNullSymbol);
             }
-        }
-
-        /// <summary>
-        /// 获取集合数
-        /// </summary>
-        /// <param name="enumeratorList"></param>
-        /// <returns></returns>
-        private static int GetEnumeratorCount(IEnumerator enumeratorList)
-        {
-            int objCount = 0;
-            while (enumeratorList.MoveNext())
-            {
-                objCount++;
-            }
-            return objCount;
         }
     }
 }

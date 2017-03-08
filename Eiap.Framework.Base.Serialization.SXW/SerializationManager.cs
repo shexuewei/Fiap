@@ -25,9 +25,20 @@ namespace Eiap.Framework.Base.Serialization.SXW
         /// <typeparam name="T"></typeparam>
         /// <param name="value"></param>
         /// <returns></returns>
-        public T DeserializeObject<T>(string value)
+        public T DeserializeObject<T>(string value, SerializationSetting setting = null)
         {
-            throw new NotImplementedException();
+            if (string.IsNullOrWhiteSpace(value))
+            {
+                throw new Exception("Value is null");
+            }
+            setting = setting ?? new SerializationSetting { DataTimeFomatter = DefaultDataTimeFomatter, SerializationType = SerializationType.JSON };
+            switch (setting.SerializationType)
+            {
+                case SerializationType.JSON:
+                    return JsonDeserializeProcess<T>.Deserialize(value, setting);
+                default:
+                    return JsonDeserializeProcess<T>.Deserialize(value, setting);
+            }
         }
 
         /// <summary>
@@ -47,10 +58,10 @@ namespace Eiap.Framework.Base.Serialization.SXW
             switch (setting.SerializationType)
             {
                 case SerializationType.JSON:
-                    JsonSerializeProcess.SerializeObjectJSON(serializeObject, setting, false, valueSb, _PropertyAccessorManager);
+                    JsonSerializeProcess.Serialize(serializeObject, setting, false, valueSb, _PropertyAccessorManager);
                     break;
                 default:
-                    JsonSerializeProcess.SerializeObjectJSON(serializeObject, setting, false, valueSb, _PropertyAccessorManager);
+                    JsonSerializeProcess.Serialize(serializeObject, setting, false, valueSb, _PropertyAccessorManager);
                     break;
             }
             return valueSb.ToString();

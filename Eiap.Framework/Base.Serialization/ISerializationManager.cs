@@ -23,6 +23,6 @@ namespace Eiap.Framework.Base.Serialization
         /// <typeparam name="T"></typeparam>
         /// <param name="value"></param>
         /// <returns></returns>
-        T DeserializeObject<T>(string value);
+        T DeserializeObject<T>(string value, SerializationSetting setting = null);
     }
 }
