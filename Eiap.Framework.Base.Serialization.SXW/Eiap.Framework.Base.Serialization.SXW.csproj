@@ -42,10 +42,14 @@
   <ItemGroup>
     <Compile Include="IPropertyAccessor.cs" />
     <Compile Include="IPropertyAccessorManager.cs" />
+    <Compile Include="IPropertyInfoContainerManager.cs" />
+    <Compile Include="JsonSerializeProcess.cs" />
+    <Compile Include="JsonSymbol.cs" />
     <Compile Include="PropertyAccessor.cs" />
     <Compile Include="PropertyAccessorManager.cs" />
     <Compile Include="PropertyInfoContainer.cs" />
     <Compile Include="PropertyInfoContainerExtend .cs" />
+    <Compile Include="PropertyInfoContainerManager.cs" />
     <Compile Include="SerializationManager.cs" />
     <Compile Include="SerializationManagerModule.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
