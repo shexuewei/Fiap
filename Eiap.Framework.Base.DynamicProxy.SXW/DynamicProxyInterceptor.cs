@@ -121,7 +121,6 @@ namespace Eiap.Framework.Base.DynamicProxy.SXW
             foreach (Action<InterceptorMethodArgs> interceptorActionItem in _InterceptorActionList)
             {
                 interceptorActionItem(args);
-               
             }
         }
 
