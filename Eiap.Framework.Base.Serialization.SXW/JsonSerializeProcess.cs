@@ -199,7 +199,7 @@ namespace Eiap.Framework.Base.Serialization.SXW
                 if (objectType == typeof(DateTime))
                 {
                     valueSb.Append(JsonSymbol.JsonQuotesSymbol);
-                    valueSb.Append(DateTime.Parse(objectValue.ToString()).ToString(setting.DataTimeFomatter));
+                    valueSb.Append(Convert.ToDateTime(objectValue).ToString(setting.DataTimeFomatter));
                     valueSb.Append(JsonSymbol.JsonQuotesSymbol);
                 }
                 else if (objectType == typeof(Int32)

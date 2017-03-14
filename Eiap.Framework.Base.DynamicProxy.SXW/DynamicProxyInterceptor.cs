@@ -13,10 +13,13 @@ namespace Eiap.Framework.Base.DynamicProxy.SXW
     {
         private List<Action<InterceptorMethodArgs>> _InterceptorActionList = null;
         private readonly IInterceptorMethodManager _InterceptorMethodManager;
+        private readonly IDynamicProxyMethodContainerManager _DynamicProxyMethodContainerManager;
 
-        public DynamicProxyInterceptor(IInterceptorMethodManager interceptorMethodManager)
+        public DynamicProxyInterceptor(IInterceptorMethodManager interceptorMethodManager, 
+            IDynamicProxyMethodContainerManager dynamicProxyMethodContainerManager)
         {
             _InterceptorMethodManager = interceptorMethodManager;
+            _DynamicProxyMethodContainerManager = dynamicProxyMethodContainerManager;
             _InterceptorActionList = new List<Action<InterceptorMethodArgs>>();
         }
 
@@ -26,11 +29,24 @@ namespace Eiap.Framework.Base.DynamicProxy.SXW
             MethodInfo methodinfo = null;
             InterceptorMethodArgs args = null;
             Stopwatch stopwatch = null;
+            DynamicProxyMethodContainer methodcontainer = null;
             try
             {
                 if (instance != null)
                 {
-                    methodinfo = instance.GetType().GetMethod(name);
+                    Type instanceType = instance.GetType();
+                    string dynamicProxyMethidFullName = instanceType.FullName + "." + name;
+                    methodcontainer = _DynamicProxyMethodContainerManager.GetDynamicProxyMethodContainerByDynamicProxyMethodName(dynamicProxyMethidFullName);
+                    if (methodcontainer != null)
+                    {
+                        methodinfo = methodcontainer.DynamicProxyMethod;
+                        _DynamicProxyMethodContainerManager.AddDynamicProxyContainer(methodcontainer);
+                    }
+                    else
+                    {
+                        methodinfo = instanceType.GetMethod(name);
+
+                    }
                     if (methodinfo != null)
                     {
                         stopwatch = new Stopwatch();

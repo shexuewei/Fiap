@@ -40,6 +40,7 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="DynamicProxyContainerManager.cs" />
+    <Compile Include="DynamicProxyMethodContainerManager.cs" />
     <Compile Include="DynamicProxyModule.cs" />
     <Compile Include="DynamicProxyInterceptor.cs" />
     <Compile Include="DynamicProxyManager.cs" />
