@@ -40,12 +40,12 @@ namespace Eiap.Framework.Base.DynamicProxy.SXW
                     if (methodcontainer != null)
                     {
                         methodinfo = methodcontainer.DynamicProxyMethod;
-                        _DynamicProxyMethodContainerManager.AddDynamicProxyContainer(methodcontainer);
                     }
                     else
                     {
                         methodinfo = instanceType.GetMethod(name);
-
+                        methodcontainer = new DynamicProxyMethodContainer { DynamicProxyMethidFullName = dynamicProxyMethidFullName, DynamicProxyMethodHandle = methodinfo.MethodHandle };
+                        _DynamicProxyMethodContainerManager.AddDynamicProxyContainer(methodcontainer);
                     }
                     if (methodinfo != null)
                     {
