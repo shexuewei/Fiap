@@ -30,25 +30,27 @@ namespace Eiap.Framework.Base.DynamicProxy.SXW
             InterceptorMethodArgs args = null;
             Stopwatch stopwatch = null;
             Func<object, object[], object> methodDel = null;
+            string dynamicProxyMethidFullName = null;
+            MethodInfo excuMethod = null;
+
             try
             {
                 if (instance != null)
                 {
                     Type instanceType = instance.GetType();
-                    string dynamicProxyMethidFullName = instanceType.FullName + "." + name;
                     methodinfo = instanceType.GetMethod(name);
-                    MethodInfo excumethod = null;
                     if (methodinfo != null)
                     {
                         if (methodinfo.IsGenericMethod)
                         {
                             Type[] genericArgumentsList = methodinfo.GetGenericArguments().Select(m => m.DeclaringType).ToArray();
-                            excumethod = methodinfo.MakeGenericMethod(genericArgumentsList);
+                            excuMethod = methodinfo.MakeGenericMethod(genericArgumentsList);
                         }
                         else
                         {
-                            excumethod = methodinfo;
+                            excuMethod = methodinfo;
                         }
+                        dynamicProxyMethidFullName = GetDynamicProxyMethidFullName(instanceType, excuMethod);
                         methodDel = _DynamicProxyMethodContainerManager.GetDynamicProxyMethodByDynamicProxyMethodName(dynamicProxyMethidFullName);
                         if (methodDel == null)
                         {
@@ -182,6 +184,27 @@ namespace Eiap.Framework.Base.DynamicProxy.SXW
             {
                 return null;
             }
+        }
+
+        /// <summary>
+        /// 根据方法和实例对象返回方法全名
+        /// </summary>
+        /// <param name="instanceType"></param>
+        /// <param name="methodinfo"></param>
+        /// <returns></returns>
+        private string GetDynamicProxyMethidFullName(Type instanceType, MethodInfo methodinfo)
+        {
+            StringBuilder dynamicProxyMethidFullNameStrBui = new StringBuilder();
+            dynamicProxyMethidFullNameStrBui.Append(instanceType.FullName);
+            dynamicProxyMethidFullNameStrBui.Append(".");
+            dynamicProxyMethidFullNameStrBui.Append(methodinfo.Name);
+            ParameterInfo[] parametersList = methodinfo.GetParameters();
+            foreach(ParameterInfo parameterItem in parametersList)
+            {
+                dynamicProxyMethidFullNameStrBui.Append(".");
+                dynamicProxyMethidFullNameStrBui.Append(parameterItem.ParameterType.Name);
+            }
+            return dynamicProxyMethidFullNameStrBui.ToString();
         }
     }
 }
