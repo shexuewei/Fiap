@@ -12,22 +12,6 @@ namespace Eiap.Framework.Base.DynamicProxy
         /// <summary>
         /// 动态代理方法类型句柄
         /// </summary>
-        public RuntimeMethodHandle DynamicProxyMethodHandle { get; set; }
-
-        /// <summary>
-        /// 动态代理方法类型名称
-        /// </summary>
-        public string DynamicProxyMethidFullName { get; set; }
-
-        /// <summary>
-        /// 动态代理方法类型
-        /// </summary>
-        public MethodInfo DynamicProxyMethod
-        {
-            get
-            {
-                return (MethodInfo)MethodInfo.GetMethodFromHandle(DynamicProxyMethodHandle);
-            }
-        }
+        public Func<object, object[], object> DynamicProxyMethod { get; set; }
     }
 }

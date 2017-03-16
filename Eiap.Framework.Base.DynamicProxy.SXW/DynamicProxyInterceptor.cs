@@ -29,48 +29,48 @@ namespace Eiap.Framework.Base.DynamicProxy.SXW
             MethodInfo methodinfo = null;
             InterceptorMethodArgs args = null;
             Stopwatch stopwatch = null;
-            DynamicProxyMethodContainer methodcontainer = null;
+            Func<object, object[], object> methodDel = null;
             try
             {
                 if (instance != null)
                 {
                     Type instanceType = instance.GetType();
                     string dynamicProxyMethidFullName = instanceType.FullName + "." + name;
-                    methodcontainer = _DynamicProxyMethodContainerManager.GetDynamicProxyMethodContainerByDynamicProxyMethodName(dynamicProxyMethidFullName);
-                    if (methodcontainer != null)
-                    {
-                        methodinfo = methodcontainer.DynamicProxyMethod;
-                    }
-                    else
-                    {
-                        methodinfo = instanceType.GetMethod(name);
-                        methodcontainer = new DynamicProxyMethodContainer { DynamicProxyMethidFullName = dynamicProxyMethidFullName, DynamicProxyMethodHandle = methodinfo.MethodHandle };
-                        _DynamicProxyMethodContainerManager.AddDynamicProxyContainer(methodcontainer);
-                    }
+                    methodinfo = instanceType.GetMethod(name);
+                    MethodInfo excumethod = null;
                     if (methodinfo != null)
                     {
-                        stopwatch = new Stopwatch();
-                        stopwatch.Start();
-                        args = new InterceptorMethodArgs { MethodName = name, MethodDateTime = DateTime.Now, MethodParameters = parameters };
-                        InvokeBegin(methodinfo, args);
                         if (methodinfo.IsGenericMethod)
                         {
                             Type[] genericArgumentsList = methodinfo.GetGenericArguments().Select(m => m.DeclaringType).ToArray();
-                            objres = methodinfo.MakeGenericMethod(genericArgumentsList).Invoke(instance, parameters);
+                            excumethod = methodinfo.MakeGenericMethod(genericArgumentsList);
                         }
                         else
                         {
-                            objres = methodinfo.Invoke(instance, parameters);
+                            excumethod = methodinfo;
                         }
-                        stopwatch.Stop();
-                        args.MethodExecute = stopwatch.ElapsedMilliseconds;
-                        args.ReturnValue = objres;
-                        InvokeEnd(methodinfo, args);
-                    }
-                    else
-                    {
-                        //TODO:自定义异常
-                        throw new Exception("No Method");
+                        methodDel = _DynamicProxyMethodContainerManager.GetDynamicProxyMethodByDynamicProxyMethodName(dynamicProxyMethidFullName);
+                        if (methodDel == null)
+                        {
+                            methodDel = _DynamicProxyMethodContainerManager.AddDynamicProxyContainer(dynamicProxyMethidFullName, methodinfo);
+                        }
+                        if (methodDel != null)
+                        {
+                            stopwatch = new Stopwatch();
+                            stopwatch.Start();
+                            args = new InterceptorMethodArgs { MethodName = name, MethodDateTime = DateTime.Now, MethodParameters = parameters };
+                            InvokeBegin(methodinfo, args);
+                            objres = methodDel(instance, parameters);
+                            stopwatch.Stop();
+                            args.MethodExecute = stopwatch.ElapsedMilliseconds;
+                            args.ReturnValue = objres;
+                            InvokeEnd(methodinfo, args);
+                        }
+                        else
+                        {
+                            //TODO:自定义异常
+                            throw new Exception("No Method");
+                        }
                     }
                 }
                 else

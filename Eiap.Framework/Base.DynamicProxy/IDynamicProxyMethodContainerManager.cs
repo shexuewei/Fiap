@@ -2,6 +2,7 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Reflection;
 using System.Text;
 using System.Threading.Tasks;
 
@@ -12,14 +13,16 @@ namespace Eiap.Framework.Base.DynamicProxy
         /// <summary>
         /// 添加动态代理方法容器
         /// </summary>
-        /// <param name="container"></param>
-        void AddDynamicProxyContainer(DynamicProxyMethodContainer container);
+        /// <param name="dynamicProxyMethodFullName"></param>
+        /// <param name="methodInfo"></param>
+        /// <returns></returns>
+        Func<object, object[], object> AddDynamicProxyContainer(string dynamicProxyMethodFullName, MethodInfo methodInfo);
 
         /// <summary>
         /// 获取动态代理方法容器
         /// </summary>
-        /// <param name="dynamicProxyTypeName"></param>
+        /// <param name="dynamicProxyMethodFullName"></param>
         /// <returns></returns>
-        DynamicProxyMethodContainer GetDynamicProxyMethodContainerByDynamicProxyMethodName(string dynamicProxyMethodName);
+        Func<object, object[], object> GetDynamicProxyMethodByDynamicProxyMethodName(string dynamicProxyMethodFullName);
     }
 }
