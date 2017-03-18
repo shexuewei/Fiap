@@ -16,5 +16,6 @@ namespace Eiap.Framework.Base.Serialization.SXW
         public const string JsonNullSymbol = "null";
         public const string JsonSeparateSymbol = ",";
         public const string JsonPropertySymbol = ":";
+        public const string JsonSpaceSymbol = " ";
     }
 }

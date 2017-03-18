@@ -7,7 +7,7 @@ using System.Threading.Tasks;
 
 namespace Eiap.Framework.Base.Serialization
 {
-    public interface ISerializationManager : ISingletonDependency
+    public interface ISerializationManager : ISingletonDependency, IDynamicProxyDisable
     {
         /// <summary>
         /// 根据设置将对象序列化成字符串

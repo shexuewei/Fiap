@@ -23,7 +23,7 @@ namespace Eiap.Framework.Base.Serialization.SXW
         {
             if (serializeObject == null)
             {
-                if (isShowPropertyName)
+                if (isShowPropertyName && !string.IsNullOrWhiteSpace(propertyName))
                 {
                     valueSb.Append(JsonSymbol.JsonQuotesSymbol);
                     valueSb.Append(propertyName);
@@ -45,58 +45,40 @@ namespace Eiap.Framework.Base.Serialization.SXW
                 int objCount = enumeratorList.GetEnumeratorCount();
                 enumeratorList.Reset();
                 int tmpObjCount = 0;
-                if (!isShowPropertyName)
-                {
-                    valueSb.Append(JsonSymbol.JsonArraySymbol_Begin);
-                    while (enumeratorList.MoveNext())
-                    {
-                        Type enumeratorCurrentType = enumeratorList.Current.GetType();
-                        if (enumeratorCurrentType.IsNormalType())
-                        {
-                            Serialize(enumeratorList.Current, setting, false, valueSb, propertyAccessorManager);
-                        }
-                        else
-                        {
-                            Serialize(enumeratorList.Current, setting, true, valueSb, propertyAccessorManager);
-                        }
-                        tmpObjCount++;
-                        if (tmpObjCount < objCount)
-                        {
-                            valueSb.Append(JsonSymbol.JsonSeparateSymbol);
-                        }
-                    }
-                    valueSb.Append(JsonSymbol.JsonArraySymbol_End);
-                }
-                else
+                if (isShowPropertyName && !string.IsNullOrWhiteSpace(propertyName))
                 {
                     valueSb.Append(JsonSymbol.JsonQuotesSymbol);
                     valueSb.Append(propertyName);
                     valueSb.Append(JsonSymbol.JsonQuotesSymbol);
                     valueSb.Append(JsonSymbol.JsonPropertySymbol);
-                    valueSb.Append(JsonSymbol.JsonArraySymbol_Begin);
-                    while (enumeratorList.MoveNext())
+                }
+                valueSb.Append(JsonSymbol.JsonArraySymbol_Begin);
+                while (enumeratorList.MoveNext())
+                {
+                    Type enumeratorCurrentType = enumeratorList.Current.GetType();
+                    if (enumeratorCurrentType.IsNormalType())
                     {
-                        Type enumeratorCurrentType = enumeratorList.Current.GetType();
-                        if (enumeratorCurrentType.IsNormalType())
+                        Serialize(enumeratorList.Current, setting, false, valueSb, propertyAccessorManager);
+                    }
+                    else
+                    {
+                        if (string.IsNullOrEmpty(propertyName))
                         {
                             Serialize(enumeratorList.Current, setting, false, valueSb, propertyAccessorManager);
-                        }
-                        else if (typeof(IDictionary).IsAssignableFrom(enumeratorCurrentType))
-                        {
-                            IDictionary dictObject = (IDictionary)enumeratorList.Current;
                         }
                         else
                         {
                             Serialize(enumeratorList.Current, setting, true, valueSb, propertyAccessorManager);
                         }
-                        tmpObjCount++;
-                        if (tmpObjCount < objCount)
-                        {
-                            valueSb.Append(JsonSymbol.JsonSeparateSymbol);
-                        }
                     }
-                    valueSb.Append(JsonSymbol.JsonObjectSymbol_End);
+                    tmpObjCount++;
+                    if (tmpObjCount < objCount)
+                    {
+                        valueSb.Append(JsonSymbol.JsonSeparateSymbol);
+                    }
                 }
+                valueSb.Append(JsonSymbol.JsonArraySymbol_End);
+
             }
             else if (typeof(IDictionary).IsAssignableFrom(serializeObjectType))
             {
@@ -105,49 +87,29 @@ namespace Eiap.Framework.Base.Serialization.SXW
                 ICollection keyList = objectValue.Keys;
                 IEnumerator enumeratorList = keyList.GetEnumerator();
                 int tmpObjCount = 0;
-                if (!isShowPropertyName)
-                {
-                    valueSb.Append(JsonSymbol.JsonObjectSymbol_Begin);
-                    while (enumeratorList.MoveNext())
-                    {
-                        if (enumeratorList.Current == null)
-                        {
-                            throw new Exception("Key Is Not Null");
-                        }
-                        Type enumeratorCurrentType = objectValue[enumeratorList.Current].GetType();
-                        Serialize(objectValue[enumeratorList.Current], setting, true, valueSb, propertyAccessorManager, enumeratorList.Current.ToString());
-                        tmpObjCount++;
-                        if (tmpObjCount < objCount)
-                        {
-                            valueSb.Append(JsonSymbol.JsonSeparateSymbol);
-                        }
-                    }
-                    valueSb.Append(JsonSymbol.JsonObjectSymbol_End);
-                }
-                else
+                if (isShowPropertyName && !string.IsNullOrWhiteSpace(propertyName))
                 {
                     valueSb.Append(JsonSymbol.JsonQuotesSymbol);
                     valueSb.Append(propertyName);
                     valueSb.Append(JsonSymbol.JsonQuotesSymbol);
                     valueSb.Append(JsonSymbol.JsonPropertySymbol);
-                    valueSb.Append(JsonSymbol.JsonObjectSymbol_Begin);
-                    while (enumeratorList.MoveNext())
-                    {
-                        if (enumeratorList.Current == null)
-                        {
-                            throw new Exception("Key Is Not Null");
-                        }
-                        Type enumeratorCurrentType = objectValue[enumeratorList.Current].GetType();
-                        Serialize(objectValue[enumeratorList.Current], setting, true, valueSb, propertyAccessorManager, enumeratorList.Current.ToString());
-                        tmpObjCount++;
-                        if (tmpObjCount < objCount)
-                        {
-                            valueSb.Append(JsonSymbol.JsonSeparateSymbol);
-                        }
-
-                    }
-                    valueSb.Append(JsonSymbol.JsonObjectSymbol_End);
                 }
+                valueSb.Append(JsonSymbol.JsonObjectSymbol_Begin);
+                while (enumeratorList.MoveNext())
+                {
+                    if (enumeratorList.Current == null)
+                    {
+                        throw new Exception("Key Is Not Null");
+                    }
+                    Type enumeratorCurrentType = objectValue[enumeratorList.Current].GetType();
+                    Serialize(objectValue[enumeratorList.Current], setting, true, valueSb, propertyAccessorManager, enumeratorList.Current.ToString());
+                    tmpObjCount++;
+                    if (tmpObjCount < objCount)
+                    {
+                        valueSb.Append(JsonSymbol.JsonSeparateSymbol);
+                    }
+                }
+                valueSb.Append(JsonSymbol.JsonObjectSymbol_End);
             }
             else if (serializeObjectType.IsNormalType())
             {
@@ -155,8 +117,14 @@ namespace Eiap.Framework.Base.Serialization.SXW
             }
             else
             {
+                if (isShowPropertyName && !string.IsNullOrWhiteSpace(propertyName))
+                {
+                    valueSb.Append(JsonSymbol.JsonQuotesSymbol);
+                    valueSb.Append(propertyName);
+                    valueSb.Append(JsonSymbol.JsonQuotesSymbol);
+                    valueSb.Append(JsonSymbol.JsonPropertySymbol);
+                }
                 valueSb.Append(JsonSymbol.JsonObjectSymbol_Begin);
-
                 PropertyInfo[] propertyInfoList = serializeObject.GetType().GetProperties();
                 int propertyCount = propertyInfoList.Length;
                 int propertyIndex = 0;

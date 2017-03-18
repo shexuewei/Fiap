@@ -32,12 +32,13 @@ namespace Eiap.Framework.Base.Serialization.SXW
                 throw new Exception("Value is null");
             }
             setting = setting ?? new SerializationSetting { DataTimeFomatter = DefaultDataTimeFomatter, SerializationType = SerializationType.JSON };
+            Type objectType = typeof(T);
             switch (setting.SerializationType)
             {
                 case SerializationType.JSON:
-                    return JsonDeserializeProcess<T>.Deserialize(value, setting);
+                    return (T)JsonDeserializeProcess.Deserialize(value, objectType, setting);
                 default:
-                    return JsonDeserializeProcess<T>.Deserialize(value, setting);
+                    return (T)JsonDeserializeProcess.Deserialize(value, objectType, setting);
             }
         }
 

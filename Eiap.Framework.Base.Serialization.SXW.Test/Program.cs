@@ -35,13 +35,14 @@ namespace Eiap.Framework.Base.Serialization.SXW.Test
                 IsPriSchool = true,
                 Building = new string[] { "1", "2", "3" },
                 ClassList2 = new ArrayList { class1, 2 },
-                dict = dict
+                Dict = dict,
+                SchoolFirstStu = student1
             };
             List<Schools> schoolList = new List<Schools>();
             schoolList.Add(school1);
 
             int count = 10;
-            int num = 50000;
+            int num = 100000;
             long sum = 0;
             Stopwatch stopwatch = new Stopwatch();
             for (int m = 0; m < count; m++)
@@ -49,7 +50,7 @@ namespace Eiap.Framework.Base.Serialization.SXW.Test
                 stopwatch.Restart();
                 for (int i = 0; i < num; i++)
                 {
-                    JsonConvert.SerializeObject(school1);
+                    var xx = JsonConvert.SerializeObject(school1);
                 }
                 stopwatch.Stop();
                 Console.WriteLine("Newtonsoft:" + stopwatch.ElapsedMilliseconds);
@@ -64,7 +65,7 @@ namespace Eiap.Framework.Base.Serialization.SXW.Test
                 stopwatch.Restart();
                 for (int i = 0; i < num; i++)
                 {
-                    serliz.SerializeObject(school1);
+                    var xx = serliz.SerializeObject(school1);
                 }
                 stopwatch.Stop();
                 Console.WriteLine("SXW:" + stopwatch.ElapsedMilliseconds);
@@ -85,7 +86,8 @@ namespace Eiap.Framework.Base.Serialization.SXW.Test
         public decimal Amt { get; set; }
         public IEnumerable<Classes> ClassList { get; set; }
         public ArrayList ClassList2 { get; set; }
-        public Dictionary<string, string> dict { get; set; }
+        public Dictionary<string, string> Dict { get; set; }
+        public Students SchoolFirstStu { get; set; }
     }
 
     public class Classes
