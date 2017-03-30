@@ -11,9 +11,10 @@ namespace Eiap.Framework.Base.Serialization.SXW
         List = 0,
         Object = 1,
         Property = 2,
-        Value_String = 3,
-        Value_Int = 4,
-        Value_Decimal = 5,
-        Value_DateTime = 6
+        //Property_Value = 3,
+        Value_String = 4,
+        Value_Int = 5,
+        Value_Decimal = 6,
+        Value_DateTime = 7
     }
 }

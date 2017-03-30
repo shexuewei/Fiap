@@ -45,6 +45,7 @@
     <Compile Include="IPropertyAccessor.cs" />
     <Compile Include="IPropertyAccessorManager.cs" />
     <Compile Include="IPropertyInfoContainerManager.cs" />
+    <Compile Include="JsonDeserializeEventArgs.cs" />
     <Compile Include="JsonProcessExtend.cs" />
     <Compile Include="JsonDeserializeProcess.cs" />
     <Compile Include="JsonSerializeProcess.cs" />

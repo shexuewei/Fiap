@@ -33,6 +33,7 @@ namespace Eiap.Framework.Base.Serialization.SXW
             }
             setting = setting ?? new SerializationSetting { DataTimeFomatter = DefaultDataTimeFomatter, SerializationType = SerializationType.JSON };
             Type objectType = typeof(T);
+            RegisterDeserializeHandleEvent();
             switch (setting.SerializationType)
             {
                 case SerializationType.JSON:
@@ -68,6 +69,19 @@ namespace Eiap.Framework.Base.Serialization.SXW
             return valueSb.ToString();
         }
 
-        
+        /// <summary>
+        /// 注册反序列化事件
+        /// </summary>
+        private void RegisterDeserializeHandleEvent()
+        {
+            JsonDeserializeProcess.JsonDeserializeSpaceSymbol_Event += JsonDeserializeProcess.JsonDeserializeProcess_JsonDeserializeSpaceSymbol_Event;
+            JsonDeserializeProcess.JsonDeserializeArraySymbol_End_Event += JsonDeserializeProcess.JsonDeserializeProcess_JsonDeserializeSpaceSymbol_Event;
+            JsonDeserializeProcess.JsonDeserializeObjectSymbol_Begin_Event += JsonDeserializeProcess.JsonDeserializeProcess_JsonDeserializeSpaceSymbol_Event;
+            JsonDeserializeProcess.JsonDeserializeObjectSymbol_End_Event += JsonDeserializeProcess.JsonDeserializeProcess_JsonDeserializeSpaceSymbol_Event;
+            JsonDeserializeProcess.JsonDeserializeQuotesSymbol_Event += JsonDeserializeProcess.JsonDeserializeProcess_JsonDeserializeSpaceSymbol_Event;
+            JsonDeserializeProcess.JsonDeserializePropertySymbol_Event += JsonDeserializeProcess.JsonDeserializeProcess_JsonDeserializeSpaceSymbol_Event;
+            JsonDeserializeProcess.JsonDeserializeNullSymbol_Event += JsonDeserializeProcess.JsonDeserializeProcess_JsonDeserializeSpaceSymbol_Event;
+            JsonDeserializeProcess.JsonDeserializeSeparateSymbol_Event += JsonDeserializeProcess.JsonDeserializeProcess_JsonDeserializeSpaceSymbol_Event;
+        }
     }
 }
