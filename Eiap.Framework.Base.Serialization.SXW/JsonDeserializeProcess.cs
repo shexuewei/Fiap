@@ -65,93 +65,9 @@ namespace Eiap.Framework.Base.Serialization.SXW
                 //逗号
                 else if (charitem == Convert.ToChar(JsonSymbol.JsonSeparateSymbol))
                 {
-                    jsonStringStack.Pop();//,出栈
-                    char valueSymbol = jsonStringStack.Pop();
-                    if (valueSymbol == Convert.ToChar(JsonSymbol.JsonObjectSymbol_End))
+                    if (JsonDeserializeSeparateSymbol_Event != null)
                     {
-                        jsonStringStack.Push(valueSymbol);
-                        jsonStringStack.Push(Convert.ToChar(JsonSymbol.JsonSeparateSymbol));
-                        List<DeserializeObjectContainer> propertylist = new List<DeserializeObjectContainer>();
-                        List<DeserializeObjectContainer> valuelist = new List<DeserializeObjectContainer>();
-                        while (true)
-                        {
-                            DeserializeObjectContainer objlist = containerStack.Pop();
-                            if (objlist.ContainerType != DeserializeObjectContainerType.Property && objlist.ContainerType != DeserializeObjectContainerType.Object)
-                            {
-
-                            }
-                        }
-                    }
-                    else
-                    {
-                        PropertyInfo currentPropertyInfo = containerStack.Peek().ContainerObject as PropertyInfo;
-                        jsonStringStack.Pop();
-                        List<char> value = new List<char>();
-                        value.Add(valueSymbol);
-                        if (currentPropertyInfo.PropertyType == typeof(int))
-                        {
-                            while (true)
-                            {
-                                char tmpValueSymbol = jsonStringStack.Pop();
-                                if (tmpValueSymbol == Convert.ToChar(JsonSymbol.JsonPropertySymbol))
-                                {
-                                    break;
-                                }
-                                else
-                                {
-                                    value.Add(tmpValueSymbol);
-                                }
-                            }
-                            containerStack.Push(new DeserializeObjectContainer { ContainerType = DeserializeObjectContainerType.Value_Int, ContainerObject = Convert.ToInt32(new string(value.ToArray()).Trim()) });
-                        }
-                        else if (currentPropertyInfo.PropertyType == typeof(string))
-                        {
-                            while (true)
-                            {
-                                char tmpValueSymbol = jsonStringStack.Pop();
-                                if (tmpValueSymbol == Convert.ToChar(JsonSymbol.JsonPropertySymbol))
-                                {
-                                    break;
-                                }
-                                else
-                                {
-                                    value.Add(tmpValueSymbol);
-                                }
-                            }
-                            containerStack.Push(new DeserializeObjectContainer { ContainerType = DeserializeObjectContainerType.Value_String, ContainerObject = new string(value.ToArray()).Trim() });
-                        }
-                        else if (currentPropertyInfo.PropertyType == typeof(Decimal))
-                        {
-                            while (true)
-                            {
-                                char tmpValueSymbol = jsonStringStack.Pop();
-                                if (tmpValueSymbol == Convert.ToChar(JsonSymbol.JsonPropertySymbol))
-                                {
-                                    break;
-                                }
-                                else
-                                {
-                                    value.Add(tmpValueSymbol);
-                                }
-                            }
-                            containerStack.Push(new DeserializeObjectContainer { ContainerType = DeserializeObjectContainerType.Value_Decimal, ContainerObject = Convert.ToDecimal(new string(value.ToArray()).Trim()) });
-                        }
-                        else if (currentPropertyInfo.PropertyType == typeof(DateTime))
-                        {
-                            while (true)
-                            {
-                                char tmpValueSymbol = jsonStringStack.Pop();
-                                if (tmpValueSymbol == Convert.ToChar(JsonSymbol.JsonPropertySymbol))
-                                {
-                                    break;
-                                }
-                                else
-                                {
-                                    value.Add(tmpValueSymbol);
-                                }
-                            }
-                            containerStack.Push(new DeserializeObjectContainer { ContainerType = DeserializeObjectContainerType.Value_DateTime, ContainerObject = Convert.ToDateTime(new string(value.ToArray()).Trim()) });
-                        }
+                        JsonDeserializeSeparateSymbol_Event(null, args);
                     }
                 }
             }
@@ -260,7 +176,15 @@ namespace Eiap.Framework.Base.Serialization.SXW
                     }
                 }
             }
-            object objectInstance = Activator.CreateInstance(currentObjectType);
+            object objectInstance = null;
+            if (currentObjectType.IsGenericType)
+            {
+                objectInstance = null;
+            }
+            else
+            {
+                objectInstance = Activator.CreateInstance(currentObjectType);
+            }
             e.ContainerStack.Push(new DeserializeObjectContainer { ContainerType = DeserializeObjectContainerType.Object, ContainerObject = objectInstance });
         }
 
@@ -384,9 +308,12 @@ namespace Eiap.Framework.Base.Serialization.SXW
                 }
             }
             string propertyNameStr = new string(propertyNameList.ToArray());
-            object currentObj = e.ContainerStack.Peek();
-            PropertyInfo propertyinfo = currentObj.GetType().GetProperty(propertyNameStr);
-            e.ContainerStack.Push(new DeserializeObjectContainer { ContainerType = DeserializeObjectContainerType.Property, ContainerObject = propertyinfo });
+            DeserializeObjectContainer currentObj = e.ContainerStack.Peek() as DeserializeObjectContainer;
+            if (currentObj != null)
+            {
+                PropertyInfo propertyinfo = GetCurrentObject(e).ContainerObject.GetType().GetProperty(propertyNameStr);
+                e.ContainerStack.Push(new DeserializeObjectContainer { ContainerType = DeserializeObjectContainerType.Property, ContainerObject = propertyinfo });
+            }
             e.JsonStringStack.Push(e.CurrentCharItem);
         }
 
@@ -481,7 +408,25 @@ namespace Eiap.Framework.Base.Serialization.SXW
         {
             throw new NotImplementedException();
         }
+
+        private static DeserializeObjectContainer GetCurrentObject(JsonDeserializeEventArgs e)
+        {
+            DeserializeObjectContainer currentObjectContainer = null;
+            Stack<DeserializeObjectContainer> tmpDeserializeObjectContainerStack = new Stack<DeserializeObjectContainer>();
+            while (true)
+            {
+                currentObjectContainer = e.ContainerStack.Pop();
+                tmpDeserializeObjectContainerStack.Push(currentObjectContainer);
+                if (currentObjectContainer.ContainerType == DeserializeObjectContainerType.Object)
+                {
+                    break;
+                }
+            }
+            while (tmpDeserializeObjectContainerStack.Count() > 0)
+            {
+                e.ContainerStack.Push(tmpDeserializeObjectContainerStack.Pop());
+            }
+            return currentObjectContainer;
+        }
     }
-
-
 }

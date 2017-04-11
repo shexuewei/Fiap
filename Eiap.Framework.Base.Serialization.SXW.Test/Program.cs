@@ -41,37 +41,42 @@ namespace Eiap.Framework.Base.Serialization.SXW.Test
             List<Schools> schoolList = new List<Schools>();
             schoolList.Add(school1);
 
-            int count = 10;
-            int num = 100000;
-            long sum = 0;
-            Stopwatch stopwatch = new Stopwatch();
-            for (int m = 0; m < count; m++)
-            {
-                stopwatch.Restart();
-                for (int i = 0; i < num; i++)
-                {
-                    var xx = JsonConvert.SerializeObject(school1);
-                }
-                stopwatch.Stop();
-                Console.WriteLine("Newtonsoft:" + stopwatch.ElapsedMilliseconds);
-                sum += stopwatch.ElapsedMilliseconds;
-            }
-            Console.WriteLine("Newtonsoft Avg:" + sum / count);
+            //int count = 10;
+            //int num = 100000;
+            //long sum = 0;
+            //Stopwatch stopwatch = new Stopwatch();
+            //for (int m = 0; m < count; m++)
+            //{
+            //    stopwatch.Restart();
+            //    for (int i = 0; i < num; i++)
+            //    {
+            //        var xx = JsonConvert.SerializeObject(school1);
+            //    }
+            //    stopwatch.Stop();
+            //    Console.WriteLine("Newtonsoft:" + stopwatch.ElapsedMilliseconds);
+            //    sum += stopwatch.ElapsedMilliseconds;
+            //}
+            //Console.WriteLine("Newtonsoft Avg:" + sum / count);
 
-            sum = 0;
+            //sum = 0;
+            //ISerializationManager serliz = DependencyManager.Instance.Resolver<ISerializationManager>();
+            //for (int m = 0; m < count; m++)
+            //{
+            //    stopwatch.Restart();
+            //    for (int i = 0; i < num; i++)
+            //    {
+            //        var xx = serliz.SerializeObject(school1);
+            //    }
+            //    stopwatch.Stop();
+            //    Console.WriteLine("SXW:" + stopwatch.ElapsedMilliseconds);
+            //    sum += stopwatch.ElapsedMilliseconds;
+            //}
+            //Console.WriteLine("SXW Avg:" + sum / count);
+
             ISerializationManager serliz = DependencyManager.Instance.Resolver<ISerializationManager>();
-            for (int m = 0; m < count; m++)
-            {
-                stopwatch.Restart();
-                for (int i = 0; i < num; i++)
-                {
-                    var xx = serliz.SerializeObject(school1);
-                }
-                stopwatch.Stop();
-                Console.WriteLine("SXW:" + stopwatch.ElapsedMilliseconds);
-                sum += stopwatch.ElapsedMilliseconds;
-            }
-            Console.WriteLine("SXW Avg:" + sum / count);
+            var xx = JsonConvert.SerializeObject(school1);
+            serliz.DeserializeObject<Schools>(xx);
+
             Console.ReadLine();
         }
     }

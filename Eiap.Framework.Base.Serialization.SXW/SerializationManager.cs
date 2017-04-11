@@ -75,13 +75,13 @@ namespace Eiap.Framework.Base.Serialization.SXW
         private void RegisterDeserializeHandleEvent()
         {
             JsonDeserializeProcess.JsonDeserializeSpaceSymbol_Event += JsonDeserializeProcess.JsonDeserializeProcess_JsonDeserializeSpaceSymbol_Event;
-            JsonDeserializeProcess.JsonDeserializeArraySymbol_End_Event += JsonDeserializeProcess.JsonDeserializeProcess_JsonDeserializeSpaceSymbol_Event;
-            JsonDeserializeProcess.JsonDeserializeObjectSymbol_Begin_Event += JsonDeserializeProcess.JsonDeserializeProcess_JsonDeserializeSpaceSymbol_Event;
-            JsonDeserializeProcess.JsonDeserializeObjectSymbol_End_Event += JsonDeserializeProcess.JsonDeserializeProcess_JsonDeserializeSpaceSymbol_Event;
-            JsonDeserializeProcess.JsonDeserializeQuotesSymbol_Event += JsonDeserializeProcess.JsonDeserializeProcess_JsonDeserializeSpaceSymbol_Event;
-            JsonDeserializeProcess.JsonDeserializePropertySymbol_Event += JsonDeserializeProcess.JsonDeserializeProcess_JsonDeserializeSpaceSymbol_Event;
-            JsonDeserializeProcess.JsonDeserializeNullSymbol_Event += JsonDeserializeProcess.JsonDeserializeProcess_JsonDeserializeSpaceSymbol_Event;
-            JsonDeserializeProcess.JsonDeserializeSeparateSymbol_Event += JsonDeserializeProcess.JsonDeserializeProcess_JsonDeserializeSpaceSymbol_Event;
+            JsonDeserializeProcess.JsonDeserializeArraySymbol_End_Event += JsonDeserializeProcess.JsonDeserializeProcess_JsonDeserializeArraySymbol_End_Event;
+            JsonDeserializeProcess.JsonDeserializeObjectSymbol_Begin_Event += JsonDeserializeProcess.JsonDeserializeProcess_JsonDeserializeObjectSymbol_Begin_Event;
+            JsonDeserializeProcess.JsonDeserializeObjectSymbol_End_Event += JsonDeserializeProcess.JsonDeserializeProcess_JsonDeserializeObjectSymbol_End_Event;
+            JsonDeserializeProcess.JsonDeserializeQuotesSymbol_Event += JsonDeserializeProcess.JsonDeserializeProcess_JsonDeserializeQuotesSymbol_Event;
+            JsonDeserializeProcess.JsonDeserializePropertySymbol_Event += JsonDeserializeProcess.JsonDeserializeProcess_JsonDeserializePropertySymbol_Event;
+            JsonDeserializeProcess.JsonDeserializeNullSymbol_Event += JsonDeserializeProcess.JsonDeserializeProcess_JsonDeserializeNullSymbol_Event;
+            JsonDeserializeProcess.JsonDeserializeSeparateSymbol_Event += JsonDeserializeProcess.JsonDeserializeProcess_JsonDeserializeSeparateSymbol_Event;
         }
     }
 }
