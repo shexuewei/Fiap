@@ -47,7 +47,7 @@ namespace Eiap.Framework.Base.Serialization.SXW
                     }
                 }
                 //属性名
-                else if (charitem == Convert.ToChar(JsonSymbol.JsonPropertySymbol))
+                else if (charitem == Convert.ToChar(JsonSymbol.JsonPropertySymbol) && IsPropertyHandler(args))
                 {
                     if (JsonDeserializePropertySymbol_Event != null)
                     {
@@ -218,7 +218,7 @@ namespace Eiap.Framework.Base.Serialization.SXW
                 }
                 else if (currentPropertyInfo.PropertyType == typeof(DateTime))
                 {
-                    GetValueContainerByPropertyType(value, Convert.ToChar(JsonSymbol.JsonQuotesSymbol), e.JsonStringStack, true);
+                    GetValueContainerByPropertyType(value, Convert.ToChar(JsonSymbol.JsonQuotesSymbol), e.JsonStringStack, true, true);
                     e.ContainerStack.Push(new DeserializeObjectContainer { ContainerType = DeserializeObjectContainerType.Value_DateTime, ContainerObject = DateTime.Parse(new string(value.ToArray())) });
                 }
                 else if (currentPropertyInfo.PropertyType == typeof(Decimal))
@@ -230,12 +230,12 @@ namespace Eiap.Framework.Base.Serialization.SXW
             e.JsonStringStack.Push(e.CurrentCharItem);
         }
 
-        private static void GetValueContainerByPropertyType(List<char> value, char breakSymbol, Stack<char> jsonStringStack, bool isContainSpace)
+        private static void GetValueContainerByPropertyType(List<char> value, char breakSymbol, Stack<char> jsonStringStack, bool isContainSpace, bool isDateTime = false)
         {
             while (true)
             {
                 char valueSymbol = jsonStringStack.Pop();
-                if (valueSymbol == breakSymbol)
+                if (valueSymbol == breakSymbol && !isDateTime)
                 {
                     break;
                 }
@@ -247,6 +247,7 @@ namespace Eiap.Framework.Base.Serialization.SXW
                 {
                     value.Insert(0, valueSymbol);
                 }
+                isDateTime = false;
             }
         }
 
@@ -392,7 +393,7 @@ namespace Eiap.Framework.Base.Serialization.SXW
                     }
                     else if (currentPropertyInfo.PropertyType == typeof(DateTime))
                     {
-                        GetValueContainerByPropertyType(value, Convert.ToChar(JsonSymbol.JsonQuotesSymbol), e.JsonStringStack, true);
+                        GetValueContainerByPropertyType(value, Convert.ToChar(JsonSymbol.JsonQuotesSymbol), e.JsonStringStack, true, true);
                         e.ContainerStack.Push(new DeserializeObjectContainer { ContainerType = DeserializeObjectContainerType.Value_DateTime, ContainerObject = Convert.ToDateTime(new string(value.ToArray()).Trim()) });
                     }
                 }
@@ -427,6 +428,35 @@ namespace Eiap.Framework.Base.Serialization.SXW
                 e.ContainerStack.Push(tmpDeserializeObjectContainerStack.Pop());
             }
             return currentObjectContainer;
+        }
+
+        private static bool IsPropertyHandler(JsonDeserializeEventArgs e)
+        {
+            bool res = false;
+            bool isQuotesSymbol = false;
+            Stack<char> charList = new Stack<char>();
+            while (true)
+            {
+                var currentChar = e.JsonStringStack.Pop();
+                charList.Push(currentChar);
+                if (currentChar != Convert.ToChar(JsonSymbol.JsonPropertySymbol) && currentChar != Convert.ToChar(JsonSymbol.JsonQuotesSymbol) && currentChar != Convert.ToChar(JsonSymbol.JsonSpaceSymbol))
+                {
+                    if (isQuotesSymbol)
+                    {
+                        res = true;
+                    }
+                    break;
+                }
+                else if (currentChar == Convert.ToChar(JsonSymbol.JsonQuotesSymbol))
+                {
+                    isQuotesSymbol = true;
+                }
+            }
+            while (charList.Count > 0)
+            {
+                e.JsonStringStack.Push(charList.Pop());
+            }
+            return res;
         }
     }
 }

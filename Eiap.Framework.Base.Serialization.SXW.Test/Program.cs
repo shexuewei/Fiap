@@ -74,8 +74,8 @@ namespace Eiap.Framework.Base.Serialization.SXW.Test
             //Console.WriteLine("SXW Avg:" + sum / count);
 
             ISerializationManager serliz = DependencyManager.Instance.Resolver<ISerializationManager>();
-            var xx = JsonConvert.SerializeObject(school1);
-            serliz.DeserializeObject<Schools>(xx);
+            var xx = JsonConvert.SerializeObject(student1);
+            var tmpxx = serliz.DeserializeObject<Students>(xx);
 
             Console.ReadLine();
         }
