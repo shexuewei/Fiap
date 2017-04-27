@@ -16,7 +16,6 @@ namespace Eiap.Framework.Base.Serialization.SXW
         public static event EventHandler<JsonDeserializeEventArgs> JsonDeserializeObjectSymbol_End_Event;
         public static event EventHandler<JsonDeserializeEventArgs> JsonDeserializeQuotesSymbol_Event;
         public static event EventHandler<JsonDeserializeEventArgs> JsonDeserializePropertySymbol_Event;
-        public static event EventHandler<JsonDeserializeEventArgs> JsonDeserializeNullSymbol_Event;
         public static event EventHandler<JsonDeserializeEventArgs> JsonDeserializeSeparateSymbol_Event;
         public static event EventHandler<JsonDeserializeEventArgs> JsonDeserializeSpaceSymbol_Event;
 
@@ -71,7 +70,8 @@ namespace Eiap.Framework.Base.Serialization.SXW
                     }
                 }
             }
-            return null;
+            object resobj = ObjectSetValue(args);
+            return resobj;
         }
 
         private static object Process(string jsonString, Type objectType, SerializationSetting setting)
@@ -206,25 +206,59 @@ namespace Eiap.Framework.Base.Serialization.SXW
             if (currentPropertyInfo != null)
             {
                 List<char> value = new List<char>();
-                if (currentPropertyInfo.PropertyType == typeof(int))
+                Type currentPropertyType = null;
+                if (currentPropertyInfo.PropertyType.IsGenericType)
+                {
+                    currentPropertyType = currentPropertyInfo.PropertyType.GetGenericArguments()[0];
+                }
+                else
+                {
+                    currentPropertyType = currentPropertyInfo.PropertyType;
+                }
+
+                if (currentPropertyType == typeof(int))
                 {
                     GetValueContainerByPropertyType(value, Convert.ToChar(JsonSymbol.JsonPropertySymbol), e.JsonStringStack,false);
-                    e.ContainerStack.Push(new DeserializeObjectContainer { ContainerType = DeserializeObjectContainerType.Value_Int, ContainerObject = int.Parse(new string(value.ToArray())) });
+                    string valuestring = new string(value.ToArray()).Trim();
+                    object objvalue = null;
+                    if (valuestring != "null")
+                    {
+                        objvalue = int.Parse(valuestring);
+                    }
+                    e.ContainerStack.Push(new DeserializeObjectContainer { ContainerType = DeserializeObjectContainerType.Value_Int, ContainerObject = objvalue });
                 }
-                else if (currentPropertyInfo.PropertyType == typeof(string))
+                else if (currentPropertyType == typeof(string))
                 {
                     GetValueContainerByPropertyType(value, Convert.ToChar(JsonSymbol.JsonPropertySymbol), e.JsonStringStack, true);
-                    e.ContainerStack.Push(new DeserializeObjectContainer { ContainerType = DeserializeObjectContainerType.Value_String, ContainerObject = new string(value.ToArray()) });
+                    string valuestring = new string(value.ToArray()).Trim();
+                    object objvalue = null;
+                    if (valuestring != "null")
+                    {
+                        objvalue = valuestring;
+                    }
+                    e.ContainerStack.Push(new DeserializeObjectContainer { ContainerType = DeserializeObjectContainerType.Value_String, ContainerObject = objvalue });
                 }
-                else if (currentPropertyInfo.PropertyType == typeof(DateTime))
+                else if (currentPropertyType == typeof(DateTime))
                 {
                     GetValueContainerByPropertyType(value, Convert.ToChar(JsonSymbol.JsonQuotesSymbol), e.JsonStringStack, true, true);
-                    e.ContainerStack.Push(new DeserializeObjectContainer { ContainerType = DeserializeObjectContainerType.Value_DateTime, ContainerObject = DateTime.Parse(new string(value.ToArray())) });
+                    string valuestring = new string(value.ToArray()).Trim();
+                    object objvalue = null;
+                    if (valuestring != "null")
+                    {
+                        objvalue = DateTime.Parse(valuestring);
+                    }
+                    e.ContainerStack.Push(new DeserializeObjectContainer { ContainerType = DeserializeObjectContainerType.Value_DateTime, ContainerObject = objvalue });
                 }
-                else if (currentPropertyInfo.PropertyType == typeof(Decimal))
+                else if (currentPropertyType == typeof(Decimal))
                 {
                     GetValueContainerByPropertyType(value, Convert.ToChar(JsonSymbol.JsonPropertySymbol), e.JsonStringStack, false);
-                    e.ContainerStack.Push(new DeserializeObjectContainer { ContainerType = DeserializeObjectContainerType.Value_Decimal, ContainerObject = Decimal.Parse(new string(value.ToArray()).Trim()) });
+                    string valuestring = new string(value.ToArray()).Trim();
+                    object objvalue = null;
+                    if (valuestring != "null")
+                    {
+                        objvalue = Decimal.Parse(valuestring);
+                    }
+                    e.ContainerStack.Push(new DeserializeObjectContainer { ContainerType = DeserializeObjectContainerType.Value_Decimal, ContainerObject = objvalue });
                 }
             }
             e.JsonStringStack.Push(e.CurrentCharItem);
@@ -319,16 +353,6 @@ namespace Eiap.Framework.Base.Serialization.SXW
         }
 
         /// <summary>
-        /// Null
-        /// </summary>
-        /// <param name="sender"></param>
-        /// <param name="e"></param>
-        public static void JsonDeserializeProcess_JsonDeserializeNullSymbol_Event(object sender, JsonDeserializeEventArgs e)
-        {
-            throw new NotImplementedException();
-        }
-
-        /// <summary>
         /// 逗号事件
         /// </summary>
         /// <param name="sender"></param>
@@ -366,7 +390,7 @@ namespace Eiap.Framework.Base.Serialization.SXW
                     PropertyInfo propertyinfo = propertylist[i].ContainerObject as PropertyInfo;
                     if (propertyinfo != null)
                     {
-                        propertyinfo.SetValue(objlist, valuelist[i].ContainerObject);
+                        propertyinfo.SetValue(objlist.ContainerObject, valuelist[i].ContainerObject);
                     }
                 }
             }
@@ -376,25 +400,59 @@ namespace Eiap.Framework.Base.Serialization.SXW
                 if (currentPropertyInfo != null)
                 {
                     List<char> value = new List<char>();
-                    if (currentPropertyInfo.PropertyType == typeof(int))
+                    Type currentPropertyType = null;
+                    if (currentPropertyInfo.PropertyType.IsGenericType)
+                    {
+                        currentPropertyType = currentPropertyInfo.PropertyType.GetGenericArguments()[0];
+                    }
+                    else
+                    {
+                        currentPropertyType = currentPropertyInfo.PropertyType;
+                    }
+
+                    if (currentPropertyType == typeof(int))
                     {
                         GetValueContainerByPropertyType(value, Convert.ToChar(JsonSymbol.JsonPropertySymbol), e.JsonStringStack, false);
-                        e.ContainerStack.Push(new DeserializeObjectContainer { ContainerType = DeserializeObjectContainerType.Value_Int, ContainerObject = Convert.ToInt32(new string(value.ToArray()).Trim()) });
+                        string valuestring = new string(value.ToArray()).Trim();
+                        object objvalue = null;
+                        if (valuestring != "null")
+                        {
+                            objvalue = int.Parse(valuestring);
+                        }
+                        e.ContainerStack.Push(new DeserializeObjectContainer { ContainerType = DeserializeObjectContainerType.Value_Int, ContainerObject = objvalue });
                     }
-                    else if (currentPropertyInfo.PropertyType == typeof(string))
+                    else if (currentPropertyType == typeof(string))
                     {
                         GetValueContainerByPropertyType(value, Convert.ToChar(JsonSymbol.JsonPropertySymbol), e.JsonStringStack, true);
-                        e.ContainerStack.Push(new DeserializeObjectContainer { ContainerType = DeserializeObjectContainerType.Value_String, ContainerObject = new string(value.ToArray()).Trim() });
+                        string valuestring = new string(value.ToArray()).Trim();
+                        object objvalue = null;
+                        if (valuestring != "null")
+                        {
+                            objvalue = valuestring;
+                        }
+                        e.ContainerStack.Push(new DeserializeObjectContainer { ContainerType = DeserializeObjectContainerType.Value_String, ContainerObject = objvalue });
                     }
-                    else if (currentPropertyInfo.PropertyType == typeof(Decimal))
-                    {
-                        GetValueContainerByPropertyType(value, Convert.ToChar(JsonSymbol.JsonPropertySymbol), e.JsonStringStack, false);
-                        e.ContainerStack.Push(new DeserializeObjectContainer { ContainerType = DeserializeObjectContainerType.Value_Decimal, ContainerObject = Convert.ToDecimal(new string(value.ToArray()).Trim()) });
-                    }
-                    else if (currentPropertyInfo.PropertyType == typeof(DateTime))
+                    else if (currentPropertyType == typeof(DateTime))
                     {
                         GetValueContainerByPropertyType(value, Convert.ToChar(JsonSymbol.JsonQuotesSymbol), e.JsonStringStack, true, true);
-                        e.ContainerStack.Push(new DeserializeObjectContainer { ContainerType = DeserializeObjectContainerType.Value_DateTime, ContainerObject = Convert.ToDateTime(new string(value.ToArray()).Trim()) });
+                        string valuestring = new string(value.ToArray()).Trim();
+                        object objvalue = null;
+                        if (valuestring != "null")
+                        {
+                            objvalue = DateTime.Parse(valuestring);
+                        }
+                        e.ContainerStack.Push(new DeserializeObjectContainer { ContainerType = DeserializeObjectContainerType.Value_DateTime, ContainerObject = objvalue });
+                    }
+                    else if (currentPropertyType == typeof(Decimal))
+                    {
+                        GetValueContainerByPropertyType(value, Convert.ToChar(JsonSymbol.JsonPropertySymbol), e.JsonStringStack, false);
+                        string valuestring = new string(value.ToArray()).Trim();
+                        object objvalue = null;
+                        if (valuestring != "null")
+                        {
+                            objvalue = Decimal.Parse(valuestring);
+                        }
+                        e.ContainerStack.Push(new DeserializeObjectContainer { ContainerType = DeserializeObjectContainerType.Value_Decimal, ContainerObject = objvalue });
                     }
                 }
             }
@@ -457,6 +515,45 @@ namespace Eiap.Framework.Base.Serialization.SXW
                 e.JsonStringStack.Push(charList.Pop());
             }
             return res;
+        }
+
+        private static object ObjectSetValue(JsonDeserializeEventArgs e)
+        {
+            List<DeserializeObjectContainer> propertylist = new List<DeserializeObjectContainer>();
+            List<DeserializeObjectContainer> valuelist = new List<DeserializeObjectContainer>();
+            DeserializeObjectContainer objlist = null;
+            while (true)
+            {
+                objlist = e.ContainerStack.Pop();
+                if (objlist.ContainerType != DeserializeObjectContainerType.Property && objlist.ContainerType != DeserializeObjectContainerType.Object)
+                {
+                    valuelist.Add(objlist);
+                }
+                else if (objlist.ContainerType == DeserializeObjectContainerType.Property)
+                {
+                    propertylist.Add(objlist);
+                }
+                else if (objlist.ContainerType == DeserializeObjectContainerType.Object)
+                {
+                    int propertycount = propertylist.Count;
+                    for (int i = 0; i < propertycount; i++)
+                    {
+                        PropertyInfo propertyinfo = propertylist[i].ContainerObject as PropertyInfo;
+                        if (propertyinfo != null)
+                        {
+                            propertyinfo.SetValue(objlist.ContainerObject, valuelist[i].ContainerObject);
+                        }
+                    }
+                    objlist.ContainerType = DeserializeObjectContainerType.Value_Object;
+                    e.ContainerStack.Push(objlist);
+                }
+                if (e.ContainerStack.Count == 1)
+                {
+                    break;
+                }
+            }
+            
+            return e.ContainerStack.Pop().ContainerObject;
         }
     }
 }
