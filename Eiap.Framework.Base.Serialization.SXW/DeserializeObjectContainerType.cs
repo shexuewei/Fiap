@@ -16,6 +16,7 @@ namespace Eiap.Framework.Base.Serialization.SXW
         Value_Int = 5,
         Value_Decimal = 6,
         Value_DateTime = 7,
-        Value_Object = 8
+        Value_Bool = 8,
+        Value_Object = 9
     }
 }

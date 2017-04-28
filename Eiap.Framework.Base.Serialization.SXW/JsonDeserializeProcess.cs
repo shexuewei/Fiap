@@ -249,7 +249,7 @@ namespace Eiap.Framework.Base.Serialization.SXW
                     }
                     e.ContainerStack.Push(new DeserializeObjectContainer { ContainerType = DeserializeObjectContainerType.Value_DateTime, ContainerObject = objvalue });
                 }
-                else if (currentPropertyType == typeof(Decimal))
+                else if (currentPropertyType == typeof(decimal))
                 {
                     GetValueContainerByPropertyType(value, Convert.ToChar(JsonSymbol.JsonPropertySymbol), e.JsonStringStack, false);
                     string valuestring = new string(value.ToArray()).Trim();
@@ -259,6 +259,17 @@ namespace Eiap.Framework.Base.Serialization.SXW
                         objvalue = Decimal.Parse(valuestring);
                     }
                     e.ContainerStack.Push(new DeserializeObjectContainer { ContainerType = DeserializeObjectContainerType.Value_Decimal, ContainerObject = objvalue });
+                }
+                else if(currentPropertyType == typeof(bool))
+                {
+                    GetValueContainerByPropertyType(value, Convert.ToChar(JsonSymbol.JsonPropertySymbol), e.JsonStringStack, false);
+                    string valuestring = new string(value.ToArray()).Trim();
+                    object objvalue = null;
+                    if (valuestring != "null")
+                    {
+                        objvalue = bool.Parse(valuestring);
+                    }
+                    e.ContainerStack.Push(new DeserializeObjectContainer { ContainerType = DeserializeObjectContainerType.Value_Bool, ContainerObject = objvalue });
                 }
             }
             e.JsonStringStack.Push(e.CurrentCharItem);
@@ -443,7 +454,7 @@ namespace Eiap.Framework.Base.Serialization.SXW
                         }
                         e.ContainerStack.Push(new DeserializeObjectContainer { ContainerType = DeserializeObjectContainerType.Value_DateTime, ContainerObject = objvalue });
                     }
-                    else if (currentPropertyType == typeof(Decimal))
+                    else if (currentPropertyType == typeof(decimal))
                     {
                         GetValueContainerByPropertyType(value, Convert.ToChar(JsonSymbol.JsonPropertySymbol), e.JsonStringStack, false);
                         string valuestring = new string(value.ToArray()).Trim();
@@ -453,6 +464,17 @@ namespace Eiap.Framework.Base.Serialization.SXW
                             objvalue = Decimal.Parse(valuestring);
                         }
                         e.ContainerStack.Push(new DeserializeObjectContainer { ContainerType = DeserializeObjectContainerType.Value_Decimal, ContainerObject = objvalue });
+                    }
+                    else if (currentPropertyType == typeof(bool))
+                    {
+                        GetValueContainerByPropertyType(value, Convert.ToChar(JsonSymbol.JsonPropertySymbol), e.JsonStringStack, false);
+                        string valuestring = new string(value.ToArray()).Trim();
+                        object objvalue = null;
+                        if (valuestring != "null")
+                        {
+                            objvalue = bool.Parse(valuestring);
+                        }
+                        e.ContainerStack.Push(new DeserializeObjectContainer { ContainerType = DeserializeObjectContainerType.Value_Bool, ContainerObject = objvalue });
                     }
                 }
             }
@@ -522,7 +544,7 @@ namespace Eiap.Framework.Base.Serialization.SXW
             List<DeserializeObjectContainer> propertylist = new List<DeserializeObjectContainer>();
             List<DeserializeObjectContainer> valuelist = new List<DeserializeObjectContainer>();
             DeserializeObjectContainer objlist = null;
-            while (true)
+            while (e.ContainerStack.Count > 0)
             {
                 objlist = e.ContainerStack.Pop();
                 if (objlist.ContainerType != DeserializeObjectContainerType.Property && objlist.ContainerType != DeserializeObjectContainerType.Object)
@@ -544,16 +566,17 @@ namespace Eiap.Framework.Base.Serialization.SXW
                             propertyinfo.SetValue(objlist.ContainerObject, valuelist[i].ContainerObject);
                         }
                     }
-                    objlist.ContainerType = DeserializeObjectContainerType.Value_Object;
-                    e.ContainerStack.Push(objlist);
-                }
-                if (e.ContainerStack.Count == 1)
-                {
-                    break;
+                    valuelist.Clear();
+                    propertylist.Clear();
+                    if (e.ContainerStack.Count > 1)
+                    {
+                        objlist.ContainerType = DeserializeObjectContainerType.Value_Object;
+                        e.ContainerStack.Push(objlist);
+                    }
                 }
             }
             
-            return e.ContainerStack.Pop().ContainerObject;
+            return objlist.ContainerObject;
         }
     }
 }

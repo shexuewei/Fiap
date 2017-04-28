@@ -31,11 +31,11 @@ namespace Eiap.Framework.Base.Serialization.SXW.Test
                 SchoolAge = 10,
                 IsPubSchool = false,
                 Amt = 1999.12345m,
-                ClassList = new List<Classes> { class1, class2 },
-                IsPriSchool = true,
-                Building = new string[] { "1", "2", "3" },
-                ClassList2 = new ArrayList { class1, 2 },
-                Dict = dict,
+                //ClassList = new List<Classes> { class1, class2 },
+                //IsPriSchool = true,
+                //Building = new string[] { "1", "2", "3" },
+                //ClassList2 = new ArrayList { class1, 2 },
+                //Dict = dict,
                 SchoolFirstStu = student1
             };
             List<Schools> schoolList = new List<Schools>();
@@ -74,8 +74,8 @@ namespace Eiap.Framework.Base.Serialization.SXW.Test
             //Console.WriteLine("SXW Avg:" + sum / count);
 
             ISerializationManager serliz = DependencyManager.Instance.Resolver<ISerializationManager>();
-            var xx = JsonConvert.SerializeObject(student1);
-            var tmpxx = serliz.DeserializeObject<Students>(xx);
+            var xx = JsonConvert.SerializeObject(school1);
+            var tmpxx = serliz.DeserializeObject<Schools>(xx);
 
             Console.ReadLine();
         }
@@ -87,11 +87,11 @@ namespace Eiap.Framework.Base.Serialization.SXW.Test
         public int SchoolAge { get; set; }
         public bool? IsPubSchool { get; set; }
         public bool? IsPriSchool { get; set; }
-        public string[] Building { get; set; }
+        //public string[] Building { get; set; }
         public decimal Amt { get; set; }
-        public IEnumerable<Classes> ClassList { get; set; }
-        public ArrayList ClassList2 { get; set; }
-        public Dictionary<string, string> Dict { get; set; }
+        //public IEnumerable<Classes> ClassList { get; set; }
+        //public ArrayList ClassList2 { get; set; }
+        //public Dictionary<string, string> Dict { get; set; }
         public Students SchoolFirstStu { get; set; }
     }
 
