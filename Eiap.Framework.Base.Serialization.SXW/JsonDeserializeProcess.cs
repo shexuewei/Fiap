@@ -376,34 +376,7 @@ namespace Eiap.Framework.Base.Serialization.SXW
             if (valueSymbol == Convert.ToChar(JsonSymbol.JsonObjectSymbol_End))
             {
                 e.JsonStringStack.Push(Convert.ToChar(JsonSymbol.JsonSeparateSymbol));
-                List<DeserializeObjectContainer> propertylist = new List<DeserializeObjectContainer>();
-                List<DeserializeObjectContainer> valuelist = new List<DeserializeObjectContainer>();
-                DeserializeObjectContainer objlist = null;
-                while (true)
-                {
-                    objlist = e.ContainerStack.Pop();
-                    if (objlist.ContainerType != DeserializeObjectContainerType.Property && objlist.ContainerType != DeserializeObjectContainerType.Object)
-                    {
-                        valuelist.Add(objlist);
-                    }
-                    else if (objlist.ContainerType == DeserializeObjectContainerType.Property)
-                    {
-                        propertylist.Add(objlist);
-                    }
-                    else if (objlist.ContainerType == DeserializeObjectContainerType.Object)
-                    {
-                        break;
-                    }
-                }
-                int propertycount = propertylist.Count;
-                for (int i = 0; i < propertycount; i++)
-                {
-                    PropertyInfo propertyinfo = propertylist[i].ContainerObject as PropertyInfo;
-                    if (propertyinfo != null)
-                    {
-                        propertyinfo.SetValue(objlist.ContainerObject, valuelist[i].ContainerObject);
-                    }
-                }
+                ObjectSetValue(e);
             }
             else
             {
@@ -450,7 +423,7 @@ namespace Eiap.Framework.Base.Serialization.SXW
                         object objvalue = null;
                         if (valuestring != "null")
                         {
-                            objvalue = DateTime.Parse(valuestring);
+                            objvalue = DateTime.Parse(valuestring.Replace("\"", ""));
                         }
                         e.ContainerStack.Push(new DeserializeObjectContainer { ContainerType = DeserializeObjectContainerType.Value_DateTime, ContainerObject = objvalue });
                     }
@@ -544,7 +517,8 @@ namespace Eiap.Framework.Base.Serialization.SXW
             List<DeserializeObjectContainer> propertylist = new List<DeserializeObjectContainer>();
             List<DeserializeObjectContainer> valuelist = new List<DeserializeObjectContainer>();
             DeserializeObjectContainer objlist = null;
-            while (e.ContainerStack.Count > 0)
+            bool isBreak = true;
+            while (isBreak)
             {
                 objlist = e.ContainerStack.Pop();
                 if (objlist.ContainerType != DeserializeObjectContainerType.Property && objlist.ContainerType != DeserializeObjectContainerType.Object)
@@ -572,6 +546,7 @@ namespace Eiap.Framework.Base.Serialization.SXW
                     {
                         objlist.ContainerType = DeserializeObjectContainerType.Value_Object;
                         e.ContainerStack.Push(objlist);
+                        isBreak = false;
                     }
                 }
             }

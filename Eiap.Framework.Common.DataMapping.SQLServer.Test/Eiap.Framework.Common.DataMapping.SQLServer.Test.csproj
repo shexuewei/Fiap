@@ -42,6 +42,7 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="DataMappingSQLServerTestModule.cs" />
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
@@ -61,10 +62,6 @@
       <Project>{305c705e-d5bc-4de3-bf41-bb89a0eadd37}</Project>
       <Name>Eiap.Framework.AppBase.UnitOfWork.SXW</Name>
     </ProjectReference>
-    <ProjectReference Include="..\Eiap.Framework.Common.Logger.LocalFile\Eiap.Framework.Common.Logger.LocalFile.csproj">
-      <Project>{c9f8075b-770c-4959-92ce-78f89f6ef2aa}</Project>
-      <Name>Eiap.Framework.Common.Logger.LocalFile</Name>
-    </ProjectReference>
     <ProjectReference Include="..\Eiap.Framework.DataAccess.SQLServer\Eiap.Framework.Common.DataAccess.SQLServer.csproj">
       <Project>{e986f31f-433c-4ba0-9284-744c2d01b497}</Project>
       <Name>Eiap.Framework.Common.DataAccess.SQLServer</Name>
@@ -73,11 +70,11 @@
       <Project>{1efe8b75-d3d9-4608-b29a-ef026770bdc5}</Project>
       <Name>Eiap.Framework.Common.DataMapping.SQLServer</Name>
     </ProjectReference>
-    <ProjectReference Include="..\Eiap.Framework.Dependency.SXW\Eiap.Framework.Base.Dependency.SXW.csproj">
+    <ProjectReference Include="..\Eiap.Framework.Base.Dependency.SXW\Eiap.Framework.Base.Dependency.SXW.csproj">
       <Project>{efca732e-18cf-410e-adf5-b8a3e4c28ff3}</Project>
       <Name>Eiap.Framework.Base.Dependency.SXW</Name>
     </ProjectReference>
-    <ProjectReference Include="..\Eiap.Framework.DynamicProxy.SXW\Eiap.Framework.Base.DynamicProxy.SXW.csproj">
+    <ProjectReference Include="..\Eiap.Framework.Base.DynamicProxy.SXW\Eiap.Framework.Base.DynamicProxy.SXW.csproj">
       <Project>{c0281458-6ce2-42dd-a807-c1c74557f354}</Project>
       <Name>Eiap.Framework.Base.DynamicProxy.SXW</Name>
     </ProjectReference>

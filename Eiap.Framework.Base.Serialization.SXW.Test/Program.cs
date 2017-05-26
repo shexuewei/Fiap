@@ -20,8 +20,18 @@ namespace Eiap.Framework.Base.Serialization.SXW.Test
             Students student2 = new Students { Age = 20, Birthday = DateTime.Now, Height = 160, Name = "student2" };
             Students student3 = new Students { Age = 30, Birthday = DateTime.Now, Height = null, Name = "student3" };
 
-            Classes class1 = new Classes { ClassName = "Class1", StudentList = new List<Students> { student1 } };
-            Classes class2 = new Classes { ClassName = "class2", StudentList = new List<Students> { student3, student2, student1 } };
+            Classes class1 = new Classes
+            {
+                ClassName = "Class1",
+                StudentOne = student2
+                //StudentList = new List<Students> { student1 }
+            };
+            Classes class2 = new Classes
+            {
+                ClassName = "class2",
+                StudentOne = student1
+                //StudentList = new List<Students> { student3, student2, student1 }
+            };
             Dictionary<string, string> dict = new Dictionary<string, string>();
             dict.Add("123", "321");
             dict.Add("456", "654");
@@ -31,6 +41,7 @@ namespace Eiap.Framework.Base.Serialization.SXW.Test
                 SchoolAge = 10,
                 IsPubSchool = false,
                 Amt = 1999.12345m,
+                ClassOne = class1,
                 //ClassList = new List<Classes> { class1, class2 },
                 //IsPriSchool = true,
                 //Building = new string[] { "1", "2", "3" },
@@ -74,7 +85,7 @@ namespace Eiap.Framework.Base.Serialization.SXW.Test
             //Console.WriteLine("SXW Avg:" + sum / count);
 
             ISerializationManager serliz = DependencyManager.Instance.Resolver<ISerializationManager>();
-            var xx = JsonConvert.SerializeObject(school1);
+            var xx = serliz.SerializeObject(school1); //JsonConvert.SerializeObject(school1);
             var tmpxx = serliz.DeserializeObject<Schools>(xx);
 
             Console.ReadLine();
@@ -89,6 +100,7 @@ namespace Eiap.Framework.Base.Serialization.SXW.Test
         public bool? IsPriSchool { get; set; }
         //public string[] Building { get; set; }
         public decimal Amt { get; set; }
+        public Classes ClassOne { get; set; }
         //public IEnumerable<Classes> ClassList { get; set; }
         //public ArrayList ClassList2 { get; set; }
         //public Dictionary<string, string> Dict { get; set; }
@@ -98,7 +110,8 @@ namespace Eiap.Framework.Base.Serialization.SXW.Test
     public class Classes
     {
         public string ClassName { get; set; }
-        public IList<Students> StudentList { get; set; }
+        public Students StudentOne { get; set; }
+        //public IList<Students> StudentList { get; set; }
     }
 
     public class Students

@@ -22,7 +22,7 @@ namespace Eiap.Framework.Common.DataMapping.SQLServer.Test
     {
         static void Main(string[] args)
         {
-            AssemblyManager.Instance.RegisterAssembly(@"C:\MyWork\EiapV3.0\Eiap.Framework\Eiap.Framework.Common.DataMapping.SQLServer.Test\bin\Debug").Register(DependencyManager.Instance.Register);
+            AssemblyManager.Instance.AssemblyInitialize().Register(DependencyManager.Instance.Register);
             IUnitOfWorkApplicationTest test = (IUnitOfWorkApplicationTest)DependencyManager.Instance.Resolver(typeof(IUnitOfWorkApplicationTest));
             var school = test.InsertSchoolTest("shoolTest001");
             var classtest = test.InsertClassTest("class001", school.Id);
@@ -106,8 +106,6 @@ namespace Eiap.Framework.Common.DataMapping.SQLServer.Test
         List<StudentTest> GetStudentTestList();
     }
 
-
-
     public class UnitOfWorkApplicationTest : AppService, IUnitOfWorkApplicationTest
     {
         private readonly IRepository<StudentTest, Guid> _studentTestRepository;
@@ -127,7 +125,6 @@ namespace Eiap.Framework.Common.DataMapping.SQLServer.Test
         public void InsertStudentTest(string name, int age, DateTime? birthday, Guid classid, Guid schoolid)
         {
             StudentTest stu = new StudentTest { Name = name, Age = age, Id = Guid.NewGuid(), Birthday = birthday, ClassTestId = classid, SchoolTestId = schoolid }; //SchoolTestId = schoolid
-            Log.Info(stu.ToString(), "InsertStudentTest");
             _studentTestRepository.Add(stu);
         }
 
