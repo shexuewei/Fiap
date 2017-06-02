@@ -23,14 +23,14 @@ namespace Eiap.Framework.Base.Serialization.SXW.Test
             Classes class1 = new Classes
             {
                 ClassName = "Class1",
-                StudentOne = student2
-                //StudentList = new List<Students> { student1 }
+                StudentOne = student2,
+                StudentList = new List<Students> { student1 }
             };
             Classes class2 = new Classes
             {
                 ClassName = "class2",
-                StudentOne = student1
-                //StudentList = new List<Students> { student3, student2, student1 }
+                StudentOne = student1,
+                StudentList = new List<Students> { student3, student2, student1 }
             };
             Dictionary<string, string> dict = new Dictionary<string, string>();
             dict.Add("123", "321");
@@ -42,11 +42,11 @@ namespace Eiap.Framework.Base.Serialization.SXW.Test
                 IsPubSchool = false,
                 Amt = 1999.12345m,
                 ClassOne = class1,
-                //ClassList = new List<Classes> { class1, class2 },
-                //IsPriSchool = true,
-                //Building = new string[] { "1", "2", "3" },
-                //ClassList2 = new ArrayList { class1, 2 },
-                //Dict = dict,
+                ClassList = new List<Classes> { class1, class2 },
+                IsPriSchool = true,
+                Building = new string[] { "1", "2", "3" },
+                ClassList2 = new ArrayList { class1, 2 },
+                Dict = dict,
                 SchoolFirstStu = student1
             };
             List<Schools> schoolList = new List<Schools>();
@@ -85,8 +85,8 @@ namespace Eiap.Framework.Base.Serialization.SXW.Test
             //Console.WriteLine("SXW Avg:" + sum / count);
 
             ISerializationManager serliz = DependencyManager.Instance.Resolver<ISerializationManager>();
-            var xx = serliz.SerializeObject(school1); //JsonConvert.SerializeObject(school1);
-            var tmpxx = serliz.DeserializeObject<Schools>(xx);
+            var xx = serliz.SerializeObject(schoolList); //JsonConvert.SerializeObject(school1);
+            var tmpxx = serliz.DeserializeObject<List<Schools>>(xx);
 
             Console.ReadLine();
         }
@@ -98,12 +98,12 @@ namespace Eiap.Framework.Base.Serialization.SXW.Test
         public int SchoolAge { get; set; }
         public bool? IsPubSchool { get; set; }
         public bool? IsPriSchool { get; set; }
-        //public string[] Building { get; set; }
+        public string[] Building { get; set; }
         public decimal Amt { get; set; }
         public Classes ClassOne { get; set; }
-        //public IEnumerable<Classes> ClassList { get; set; }
-        //public ArrayList ClassList2 { get; set; }
-        //public Dictionary<string, string> Dict { get; set; }
+        public IEnumerable<Classes> ClassList { get; set; }
+        public ArrayList ClassList2 { get; set; }
+        public Dictionary<string, string> Dict { get; set; }
         public Students SchoolFirstStu { get; set; }
     }
 
@@ -111,7 +111,7 @@ namespace Eiap.Framework.Base.Serialization.SXW.Test
     {
         public string ClassName { get; set; }
         public Students StudentOne { get; set; }
-        //public IList<Students> StudentList { get; set; }
+        public IList<Students> StudentList { get; set; }
     }
 
     public class Students
