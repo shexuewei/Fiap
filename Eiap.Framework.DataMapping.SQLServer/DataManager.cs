@@ -44,6 +44,7 @@ namespace Eiap.Framework.Common.DataMapping.SQLServer
                 datadescription = new DataDescription();
                 datadescription.TableName = type.GetTableName();
                 datadescription.PrimaryKeyName = type.GetPrimaryKeyName(datadescription.TableName);
+                datadescription.PrimaryKeyParameterName = type.GetPrimaryKeyParameterName();
                 datadescription.SelectAllSQL = GetSelectAllSQL(datadescription, type);
                 datadescription.SelectSQL = GetSelectSQL(datadescription,type);
                 datadescription.InsertSQL = GetInsertSQL(datadescription, type);
@@ -58,7 +59,7 @@ namespace Eiap.Framework.Common.DataMapping.SQLServer
         private string GetSelectSQL(DataDescription datadescription, Type t)
         {
 
-            return datadescription.SelectAllSQL + " where " + datadescription.PrimaryKeyName + " = @" + datadescription.PrimaryKeyName;
+            return datadescription.SelectAllSQL + " where " + datadescription.PrimaryKeyName + " = @" + datadescription.PrimaryKeyParameterName;
         }
 
         private string GetSelectAllSQL(DataDescription datadescription, Type t)
@@ -103,12 +104,12 @@ namespace Eiap.Framework.Common.DataMapping.SQLServer
                     sql += info.GetColumnName(datadescription.TableName)+ " = @" + info.Name + "_{0}" + ",";
                 }
             }
-            return sql = sql.Substring(0, sql.Length - 1) + " where " + datadescription.PrimaryKeyName + " = @" + datadescription.PrimaryKeyName + "_{0};";
+            return sql = sql.Substring(0, sql.Length - 1) + " where " + datadescription.PrimaryKeyName + " = @" + datadescription.PrimaryKeyParameterName + "_{0};";
         }
 
         private string GetDeleteSQL(DataDescription datadescription, Type t)
         {
-            return "delete " + datadescription.TableName + " where " + datadescription.PrimaryKeyName + " = @" + datadescription.PrimaryKeyName + "_{0};";
+            return "delete " + datadescription.TableName + " where " + datadescription.PrimaryKeyName + " = @" + datadescription.PrimaryKeyParameterName + "_{0};";
         }
 
         private string GetJoinSQL(DataDescription datadescription, Type t)

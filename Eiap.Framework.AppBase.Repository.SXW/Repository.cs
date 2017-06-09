@@ -84,14 +84,17 @@ namespace Eiap.Framework.AppBase.Repository.SXW
                 if (_AddEntityList != null && _AddEntityList.Count > 0)
                 {
                     _CommandMapping.BatchInsertEntity(_AddEntityList);
+                    _AddEntityList.Clear();
                 }
                 if (_UpdateEntityList != null && _UpdateEntityList.Count > 0)
                 {
                     _CommandMapping.BatchUpdateEntity(_UpdateEntityList);
+                    _UpdateEntityList.Clear();
                 }
                 if (_DeletePrimarykeyList != null && _DeletePrimarykeyList.Count > 0)
                 {
                     _CommandMapping.BatchDeleteEntity(_DeletePrimarykeyList);
+                    _DeletePrimarykeyList.Clear();
                 }
             }
             catch (Exception ex)

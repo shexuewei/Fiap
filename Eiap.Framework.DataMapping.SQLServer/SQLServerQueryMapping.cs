@@ -48,9 +48,9 @@ namespace Eiap.Framework.Common.DataMapping.SQLServer
         {
             List<tEntity> entityList = new List<tEntity>();
             PropertyInfoList = typeof(tEntity).GetProperties().ToList();
-            string sqlWhere = GetSqlWhere(typeof(tEntity).GetTableName());
-            string sqlOrderby = GetSqlOrderBy(typeof(tEntity).GetTableName());
-            string sqlSelect = GetSqlSelect(typeof(tEntity).GetTableName());
+            string sqlWhere = GetSqlWhere(GetTableName());
+            string sqlOrderby = GetSqlOrderBy(GetTableName());
+            string sqlSelect = GetSqlSelect(GetTableName());
             string withNolock = GetWithNolockString();
             string sqlJoin = GetJoinSQL();
             _Top = _Top == 0 ? 10 : _Top;
@@ -72,6 +72,7 @@ namespace Eiap.Framework.Common.DataMapping.SQLServer
                 dr.Close();
             }
             _ReadSQLDataAccessConnection.DBClose();
+            InitializationParameter();
             return entityList;
         }
 
@@ -128,8 +129,8 @@ namespace Eiap.Framework.Common.DataMapping.SQLServer
         {
             List<tEntity> entityList = new List<tEntity>();
             PropertyInfoList = typeof(tEntity).GetProperties().ToList();
-            string sqlOrderby = GetSqlOrderBy(typeof(tEntity).GetTableName());
-            string sqlSelect = GetSqlSelect(typeof(tEntity).GetTableName());
+            string sqlOrderby = GetSqlOrderBy(GetTableName());
+            string sqlSelect = GetSqlSelect(GetTableName());
             string sqlJoin = GetJoinSQL();
             string sql = (sqlSelect.Length == 0 ? GetSelectAllSQL() : sqlSelect) + sqlJoin + sqlOrderby;
             _SQLDataQuery.SQLDataAccessConnection = _ReadSQLDataAccessConnection;
@@ -146,6 +147,7 @@ namespace Eiap.Framework.Common.DataMapping.SQLServer
                 dr.Close();
             }
             _ReadSQLDataAccessConnection.DBClose();
+            InitializationParameter();
             return entityList;
         }
 
@@ -153,7 +155,7 @@ namespace Eiap.Framework.Common.DataMapping.SQLServer
         {
             tEntity entity = (tEntity)Activator.CreateInstance(typeof(tEntity));
             PropertyInfoList = typeof(tEntity).GetProperties().ToList();
-            IDataParameter[] para = new SqlParameter[] { new SqlParameter() { ParameterName = "@" + GetPrimaryKeyName(), Value = Id } };
+            IDataParameter[] para = new SqlParameter[] { new SqlParameter() { ParameterName = "@" + GetPrimaryKeyParameterName(), Value = Id } };
             _SQLDataQuery.SQLDataAccessConnection = _ReadSQLDataAccessConnection;
             _ReadSQLDataAccessConnection.Create();
             _ReadSQLDataAccessConnection.DBOpen();
@@ -166,6 +168,7 @@ namespace Eiap.Framework.Common.DataMapping.SQLServer
                 dr.Close();
             }
             _ReadSQLDataAccessConnection.DBClose();
+            InitializationParameter();
             return entity;
         }
 
@@ -336,6 +339,21 @@ namespace Eiap.Framework.Common.DataMapping.SQLServer
         private string GetJoinSQL()
         {
             return DataManager.Instance.GetDataDescription(typeof(tEntity)).JoinSQL;
+        }
+
+        private string GetPrimaryKeyParameterName()
+        {
+            return DataManager.Instance.GetDataDescription(typeof(tEntity)).PrimaryKeyParameterName;
+        }
+
+        private void InitializationParameter()
+        {
+            PropertyInfoList.Clear();
+            _WhereExpressionList.Clear();
+            _DataParameter.Clear();
+            _DataParameterIndex = 0;
+            _Top = 0;
+            _Skip = 0;
         }
     }
 }

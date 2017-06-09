@@ -35,6 +35,14 @@ namespace Eiap.Framework.Base.Serialization.SXW
                         JsonDeserializeArraySymbol_Begin_Event(null, args);
                     }
                 }
+                //数组结束
+                if (charitem == Convert.ToChar(JsonSymbol.JsonArraySymbol_End))
+                {
+                    if (JsonDeserializeArraySymbol_End_Event != null)
+                    {
+                        JsonDeserializeArraySymbol_End_Event(null, args);
+                    }
+                }
                 //对象开始
                 else if (charitem == Convert.ToChar(JsonSymbol.JsonObjectSymbol_Begin))
                 {
@@ -78,6 +86,7 @@ namespace Eiap.Framework.Base.Serialization.SXW
         /// <param name="e"></param>
         public static void JsonDeserializeProcess_JsonDeserializeArraySymbol_Begin_Event(object sender, JsonDeserializeEventArgs e)
         {
+            e.JsonStringStack.Pop();//]出栈
             Type currentObjectType = null;
             if (e.ContainerStack.Count() == 0)
             {
@@ -100,7 +109,14 @@ namespace Eiap.Framework.Base.Serialization.SXW
             {
                 Type genType = currentObjectType.GetGenericTypeDefinition();
                 Type[] genParaType = currentObjectType.GetGenericArguments();
-                Type objtype = genType.MakeGenericType(genParaType);
+                Type objtype = typeof(List<>).MakeGenericType(genParaType);
+                objectInstance = Activator.CreateInstance(objtype) as IList;
+            }
+            else if (currentObjectType.IsArray)
+            {
+                Type arrayElementType = currentObjectType.GetElementType();
+                Type[] genParaType = new Type[] { arrayElementType };
+                Type objtype = typeof(List<>).MakeGenericType(genParaType);
                 objectInstance = Activator.CreateInstance(objtype) as IList;
             }
             else
@@ -117,7 +133,7 @@ namespace Eiap.Framework.Base.Serialization.SXW
         /// <param name="e"></param>
         public static void JsonDeserializeProcess_JsonDeserializeArraySymbol_End_Event(object sender, JsonDeserializeEventArgs e)
         {
-            e.JsonStringStack.Pop();//}出栈
+            e.JsonStringStack.Pop();//]出栈
             DeserializeObjectContainer currentObjectContainer = e.ContainerStack.Pop();
             PropertyInfo currentPropertyInfo = null;
             object objvalue = null;
@@ -125,20 +141,39 @@ namespace Eiap.Framework.Base.Serialization.SXW
             if (currentObjectContainer.ContainerType == DeserializeObjectContainerType.Object)
             {
                 objvalue = currentObjectContainer.ContainerObject;
-                currentObjectContainer = e.ContainerStack.Pop();
+                currentObjectContainer = e.ContainerStack.Peek();
                 if (currentObjectContainer.ContainerType == DeserializeObjectContainerType.List)
                 {
                     listvalue = currentObjectContainer.ContainerObject as IList;
                     listvalue.Add(objvalue);
-                    currentObjectContainer = e.ContainerStack.Pop();
-                    if (currentObjectContainer.ContainerType == DeserializeObjectContainerType.Property)
-                    {
-                        objvalue = listvalue;
-                        currentPropertyInfo = currentObjectContainer.ContainerObject as PropertyInfo;
-                        currentPropertyInfo.SetValue(e.ContainerStack.Peek().ContainerObject, objvalue);
-                    }
+                    //currentObjectContainer = e.ContainerStack.Pop();
+                    //if (currentObjectContainer.ContainerType == DeserializeObjectContainerType.Property)
+                    //{
+                    //    objvalue = listvalue;
+                    //    currentPropertyInfo = currentObjectContainer.ContainerObject as PropertyInfo;
+                    //    currentPropertyInfo.SetValue(e.ContainerStack.Peek().ContainerObject, objvalue);
+                    //}
                 }
             }
+            else if (currentObjectContainer.ContainerType == DeserializeObjectContainerType.List)
+            {
+                string valuestring = GetValueContainerByPropertyType(e.JsonStringStack);
+                listvalue = currentObjectContainer.ContainerObject as IList;
+                listvalue.Add(valuestring);
+                e.ContainerStack.Push(currentObjectContainer);
+                //currentObjectContainer = e.ContainerStack.Peek();
+                //if (currentObjectContainer.ContainerType == DeserializeObjectContainerType.Property)
+                //{
+                //    currentPropertyInfo = currentObjectContainer.ContainerObject as PropertyInfo;
+                //    Type currentPropertyType = currentPropertyInfo.PropertyType;
+                //    if (currentPropertyType.IsArray)
+                //    {
+                //        objvalue = IListToArray(listvalue);
+                //        currentPropertyInfo.SetValue(e.ContainerStack.Peek().ContainerObject, objvalue);
+                //    }
+                //}
+            }
+
         }
 
         /// <summary>
@@ -164,16 +199,12 @@ namespace Eiap.Framework.Base.Serialization.SXW
                         currentObjectType = currentPropertyInfo.PropertyType;
                     }
                 }
+                else if (container.ContainerType == DeserializeObjectContainerType.List)
+                {
+                    currentObjectType = container.ContainerObject.GetType().GetGenericArguments()[0];
+                }
             }
-            object objectInstance = null;
-            if (currentObjectType.IsGenericType)
-            {
-                objectInstance = null;
-            }
-            else
-            {
-                objectInstance = Activator.CreateInstance(currentObjectType);
-            }
+            object objectInstance = Activator.CreateInstance(currentObjectType);
             e.ContainerStack.Push(new DeserializeObjectContainer { ContainerType = DeserializeObjectContainerType.Object, ContainerObject = objectInstance });
             e.JsonStringStack.Pop();
         }
@@ -195,7 +226,11 @@ namespace Eiap.Framework.Base.Serialization.SXW
             {
                 objvalue = currentObjectContainer.ContainerObject;
                 currentObjectContainer = e.ContainerStack.Pop();
-                currentPropertyInfo.SetValue(e.ContainerStack.Peek().ContainerObject, objvalue);
+                currentPropertyInfo = currentObjectContainer.ContainerObject as PropertyInfo;
+                if (currentPropertyInfo != null)
+                {
+                    currentPropertyInfo.SetValue(e.ContainerStack.Peek().ContainerObject, objvalue);
+                }
             }
             else if (currentObjectContainer.ContainerType == DeserializeObjectContainerType.Property)
             {
@@ -325,12 +360,22 @@ namespace Eiap.Framework.Base.Serialization.SXW
             IList listvalue = null;
             if (currentObjectContainer.ContainerType == DeserializeObjectContainerType.List)
             {
-                objvalue = currentObjectContainer.ContainerObject;
-                currentObjectContainer = e.ContainerStack.Pop();
-                if (currentObjectContainer.ContainerType == DeserializeObjectContainerType.Property)
+                listvalue = currentObjectContainer.ContainerObject as IList;
+                if (e.JsonStringStack.Count > 0)
                 {
-                    currentPropertyInfo = currentObjectContainer.ContainerObject as PropertyInfo;
-                    currentPropertyInfo.SetValue(e.ContainerStack.Peek().ContainerObject, objvalue);
+                    string valuestring = GetValueContainerByPropertyType(e.JsonStringStack);
+                    listvalue.Add(valuestring);
+                    e.ContainerStack.Push(currentObjectContainer);
+                }
+                else
+                {
+                    objvalue = IListToArray(listvalue);
+                    currentObjectContainer = e.ContainerStack.Pop();
+                    if (currentObjectContainer.ContainerType == DeserializeObjectContainerType.Property)
+                    {
+                        currentPropertyInfo = currentObjectContainer.ContainerObject as PropertyInfo;
+                        currentPropertyInfo.SetValue(e.ContainerStack.Peek().ContainerObject, objvalue);
+                    }
                 }
             }
             else if (currentObjectContainer.ContainerType == DeserializeObjectContainerType.Object)
@@ -452,6 +497,65 @@ namespace Eiap.Framework.Base.Serialization.SXW
                 e.JsonStringStack.Push(charList.Pop());
             }
             return res;
+        }
+
+        private static object IListToArray(IList list)
+        {
+            object arrayObj = null;
+            Type listType = list.GetType().GetGenericArguments()[0];
+            IEnumerator enumeratorList = list.GetEnumerator();
+            int currentListIndex = 0;
+            if (listType == typeof(int))
+            {
+                int[] tmpIntArray = new int[list.Count];
+                while (enumeratorList.MoveNext())
+                {
+                    tmpIntArray[currentListIndex] = Convert.ToInt32(enumeratorList.Current);
+                    currentListIndex++;
+                }
+                arrayObj = tmpIntArray;
+            }
+            else if (listType == typeof(string))
+            {
+                string[] tmpStringArray = new string[list.Count];
+                while (enumeratorList.MoveNext())
+                {
+                    tmpStringArray[currentListIndex] = Convert.ToString(enumeratorList.Current);
+                    currentListIndex++;
+                }
+                arrayObj = tmpStringArray;
+            }
+            else if (listType == typeof(DateTime))
+            {
+                DateTime[] tmpDTArray = new DateTime[list.Count];
+                while (enumeratorList.MoveNext())
+                {
+                    tmpDTArray[currentListIndex] = Convert.ToDateTime(enumeratorList.Current);
+                    currentListIndex++;
+                }
+                arrayObj = tmpDTArray;
+            }
+            else if (listType == typeof(decimal))
+            {
+                decimal[] tmpDecimalArray = new decimal[list.Count];
+                while (enumeratorList.MoveNext())
+                {
+                    tmpDecimalArray[currentListIndex] = Convert.ToDecimal(enumeratorList.Current);
+                    currentListIndex++;
+                }
+                arrayObj = tmpDecimalArray;
+            }
+            else if (listType == typeof(bool))
+            {
+                bool[] tmpBoolArray = new bool[list.Count];
+                while (enumeratorList.MoveNext())
+                {
+                    tmpBoolArray[currentListIndex] = Convert.ToBoolean(enumeratorList.Current);
+                    currentListIndex++;
+                }
+                arrayObj = tmpBoolArray;
+            }
+            return arrayObj;
         }
     }
 }

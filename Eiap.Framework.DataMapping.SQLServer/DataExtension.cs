@@ -33,6 +33,26 @@ namespace Eiap.Framework.Common.DataMapping.SQLServer
             return key;
         }
 
+        public static string GetPrimaryKeyParameterName(this Type tEntity)
+        {
+            string paraName = "";
+            PropertyInfo[] propertyList = tEntity.GetProperties();
+            foreach (PropertyInfo p in propertyList)
+            {
+                PropertyAttribute proAtt = p.GetCustomAttribute(typeof(PropertyAttribute)) as PropertyAttribute;
+                if (proAtt != null && proAtt.IsPrimaryKey && proAtt.ColumnName != null && proAtt.ColumnName.Length > 0)
+                {
+                    paraName = proAtt.ColumnName;
+                    break;
+                }
+            }
+            if (paraName.Length == 0)
+            {
+                paraName = propertyList[0].Name;
+            }
+            return paraName;
+        }
+
         public static string GetTableName(this Type tEntity)
         {
             string tableName = "";

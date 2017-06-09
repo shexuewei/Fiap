@@ -24,5 +24,7 @@ namespace Eiap.Framework.Common.DataMapping.SQLServer
         public string DeleteSQL { get; set; }
 
         public string JoinSQL { get; set; }
+
+        public string PrimaryKeyParameterName { get; set; }
     }
 }
