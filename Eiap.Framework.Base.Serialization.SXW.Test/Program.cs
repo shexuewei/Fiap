@@ -45,7 +45,7 @@ namespace Eiap.Framework.Base.Serialization.SXW.Test
                 ClassList = new List<Classes> { class1, class2 },
                 IsPriSchool = true,
                 Building = new string[] { "1", "2", "3" },
-                ClassList2 = new ArrayList { class1, 2 },
+                //ClassList2 = new ArrayList { class1, 2 },
                 Dict = dict,
                 SchoolFirstStu = student1
             };
@@ -86,6 +86,7 @@ namespace Eiap.Framework.Base.Serialization.SXW.Test
 
             ISerializationManager serliz = DependencyManager.Instance.Resolver<ISerializationManager>();
             var xx = serliz.SerializeObject(schoolList); //JsonConvert.SerializeObject(school1);
+            var yy = JsonConvert.DeserializeObject<List<Schools>>(xx);
             var tmpxx = serliz.DeserializeObject<List<Schools>>(xx);
 
             Console.ReadLine();

@@ -11,6 +11,7 @@ namespace Eiap.Framework.Base.Serialization.SXW
         List = 0,
         Object = 1,
         Property = 2,
+        DictionaryKey = 3,
         Value_String = 4,
         Value_Int = 5,
         Value_Decimal = 6,

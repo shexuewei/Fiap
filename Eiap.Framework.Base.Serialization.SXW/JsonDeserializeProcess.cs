@@ -232,6 +232,12 @@ namespace Eiap.Framework.Base.Serialization.SXW
                     currentPropertyInfo.SetValue(e.ContainerStack.Peek().ContainerObject, objvalue);
                 }
             }
+            else if (currentObjectContainer.ContainerType == DeserializeObjectContainerType.DictionaryKey)
+            {
+                IDictionary dic = e.ContainerStack.Peek().ContainerObject as IDictionary;
+                string valuestring = GetValueContainerByPropertyType(e.JsonStringStack);
+                dic.Add(currentObjectContainer.ContainerObject, valuestring);
+            }
             else if (currentObjectContainer.ContainerType == DeserializeObjectContainerType.Property)
             {
                 Type currentPropertyType = null;
@@ -338,11 +344,20 @@ namespace Eiap.Framework.Base.Serialization.SXW
                 }
             }
             string propertyNameStr = new string(propertyNameList.ToArray());
+            if (propertyNameStr == "Dict")
+            { }
             DeserializeObjectContainer currentObj = e.ContainerStack.Peek() as DeserializeObjectContainer;
             if (currentObj != null)
             {
-                PropertyInfo propertyinfo = GetCurrentObject(e).ContainerObject.GetType().GetProperty(propertyNameStr);
-                e.ContainerStack.Push(new DeserializeObjectContainer { ContainerType = DeserializeObjectContainerType.Property, ContainerObject = propertyinfo });
+                if (typeof(IDictionary).IsAssignableFrom(currentObj.ContainerObject.GetType()))
+                {
+                    e.ContainerStack.Push(new DeserializeObjectContainer { ContainerType = DeserializeObjectContainerType.DictionaryKey, ContainerObject = propertyNameStr });
+                }
+                else
+                {
+                    PropertyInfo propertyinfo = GetCurrentObject(e).ContainerObject.GetType().GetProperty(propertyNameStr);
+                    e.ContainerStack.Push(new DeserializeObjectContainer { ContainerType = DeserializeObjectContainerType.Property, ContainerObject = propertyinfo });
+                }
             }
         }
 
@@ -377,6 +392,12 @@ namespace Eiap.Framework.Base.Serialization.SXW
                         currentPropertyInfo.SetValue(e.ContainerStack.Peek().ContainerObject, objvalue);
                     }
                 }
+            }
+            else if (currentObjectContainer.ContainerType == DeserializeObjectContainerType.DictionaryKey)
+            {
+                IDictionary dic = e.ContainerStack.Peek().ContainerObject as IDictionary;
+                string valuestring = GetValueContainerByPropertyType(e.JsonStringStack);
+                dic.Add(currentObjectContainer.ContainerObject, valuestring);
             }
             else if (currentObjectContainer.ContainerType == DeserializeObjectContainerType.Object)
             {
@@ -443,10 +464,7 @@ namespace Eiap.Framework.Base.Serialization.SXW
                         objvalue = bool.Parse(valuestring);
                     }
                 }
-                if (objvalue != null)
-                {
-                    currentPropertyInfo.SetValue(e.ContainerStack.Peek().ContainerObject, objvalue);
-                }
+                currentPropertyInfo.SetValue(e.ContainerStack.Peek().ContainerObject, objvalue);
             }
         }
 
@@ -554,6 +572,10 @@ namespace Eiap.Framework.Base.Serialization.SXW
                     currentListIndex++;
                 }
                 arrayObj = tmpBoolArray;
+            }
+            else
+            {
+                arrayObj = list;
             }
             return arrayObj;
         }
