@@ -89,10 +89,10 @@ namespace Eiap.Framework.Base.Serialization.SXW.Test
             #region 反序列化
             ISerializationManager serliz = DependencyManager.Instance.Resolver<ISerializationManager>();
             var testobject = serliz.SerializeObject(schoolList);
-            long count = 10;
+            long count = 1;
             long num = 10000;
 
-            //long sum = 0;
+            //double sum = 0;
             //for (int m = 0; m < count; m++)
             //{
             //    Stopwatch stopwatch1 = new Stopwatch();
@@ -102,12 +102,12 @@ namespace Eiap.Framework.Base.Serialization.SXW.Test
             //        var xx = JsonConvert.DeserializeObject<List<Schools>>(testobject);
             //    }
             //    stopwatch1.Stop();
-            //    Console.WriteLine("Newtonsoft:" + stopwatch1.ElapsedMilliseconds);
-            //    sum += stopwatch1.ElapsedMilliseconds;
+            //    Console.WriteLine("Newtonsoft:" + stopwatch1.Elapsed.TotalMilliseconds);
+            //    sum += stopwatch1.Elapsed.TotalMilliseconds;
             //}
             //Console.WriteLine("Newtonsoft Avg:" + sum / count);
 
-            long sum2 = 0;
+            double sum2 = 0;
             for (int m = 0; m < count; m++)
             {
                 Stopwatch stopwatch2 = new Stopwatch();
@@ -117,10 +117,19 @@ namespace Eiap.Framework.Base.Serialization.SXW.Test
                     var xx = serliz.DeserializeObject<List<Schools>>(testobject);
                 }
                 stopwatch2.Stop();
-                Console.WriteLine("SXW:" + stopwatch2.ElapsedMilliseconds);
-                sum2 += stopwatch2.ElapsedMilliseconds;
+                Console.WriteLine("SXW:" + stopwatch2.Elapsed.TotalMilliseconds);
+                sum2 += stopwatch2.Elapsed.TotalMilliseconds;
             }
             Console.WriteLine("SXW Avg:" + sum2 / count);
+
+
+            Console.WriteLine("ArraySymbol_Begin_Time:" + ProcessTime.ArraySymbol_Begin_Time);
+            Console.WriteLine("ArraySymbol_End_Time:" + ProcessTime.ArraySymbol_End_Time);
+            Console.WriteLine("ObjectSymbol_Begin_Time:" + ProcessTime.ObjectSymbol_Begin_Time);
+            Console.WriteLine("ObjectSymbol_End_Time:" + ProcessTime.ObjectSymbol_End_Time);
+            Console.WriteLine("PropertySymbol_Time:" + ProcessTime.PropertySymbol_Time);
+            Console.WriteLine("SeparateSymbol_Time:" + ProcessTime.SeparateSymbol_Time);
+
 
             #endregion
 

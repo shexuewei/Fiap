@@ -37,11 +37,11 @@ namespace Eiap.Framework.Base.Serialization.SXW
                         stopwatch.Start();
                         JsonDeserializeArraySymbol_Begin_Event(null, args);
                         stopwatch.Stop();
-                        ProcessTime.ArraySymbol_Begin_Time += stopwatch.ElapsedMilliseconds;
+                        ProcessTime.ArraySymbol_Begin_Time += stopwatch.Elapsed.TotalMilliseconds;
                     }
                 }
                 //数组结束
-                if (charitem == JsonSymbol.JsonArraySymbol_End)
+                else if (charitem == JsonSymbol.JsonArraySymbol_End)
                 {
                     if (JsonDeserializeArraySymbol_End_Event != null)
                     {
@@ -49,7 +49,7 @@ namespace Eiap.Framework.Base.Serialization.SXW
                         stopwatch.Start();
                         JsonDeserializeArraySymbol_End_Event(null, args);
                         stopwatch.Stop();
-                        ProcessTime.ArraySymbol_End_Time += stopwatch.ElapsedMilliseconds;
+                        ProcessTime.ArraySymbol_End_Time += stopwatch.Elapsed.TotalMilliseconds;
                     }
                 }
                 //对象开始
@@ -61,7 +61,7 @@ namespace Eiap.Framework.Base.Serialization.SXW
                         stopwatch.Start();
                         JsonDeserializeObjectSymbol_Begin_Event(null, args);
                         stopwatch.Stop();
-                        ProcessTime.ObjectSymbol_Begin_Time += stopwatch.ElapsedMilliseconds;
+                        ProcessTime.ObjectSymbol_Begin_Time += stopwatch.Elapsed.TotalMilliseconds;
                     }
                 }
                 //属性名
@@ -73,7 +73,7 @@ namespace Eiap.Framework.Base.Serialization.SXW
                         stopwatch.Start();
                         JsonDeserializePropertySymbol_Event(null, args);
                         stopwatch.Stop();
-                        ProcessTime.PropertySymbol_Time += stopwatch.ElapsedMilliseconds;
+                        ProcessTime.PropertySymbol_Time += stopwatch.Elapsed.TotalMilliseconds;
                     }
                 }
                 //对象结束
@@ -85,7 +85,7 @@ namespace Eiap.Framework.Base.Serialization.SXW
                         stopwatch.Start();
                         JsonDeserializeObjectSymbol_End_Event(null, args);
                         stopwatch.Stop();
-                        ProcessTime.ObjectSymbol_End_Time += stopwatch.ElapsedMilliseconds;
+                        ProcessTime.ObjectSymbol_End_Time += stopwatch.Elapsed.TotalMilliseconds;
                     }
                 }
                 //逗号
@@ -97,7 +97,7 @@ namespace Eiap.Framework.Base.Serialization.SXW
                         stopwatch.Start();
                         JsonDeserializeSeparateSymbol_Event(null, args);
                         stopwatch.Stop();
-                        ProcessTime.SeparateSymbol_Time += stopwatch.ElapsedMilliseconds;
+                        ProcessTime.SeparateSymbol_Time += stopwatch.Elapsed.TotalMilliseconds;
                     }
                 }
             }
@@ -424,7 +424,6 @@ namespace Eiap.Framework.Base.Serialization.SXW
             else if (currentObjectContainer.ContainerType == DeserializeObjectContainerType.Property)
             {
                 currentPropertyInfo = currentObjectContainer.ContainerObject as PropertyInfo;
-                List<char> value = new List<char>();
                 Type currentPropertyType = null;
                 if (currentPropertyInfo.PropertyType.IsGenericType)
                 {
@@ -597,14 +596,14 @@ namespace Eiap.Framework.Base.Serialization.SXW
 
     public static class ProcessTime
     {
-        public static long ArraySymbol_Begin_Time { get; set; }
-        public static long ArraySymbol_End_Time { get; set; }
-        public static long ObjectSymbol_Begin_Time { get; set; }
-        public static long ObjectSymbol_End_Time { get; set; }
-        public static long PropertySymbol_Time { get; set; }
-        public static long SeparateSymbol_Time { get; set; }
-        public static long ForeachChar_Time { get; set; }
-        public static long ForeachObject_Time { get; set; }
+        public static double ArraySymbol_Begin_Time { get; set; }
+        public static double ArraySymbol_End_Time { get; set; } 
+        public static double ObjectSymbol_Begin_Time { get; set; }
+        public static double ObjectSymbol_End_Time { get; set; }
+        public static double PropertySymbol_Time { get; set; }
+        public static double SeparateSymbol_Time { get; set; } 
+        public static double ForeachChar_Time { get; set; } 
+        public static double ForeachObject_Time { get; set; }
 
     }
 }
