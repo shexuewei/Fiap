@@ -15,5 +15,7 @@ namespace Eiap.Framework.Base.Serialization.SXW
         public Type RootType { get; set; }
 
         public char CurrentCharItem { get; set; }
+
+        public IPropertyAccessorManager PropertyAccessorManager { get; set; }
     }
 }

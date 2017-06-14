@@ -52,6 +52,7 @@ namespace Eiap.Framework.Base.Serialization.SXW.Test
             List<Schools> schoolList = new List<Schools>();
             schoolList.Add(school1);
 
+            #region 序列化
             //int count = 10;
             //int num = 100000;
             //long sum = 0;
@@ -83,11 +84,45 @@ namespace Eiap.Framework.Base.Serialization.SXW.Test
             //    sum += stopwatch.ElapsedMilliseconds;
             //}
             //Console.WriteLine("SXW Avg:" + sum / count);
+            #endregion
 
+            #region 反序列化
             ISerializationManager serliz = DependencyManager.Instance.Resolver<ISerializationManager>();
-            var xx = serliz.SerializeObject(schoolList); //JsonConvert.SerializeObject(school1);
-            var yy = JsonConvert.DeserializeObject<List<Schools>>(xx);
-            var tmpxx = serliz.DeserializeObject<List<Schools>>(xx);
+            var testobject = serliz.SerializeObject(schoolList);
+            long count = 10;
+            long num = 10000;
+
+            //long sum = 0;
+            //for (int m = 0; m < count; m++)
+            //{
+            //    Stopwatch stopwatch1 = new Stopwatch();
+            //    stopwatch1.Start();
+            //    for (int i = 0; i < num; i++)
+            //    {
+            //        var xx = JsonConvert.DeserializeObject<List<Schools>>(testobject);
+            //    }
+            //    stopwatch1.Stop();
+            //    Console.WriteLine("Newtonsoft:" + stopwatch1.ElapsedMilliseconds);
+            //    sum += stopwatch1.ElapsedMilliseconds;
+            //}
+            //Console.WriteLine("Newtonsoft Avg:" + sum / count);
+
+            long sum2 = 0;
+            for (int m = 0; m < count; m++)
+            {
+                Stopwatch stopwatch2 = new Stopwatch();
+                stopwatch2.Start();
+                for (int i = 0; i < num; i++)
+                {
+                    var xx = serliz.DeserializeObject<List<Schools>>(testobject);
+                }
+                stopwatch2.Stop();
+                Console.WriteLine("SXW:" + stopwatch2.ElapsedMilliseconds);
+                sum2 += stopwatch2.ElapsedMilliseconds;
+            }
+            Console.WriteLine("SXW Avg:" + sum2 / count);
+
+            #endregion
 
             Console.ReadLine();
         }

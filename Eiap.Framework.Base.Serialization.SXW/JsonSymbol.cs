@@ -8,14 +8,14 @@ namespace Eiap.Framework.Base.Serialization.SXW
 {
     public static class JsonSymbol
     {
-        public const string JsonArraySymbol_Begin = "[";
-        public const string JsonArraySymbol_End = "]";
-        public const string JsonObjectSymbol_Begin = "{";
-        public const string JsonObjectSymbol_End = "}";
-        public const string JsonQuotesSymbol = "\"";
+        public const char JsonArraySymbol_Begin = '[';
+        public const char JsonArraySymbol_End = ']';
+        public const char JsonObjectSymbol_Begin = '{';
+        public const char JsonObjectSymbol_End = '}';
+        public const char JsonQuotesSymbol = '"';
         public const string JsonNullSymbol = "null";
-        public const string JsonSeparateSymbol = ",";
-        public const string JsonPropertySymbol = ":";
-        public const string JsonSpaceSymbol = " ";
+        public const char JsonSeparateSymbol = ',';
+        public const char JsonPropertySymbol = ':';
+        public const char JsonSpaceSymbol = ' ';
     }
 }

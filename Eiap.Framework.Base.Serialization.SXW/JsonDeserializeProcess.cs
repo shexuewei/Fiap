@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections;
 using System.Collections.Generic;
+using System.Diagnostics;
 using System.Linq;
 using System.Reflection;
 using System.Text;
@@ -17,62 +18,86 @@ namespace Eiap.Framework.Base.Serialization.SXW
         public static event EventHandler<JsonDeserializeEventArgs> JsonDeserializePropertySymbol_Event;
         public static event EventHandler<JsonDeserializeEventArgs> JsonDeserializeSeparateSymbol_Event;
 
-        public static object Deserialize(string jsonString, Type objectType, SerializationSetting setting)
+        public static object Deserialize(string jsonString, Type objectType, SerializationSetting setting, IPropertyAccessorManager propertyAccessorManager)
         {
             Stack<char> jsonStringStack = new Stack<char>();
             Stack<DeserializeObjectContainer> containerStack = new Stack<DeserializeObjectContainer>();
-            JsonDeserializeEventArgs args = new JsonDeserializeEventArgs { RootType = objectType, ContainerStack = containerStack, JsonStringStack = jsonStringStack };
+            JsonDeserializeEventArgs args = new JsonDeserializeEventArgs { RootType = objectType, ContainerStack = containerStack, JsonStringStack = jsonStringStack, PropertyAccessorManager = propertyAccessorManager };
             char[] jsonCharList = jsonString.ToCharArray();
             foreach (char charitem in jsonCharList)
             {
                 jsonStringStack.Push(charitem);
                 args.CurrentCharItem = charitem;
                 //数组开始
-                if (charitem == Convert.ToChar(JsonSymbol.JsonArraySymbol_Begin))
+                if (charitem == JsonSymbol.JsonArraySymbol_Begin)
                 {
                     if (JsonDeserializeArraySymbol_Begin_Event != null)
                     {
+                        Stopwatch stopwatch = new Stopwatch();
+                        stopwatch.Start();
                         JsonDeserializeArraySymbol_Begin_Event(null, args);
+                        stopwatch.Stop();
+                        ProcessTime.ArraySymbol_Begin_Time += stopwatch.ElapsedMilliseconds;
                     }
                 }
                 //数组结束
-                if (charitem == Convert.ToChar(JsonSymbol.JsonArraySymbol_End))
+                if (charitem == JsonSymbol.JsonArraySymbol_End)
                 {
                     if (JsonDeserializeArraySymbol_End_Event != null)
                     {
+                        Stopwatch stopwatch = new Stopwatch();
+                        stopwatch.Start();
                         JsonDeserializeArraySymbol_End_Event(null, args);
+                        stopwatch.Stop();
+                        ProcessTime.ArraySymbol_End_Time += stopwatch.ElapsedMilliseconds;
                     }
                 }
                 //对象开始
-                else if (charitem == Convert.ToChar(JsonSymbol.JsonObjectSymbol_Begin))
+                else if (charitem == JsonSymbol.JsonObjectSymbol_Begin)
                 {
                     if (JsonDeserializeObjectSymbol_Begin_Event != null)
                     {
+                        Stopwatch stopwatch = new Stopwatch();
+                        stopwatch.Start();
                         JsonDeserializeObjectSymbol_Begin_Event(null, args);
+                        stopwatch.Stop();
+                        ProcessTime.ObjectSymbol_Begin_Time += stopwatch.ElapsedMilliseconds;
                     }
                 }
                 //属性名
-                else if (charitem == Convert.ToChar(JsonSymbol.JsonPropertySymbol) && IsPropertyHandler(args))
+                else if (charitem == JsonSymbol.JsonPropertySymbol && IsPropertyHandler(args))
                 {
                     if (JsonDeserializePropertySymbol_Event != null)
                     {
+                        Stopwatch stopwatch = new Stopwatch();
+                        stopwatch.Start();
                         JsonDeserializePropertySymbol_Event(null, args);
+                        stopwatch.Stop();
+                        ProcessTime.PropertySymbol_Time += stopwatch.ElapsedMilliseconds;
                     }
                 }
                 //对象结束
-                else if (charitem == Convert.ToChar(JsonSymbol.JsonObjectSymbol_End))
+                else if (charitem == JsonSymbol.JsonObjectSymbol_End)
                 {
                     if (JsonDeserializeObjectSymbol_End_Event != null)
                     {
+                        Stopwatch stopwatch = new Stopwatch();
+                        stopwatch.Start();
                         JsonDeserializeObjectSymbol_End_Event(null, args);
+                        stopwatch.Stop();
+                        ProcessTime.ObjectSymbol_End_Time += stopwatch.ElapsedMilliseconds;
                     }
                 }
                 //逗号
-                else if (charitem == Convert.ToChar(JsonSymbol.JsonSeparateSymbol))
+                else if (charitem == JsonSymbol.JsonSeparateSymbol)
                 {
                     if (JsonDeserializeSeparateSymbol_Event != null)
                     {
+                        Stopwatch stopwatch = new Stopwatch();
+                        stopwatch.Start();
                         JsonDeserializeSeparateSymbol_Event(null, args);
+                        stopwatch.Stop();
+                        ProcessTime.SeparateSymbol_Time += stopwatch.ElapsedMilliseconds;
                     }
                 }
             }
@@ -135,7 +160,6 @@ namespace Eiap.Framework.Base.Serialization.SXW
         {
             e.JsonStringStack.Pop();//]出栈
             DeserializeObjectContainer currentObjectContainer = e.ContainerStack.Pop();
-            PropertyInfo currentPropertyInfo = null;
             object objvalue = null;
             IList listvalue = null;
             if (currentObjectContainer.ContainerType == DeserializeObjectContainerType.Object)
@@ -146,13 +170,6 @@ namespace Eiap.Framework.Base.Serialization.SXW
                 {
                     listvalue = currentObjectContainer.ContainerObject as IList;
                     listvalue.Add(objvalue);
-                    //currentObjectContainer = e.ContainerStack.Pop();
-                    //if (currentObjectContainer.ContainerType == DeserializeObjectContainerType.Property)
-                    //{
-                    //    objvalue = listvalue;
-                    //    currentPropertyInfo = currentObjectContainer.ContainerObject as PropertyInfo;
-                    //    currentPropertyInfo.SetValue(e.ContainerStack.Peek().ContainerObject, objvalue);
-                    //}
                 }
             }
             else if (currentObjectContainer.ContainerType == DeserializeObjectContainerType.List)
@@ -161,17 +178,6 @@ namespace Eiap.Framework.Base.Serialization.SXW
                 listvalue = currentObjectContainer.ContainerObject as IList;
                 listvalue.Add(valuestring);
                 e.ContainerStack.Push(currentObjectContainer);
-                //currentObjectContainer = e.ContainerStack.Peek();
-                //if (currentObjectContainer.ContainerType == DeserializeObjectContainerType.Property)
-                //{
-                //    currentPropertyInfo = currentObjectContainer.ContainerObject as PropertyInfo;
-                //    Type currentPropertyType = currentPropertyInfo.PropertyType;
-                //    if (currentPropertyType.IsArray)
-                //    {
-                //        objvalue = IListToArray(listvalue);
-                //        currentPropertyInfo.SetValue(e.ContainerStack.Peek().ContainerObject, objvalue);
-                //    }
-                //}
             }
 
         }
@@ -221,7 +227,7 @@ namespace Eiap.Framework.Base.Serialization.SXW
             PropertyInfo currentPropertyInfo = null;
             object objvalue = null;
 
-            if (currentObjectContainer.ContainerType == DeserializeObjectContainerType.Object 
+            if (currentObjectContainer.ContainerType == DeserializeObjectContainerType.Object
                 || currentObjectContainer.ContainerType == DeserializeObjectContainerType.List)
             {
                 objvalue = currentObjectContainer.ContainerObject;
@@ -229,7 +235,7 @@ namespace Eiap.Framework.Base.Serialization.SXW
                 currentPropertyInfo = currentObjectContainer.ContainerObject as PropertyInfo;
                 if (currentPropertyInfo != null)
                 {
-                    currentPropertyInfo.SetValue(e.ContainerStack.Peek().ContainerObject, objvalue);
+                    PropertySetValue(e.ContainerStack.Peek().ContainerObject, currentPropertyInfo, objvalue, e.PropertyAccessorManager);
                 }
             }
             else if (currentObjectContainer.ContainerType == DeserializeObjectContainerType.DictionaryKey)
@@ -253,40 +259,40 @@ namespace Eiap.Framework.Base.Serialization.SXW
                 string valuestring = GetValueContainerByPropertyType(e.JsonStringStack);
                 if (currentPropertyType == typeof(int))
                 {
-                    if (valuestring != "null")
+                    if (valuestring != JsonSymbol.JsonNullSymbol)
                     {
                         objvalue = int.Parse(valuestring);
                     }
                 }
                 else if (currentPropertyType == typeof(string))
                 {
-                    if (valuestring != "null")
+                    if (valuestring != JsonSymbol.JsonNullSymbol)
                     {
                         objvalue = valuestring;
                     }
                 }
                 else if (currentPropertyType == typeof(DateTime))
                 {
-                    if (valuestring != "null")
+                    if (valuestring != JsonSymbol.JsonNullSymbol)
                     {
                         objvalue = DateTime.Parse(valuestring);
                     }
                 }
                 else if (currentPropertyType == typeof(decimal))
                 {
-                    if (valuestring != "null")
+                    if (valuestring != JsonSymbol.JsonNullSymbol)
                     {
                         objvalue = Decimal.Parse(valuestring);
                     }
                 }
                 else if (currentPropertyType == typeof(bool))
                 {
-                    if (valuestring != "null")
+                    if (valuestring != JsonSymbol.JsonNullSymbol)
                     {
                         objvalue = bool.Parse(valuestring);
                     }
                 }
-                currentPropertyInfo.SetValue(e.ContainerStack.Peek().ContainerObject, objvalue);
+                PropertySetValue(e.ContainerStack.Peek().ContainerObject, currentPropertyInfo, objvalue, e.PropertyAccessorManager);
             }
         }
 
@@ -298,16 +304,17 @@ namespace Eiap.Framework.Base.Serialization.SXW
             {
                 count++;
                 char valueSymbol = jsonStringStack.Pop();
-                if ((count == 0 && valueSymbol == Convert.ToChar(JsonSymbol.JsonQuotesSymbol))
-                    || (jsonStringStack.Count == 0 && valueSymbol == Convert.ToChar(JsonSymbol.JsonQuotesSymbol)))
+                if ((count == 0 && valueSymbol == JsonSymbol.JsonQuotesSymbol)
+                    || (jsonStringStack.Count == 0 && valueSymbol == JsonSymbol.JsonQuotesSymbol))
                 {
                     continue;
                 }
                 else
                 {
-                    valuestring.Insert(0, valueSymbol);
+                    valuestring.Add(valueSymbol);
                 }
             }
+            valuestring.Reverse();
             return new string(valuestring.ToArray());
         }
 
@@ -320,12 +327,12 @@ namespace Eiap.Framework.Base.Serialization.SXW
         {
             e.JsonStringStack.Pop();//属性分隔符出栈
             List<char> propertyNameList = new List<char>();
-            
+
             //属性引号出栈
             while (true)
             {
                 char beginQuotes = e.JsonStringStack.Pop();
-                if (beginQuotes == Convert.ToChar(JsonSymbol.JsonQuotesSymbol))
+                if (beginQuotes == JsonSymbol.JsonQuotesSymbol)
                 {
                     break;
                 }
@@ -334,18 +341,17 @@ namespace Eiap.Framework.Base.Serialization.SXW
             while (true)
             {
                 char propertyNameChar = e.JsonStringStack.Pop();
-                if (propertyNameChar == Convert.ToChar(JsonSymbol.JsonQuotesSymbol))
+                if (propertyNameChar == JsonSymbol.JsonQuotesSymbol)
                 {
                     break;
                 }
-                else if(propertyNameChar != Convert.ToChar(JsonSymbol.JsonSpaceSymbol))
+                else if (propertyNameChar != JsonSymbol.JsonSpaceSymbol)
                 {
-                    propertyNameList.Insert(0, propertyNameChar);
+                    propertyNameList.Add(propertyNameChar);
                 }
             }
+            propertyNameList.Reverse();
             string propertyNameStr = new string(propertyNameList.ToArray());
-            if (propertyNameStr == "Dict")
-            { }
             DeserializeObjectContainer currentObj = e.ContainerStack.Peek() as DeserializeObjectContainer;
             if (currentObj != null)
             {
@@ -389,7 +395,7 @@ namespace Eiap.Framework.Base.Serialization.SXW
                     if (currentObjectContainer.ContainerType == DeserializeObjectContainerType.Property)
                     {
                         currentPropertyInfo = currentObjectContainer.ContainerObject as PropertyInfo;
-                        currentPropertyInfo.SetValue(e.ContainerStack.Peek().ContainerObject, objvalue);
+                        PropertySetValue(e.ContainerStack.Peek().ContainerObject, currentPropertyInfo, objvalue, e.PropertyAccessorManager);
                     }
                 }
             }
@@ -406,7 +412,7 @@ namespace Eiap.Framework.Base.Serialization.SXW
                 if (currentObjectContainer.ContainerType == DeserializeObjectContainerType.Property)
                 {
                     currentPropertyInfo = currentObjectContainer.ContainerObject as PropertyInfo;
-                    currentPropertyInfo.SetValue(e.ContainerStack.Peek().ContainerObject, objvalue);
+                    PropertySetValue(e.ContainerStack.Peek().ContainerObject, currentPropertyInfo, objvalue, e.PropertyAccessorManager);
                 }
                 else if (currentObjectContainer.ContainerType == DeserializeObjectContainerType.List)
                 {
@@ -431,40 +437,40 @@ namespace Eiap.Framework.Base.Serialization.SXW
                 string valuestring = GetValueContainerByPropertyType(e.JsonStringStack);
                 if (currentPropertyType == typeof(int))
                 {
-                    if (valuestring != "null")
+                    if (valuestring != JsonSymbol.JsonNullSymbol)
                     {
                         objvalue = int.Parse(valuestring);
                     }
                 }
                 else if (currentPropertyType == typeof(string))
                 {
-                    if (valuestring != "null")
+                    if (valuestring != JsonSymbol.JsonNullSymbol)
                     {
                         objvalue = valuestring;
                     }
                 }
                 else if (currentPropertyType == typeof(DateTime))
                 {
-                    if (valuestring != "null")
+                    if (valuestring != JsonSymbol.JsonNullSymbol)
                     {
                         objvalue = DateTime.Parse(valuestring);
                     }
                 }
                 else if (currentPropertyType == typeof(decimal))
                 {
-                    if (valuestring != "null")
+                    if (valuestring != JsonSymbol.JsonNullSymbol)
                     {
                         objvalue = Decimal.Parse(valuestring);
                     }
                 }
                 else if (currentPropertyType == typeof(bool))
                 {
-                    if (valuestring != "null")
+                    if (valuestring != JsonSymbol.JsonNullSymbol)
                     {
                         objvalue = bool.Parse(valuestring);
                     }
                 }
-                currentPropertyInfo.SetValue(e.ContainerStack.Peek().ContainerObject, objvalue);
+                PropertySetValue(e.ContainerStack.Peek().ContainerObject, currentPropertyInfo, objvalue, e.PropertyAccessorManager);
             }
         }
 
@@ -497,7 +503,7 @@ namespace Eiap.Framework.Base.Serialization.SXW
             {
                 var currentChar = e.JsonStringStack.Pop();
                 charList.Push(currentChar);
-                if (currentChar != Convert.ToChar(JsonSymbol.JsonPropertySymbol) && currentChar != Convert.ToChar(JsonSymbol.JsonQuotesSymbol) && currentChar != Convert.ToChar(JsonSymbol.JsonSpaceSymbol))
+                if (currentChar != JsonSymbol.JsonPropertySymbol && currentChar != JsonSymbol.JsonQuotesSymbol && currentChar != JsonSymbol.JsonSpaceSymbol)
                 {
                     if (isQuotesSymbol)
                     {
@@ -505,7 +511,7 @@ namespace Eiap.Framework.Base.Serialization.SXW
                     }
                     break;
                 }
-                else if (currentChar == Convert.ToChar(JsonSymbol.JsonQuotesSymbol))
+                else if (currentChar == JsonSymbol.JsonQuotesSymbol)
                 {
                     isQuotesSymbol = true;
                 }
@@ -579,5 +585,26 @@ namespace Eiap.Framework.Base.Serialization.SXW
             }
             return arrayObj;
         }
+
+        private static void PropertySetValue(object instanceObj, PropertyInfo currentPropertyInfo, object objvalue, IPropertyAccessorManager propertyAccessorManager)
+        {
+            Type serializeObjectType = instanceObj.GetType();
+            string propertyKey = serializeObjectType.FullName + "." + currentPropertyInfo.Name;
+            PropertyInfoContainer container = new PropertyInfoContainer { PropertyName = currentPropertyInfo.Name, InstanceTypeHandle = serializeObjectType.TypeHandle, PropertyTypeHandle = currentPropertyInfo.PropertyType.TypeHandle };
+            propertyAccessorManager.GetPropertyAccessor(propertyKey, container).SetValue(instanceObj, objvalue);
+        }
+    }
+
+    public static class ProcessTime
+    {
+        public static long ArraySymbol_Begin_Time { get; set; }
+        public static long ArraySymbol_End_Time { get; set; }
+        public static long ObjectSymbol_Begin_Time { get; set; }
+        public static long ObjectSymbol_End_Time { get; set; }
+        public static long PropertySymbol_Time { get; set; }
+        public static long SeparateSymbol_Time { get; set; }
+        public static long ForeachChar_Time { get; set; }
+        public static long ForeachObject_Time { get; set; }
+
     }
 }

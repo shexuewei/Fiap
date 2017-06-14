@@ -17,6 +17,7 @@ namespace Eiap.Framework.Base.Serialization.SXW
         public SerializationManager(IPropertyAccessorManager propertyAccessorManager)
         {
             _PropertyAccessorManager = propertyAccessorManager;
+            RegisterDeserializeHandleEvent();
         }
 
         /// <summary>
@@ -33,13 +34,12 @@ namespace Eiap.Framework.Base.Serialization.SXW
             }
             setting = setting ?? new SerializationSetting { DataTimeFomatter = DefaultDataTimeFomatter, SerializationType = SerializationType.JSON };
             Type objectType = typeof(T);
-            RegisterDeserializeHandleEvent();
             switch (setting.SerializationType)
             {
                 case SerializationType.JSON:
-                    return (T)JsonDeserializeProcess.Deserialize(value, objectType, setting);
+                    return (T)JsonDeserializeProcess.Deserialize(value, objectType, setting, _PropertyAccessorManager);
                 default:
-                    return (T)JsonDeserializeProcess.Deserialize(value, objectType, setting);
+                    return (T)JsonDeserializeProcess.Deserialize(value, objectType, setting, _PropertyAccessorManager);
             }
         }
 
