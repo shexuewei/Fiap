@@ -53,59 +53,57 @@ namespace Eiap.Framework.Base.Serialization.SXW.Test
             schoolList.Add(school1);
 
             #region 序列化
-            //int count = 10;
-            //int num = 100000;
-            //long sum = 0;
-            //Stopwatch stopwatch = new Stopwatch();
-            //for (int m = 0; m < count; m++)
-            //{
-            //    stopwatch.Restart();
-            //    for (int i = 0; i < num; i++)
-            //    {
-            //        var xx = JsonConvert.SerializeObject(school1);
-            //    }
-            //    stopwatch.Stop();
-            //    Console.WriteLine("Newtonsoft:" + stopwatch.ElapsedMilliseconds);
-            //    sum += stopwatch.ElapsedMilliseconds;
-            //}
-            //Console.WriteLine("Newtonsoft Avg:" + sum / count);
+            int count = 10;
+            int num = 10000;
+            double sum4 = 0;
+            ISerializationManager serliz = DependencyManager.Instance.Resolver<ISerializationManager>();
 
-            //sum = 0;
-            //ISerializationManager serliz = DependencyManager.Instance.Resolver<ISerializationManager>();
-            //for (int m = 0; m < count; m++)
-            //{
-            //    stopwatch.Restart();
-            //    for (int i = 0; i < num; i++)
-            //    {
-            //        var xx = serliz.SerializeObject(school1);
-            //    }
-            //    stopwatch.Stop();
-            //    Console.WriteLine("SXW:" + stopwatch.ElapsedMilliseconds);
-            //    sum += stopwatch.ElapsedMilliseconds;
-            //}
-            //Console.WriteLine("SXW Avg:" + sum / count);
+            Stopwatch stopwatch = new Stopwatch();
+            for (int m = 0; m < count; m++)
+            {
+                stopwatch.Restart();
+                for (int i = 0; i < num; i++)
+                {
+                    var xx = JsonConvert.SerializeObject(school1);
+                }
+                stopwatch.Stop();
+                Console.WriteLine("Newtonsoft:" + stopwatch.Elapsed.TotalMilliseconds);
+                sum4 += stopwatch.Elapsed.TotalMilliseconds;
+            }
+            Console.WriteLine("Newtonsoft Avg:" + sum4 / count);
+
+            double sum3 = 0;
+            for (int m = 0; m < count; m++)
+            {
+                stopwatch.Restart();
+                for (int i = 0; i < num; i++)
+                {
+                    var xx = serliz.SerializeObject(school1);
+                }
+                stopwatch.Stop();
+                Console.WriteLine("SXW:" + stopwatch.Elapsed.TotalMilliseconds);
+                sum3 += stopwatch.Elapsed.TotalMilliseconds;
+            }
+            Console.WriteLine("SXW Avg:" + sum3 / count);
             #endregion
 
             #region 反序列化
-            ISerializationManager serliz = DependencyManager.Instance.Resolver<ISerializationManager>();
             var testobject = serliz.SerializeObject(schoolList);
-            long count = 1;
-            long num = 10000;
 
-            //double sum = 0;
-            //for (int m = 0; m < count; m++)
-            //{
-            //    Stopwatch stopwatch1 = new Stopwatch();
-            //    stopwatch1.Start();
-            //    for (int i = 0; i < num; i++)
-            //    {
-            //        var xx = JsonConvert.DeserializeObject<List<Schools>>(testobject);
-            //    }
-            //    stopwatch1.Stop();
-            //    Console.WriteLine("Newtonsoft:" + stopwatch1.Elapsed.TotalMilliseconds);
-            //    sum += stopwatch1.Elapsed.TotalMilliseconds;
-            //}
-            //Console.WriteLine("Newtonsoft Avg:" + sum / count);
+            double sum1 = 0;
+            for (int m = 0; m < count; m++)
+            {
+                Stopwatch stopwatch1 = new Stopwatch();
+                stopwatch1.Start();
+                for (int i = 0; i < num; i++)
+                {
+                    var xx = JsonConvert.DeserializeObject<List<Schools>>(testobject);
+                }
+                stopwatch1.Stop();
+                Console.WriteLine("Newtonsoft:" + stopwatch1.Elapsed.TotalMilliseconds);
+                sum1 += stopwatch1.Elapsed.TotalMilliseconds;
+            }
+            Console.WriteLine("Newtonsoft Avg:" + sum1 / count);
 
             double sum2 = 0;
             for (int m = 0; m < count; m++)
