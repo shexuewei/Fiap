@@ -11,7 +11,7 @@ using System.Threading.Tasks;
 
 namespace Eiap.Framework.AppBase.Repository
 {
-    public interface IRepository<tEntity, TPrimarykey> : IRepositoryCommit, IUnitOfWorkCommandConnection, IRepositoryUnitOfWork, IRealtimeDependency
+    public interface IRepository<tEntity, TPrimarykey> : IRepositoryCommit, IUnitOfWorkCommandConnection, IRealtimeDependency
         where tEntity : IEntity<TPrimarykey>
         where TPrimarykey : struct
     {

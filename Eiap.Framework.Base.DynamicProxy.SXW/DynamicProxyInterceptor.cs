@@ -60,11 +60,11 @@ namespace Eiap.Framework.Base.DynamicProxy.SXW
                         {
                             stopwatch = new Stopwatch();
                             stopwatch.Start();
-                            args = new InterceptorMethodArgs { MethodName = name, MethodDateTime = DateTime.Now, MethodParameters = parameters };
+                            args = new InterceptorMethodArgs { MethodName = name, MethodDateTime = DateTime.Now, MethodParameters = parameters, InstanceObject = instance };
                             InvokeBegin(methodinfo, args);
                             objres = methodDel(instance, parameters);
                             stopwatch.Stop();
-                            args.MethodExecute = stopwatch.ElapsedMilliseconds;
+                            args.MethodExecute = stopwatch.Elapsed.TotalMilliseconds;
                             args.ReturnValue = objres;
                             InvokeEnd(methodinfo, args);
                         }

@@ -5,6 +5,11 @@ namespace Eiap.Framework.Base.Interceptor
     public class InterceptorMethodArgs
     {
         /// <summary>
+        /// 当前实例
+        /// </summary>
+        public object InstanceObject { get; set; }
+
+        /// <summary>
         /// 方法名
         /// </summary>
         public string MethodName { get; set; }
@@ -27,7 +32,7 @@ namespace Eiap.Framework.Base.Interceptor
         /// <summary>
         /// 方法执行时间
         /// </summary>
-        public long? MethodExecute { get; set; }
+        public double? MethodExecute { get; set; }
 
         /// <summary>
         /// 方法返回对象

@@ -3,7 +3,17 @@
 namespace Eiap.Framework.Base.Interceptor
 {
     [AttributeUsage(AttributeTargets.Method, Inherited = true, AllowMultiple = true)]
-    public class InterceptorMethodBeginAttibute : Attribute, IInterceptorMethodBegin
+    public class InterceptorMethodAttribute : Attribute
+    {
+        /// <summary>
+        /// 特性优先级
+        /// </summary>
+        public virtual int Priority { get; set; }
+    }
+
+
+    [AttributeUsage(AttributeTargets.Method, Inherited = true, AllowMultiple = true)]
+    public class InterceptorMethodBeginAttibute : InterceptorMethodAttribute, IInterceptorMethodBegin
     {
         public virtual void Execute(InterceptorMethodArgs args)
         {
@@ -11,7 +21,7 @@ namespace Eiap.Framework.Base.Interceptor
     }
 
     [AttributeUsage(AttributeTargets.Method, Inherited = true, AllowMultiple = true)]
-    public class InterceptorMethodEndAttibute : Attribute, IInterceptorMethodEnd
+    public class InterceptorMethodEndAttibute : InterceptorMethodAttribute, IInterceptorMethodEnd
     {
         public virtual void Execute(InterceptorMethodArgs args)
         {
@@ -20,7 +30,7 @@ namespace Eiap.Framework.Base.Interceptor
     }
 
     [AttributeUsage(AttributeTargets.Method, Inherited = true, AllowMultiple = true)]
-    public class InterceptorMethodExceptionAttibute : Attribute, IInterceptorMethodException
+    public class InterceptorMethodExceptionAttibute : InterceptorMethodAttribute, IInterceptorMethodException
     {
         public virtual void Execute(InterceptorMethodArgs args)
         {

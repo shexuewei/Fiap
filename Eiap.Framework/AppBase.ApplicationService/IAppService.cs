@@ -9,6 +9,7 @@ using System.Threading.Tasks;
 
 namespace Eiap.Framework.AppBase.ApplicationService
 {
+    [UnitOfWorkCommit]
     public interface IAppService : IAppServiceUnitOfWork, IRealtimeDependency
     {
         ILogger Log { get; set; }

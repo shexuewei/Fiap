@@ -41,6 +41,7 @@
   <ItemGroup>
     <Compile Include="AppBase.ApplicationService\IAppService.cs" />
     <Compile Include="AppBase.ApplicationService\IAppServiceUnitOfWork.cs" />
+    <Compile Include="AppBase.ApplicationService\UnitOfWorkCommitAttribute.cs" />
     <Compile Include="AppBase.BussinessService\BusinessContextBase.cs" />
     <Compile Include="AppBase.BussinessService\IBusinessContextHandler.cs" />
     <Compile Include="AppBase.BussinessService\IBusinessContextManager.cs" />
@@ -60,11 +61,9 @@
     <Compile Include="AppBase.DTOMapper\IDTOMapper.cs" />
     <Compile Include="AppBase.Repository\IRepository.cs" />
     <Compile Include="AppBase.Repository\IRepositoryCommit.cs" />
-    <Compile Include="AppBase.Repository\IRepositoryUnitOfWork.cs" />
     <Compile Include="AppBase.UnitOfWork\ICurrentUnitOfWork.cs" />
     <Compile Include="AppBase.UnitOfWork\IUnitOfWork.cs" />
     <Compile Include="AppBase.UnitOfWork\IUnitOfWorkCommandConnection.cs" />
-    <Compile Include="AppBase.UnitOfWork\UnitOfWorkAttribute.cs" />
     <Compile Include="Base.AssemblyService\AssemblyManager.cs" />
     <Compile Include="Base.DynamicProxy\DynamicProxyContainer.cs" />
     <Compile Include="Base.DynamicProxy\DynamicProxyMethodContainer.cs" />
