@@ -51,7 +51,7 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Eiap.Framework.Base.Seriali
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Eiap.Framework.Common.DataMapping.SQLServer.Test", "Eiap.Framework.Common.DataMapping.SQLServer.Test\Eiap.Framework.Common.DataMapping.SQLServer.Test.csproj", "{6A6A4B11-DC9D-40F3-8D89-8067B17FD3BF}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Eiap.Framework.Test", "Eiap.Framework.Test\Eiap.Framework.Test.csproj", "{7A2872CF-0F58-4DCE-AA02-92FE2F77DE38}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Eiap.Framework.Test", "Eiap.Framework.Test\Eiap.Framework.Test.csproj", "{6E7E4AF3-38E2-42FD-A7C0-5271B4C5C861}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -155,10 +155,10 @@ Global
 		{6A6A4B11-DC9D-40F3-8D89-8067B17FD3BF}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{6A6A4B11-DC9D-40F3-8D89-8067B17FD3BF}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{6A6A4B11-DC9D-40F3-8D89-8067B17FD3BF}.Release|Any CPU.Build.0 = Release|Any CPU
-		{7A2872CF-0F58-4DCE-AA02-92FE2F77DE38}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{7A2872CF-0F58-4DCE-AA02-92FE2F77DE38}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{7A2872CF-0F58-4DCE-AA02-92FE2F77DE38}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{7A2872CF-0F58-4DCE-AA02-92FE2F77DE38}.Release|Any CPU.Build.0 = Release|Any CPU
+		{6E7E4AF3-38E2-42FD-A7C0-5271B4C5C861}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{6E7E4AF3-38E2-42FD-A7C0-5271B4C5C861}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{6E7E4AF3-38E2-42FD-A7C0-5271B4C5C861}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{6E7E4AF3-38E2-42FD-A7C0-5271B4C5C861}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

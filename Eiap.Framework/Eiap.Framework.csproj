@@ -50,7 +50,6 @@
     <Compile Include="AppBase.BussinessService\IPipingContainerManager.cs" />
     <Compile Include="AppBase.BussinessService\IPipingManager.cs" />
     <Compile Include="AppBase.BussinessService\PipingContainer.cs" />
-    <Compile Include="Base.Cache\ICacheManager.cs" />
     <Compile Include="AppBase.DomainEvent\DomainEventContainer.cs" />
     <Compile Include="AppBase.DomainEvent\IDomainEventContainerManager.cs" />
     <Compile Include="AppBase.DomainEvent\IDomainEventData.cs" />
@@ -65,6 +64,9 @@
     <Compile Include="AppBase.UnitOfWork\IUnitOfWork.cs" />
     <Compile Include="AppBase.UnitOfWork\IUnitOfWorkCommandConnection.cs" />
     <Compile Include="Base.AssemblyService\AssemblyManager.cs" />
+    <Compile Include="Base.Cache\ICacheManager.cs" />
+    <Compile Include="Base.Configuration\ConfigurationData.cs" />
+    <Compile Include="Base.Configuration\IConfiguration.cs" />
     <Compile Include="Base.DynamicProxy\DynamicProxyContainer.cs" />
     <Compile Include="Base.DynamicProxy\DynamicProxyMethodContainer.cs" />
     <Compile Include="Base.DynamicProxy\IDynamicProxyContainerManager.cs" />
